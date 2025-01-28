@@ -102,6 +102,8 @@ CREATE TABLE queue_entries (
 - [ ] Add form validation
 - [ ] Implement auth state provider
 - [ ] Add protected route navigation
+- [ ] Setup authentication service class
+- [ ] Integrate authentication service with UI
 
 ### Queue Feature
 
@@ -112,6 +114,8 @@ CREATE TABLE queue_entries (
 - [ ] Implement queue state provider
 - [ ] Add queue operations (add/remove)
 - [ ] Create entry details view
+- [ ] Setup queue service class
+- [ ] Integrate queue service with UI
 
 ### UI/UX
 
@@ -127,6 +131,7 @@ CREATE TABLE queue_entries (
   go_router: 
   hooks_riverpod:
   sqflite:
+  flutter_hooks:
 ```
 
 ### Development Guidelines
