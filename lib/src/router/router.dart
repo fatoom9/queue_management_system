@@ -4,26 +4,40 @@ import 'package:queue_management_system/src/features/auth/presentation/AdminSetu
 import 'package:queue_management_system/src/features/auth/presentation/Welcom_screen.dart';
 import 'package:queue_management_system/src/features/auth/presentation/login_screen.dart';
 import 'package:queue_management_system/src/features/auth/presentation/not_found_screen.dart';
+import 'package:queue_management_system/src/features/queue/presentation/home.dart';
 
+enum AppRoute{
+  welcome,
+  login,
+  adminSetup,
+  home,
+  notFound,
+}
 final GoRouter router = GoRouter(
-  initialLocation: '/welcome', // Default screen to show
+  initialLocation: '/Welcome',
+  debugLogDiagnostics: false,
   routes: [
-    GoRoute(
-      path: '/welcome', // Path for the Welcome screen
-      builder: (context, state) => const WelcomScreen(), // Welcome screen builder
+    GoRoute(path:'/Welcome',
+    name: AppRoute.welcome.name,
+      builder: (context, state) => const WelcomScreen(),
+    ),
+    GoRoute(path: '/login',
+    name:AppRoute.login.name,
+      builder: (context, state) => const LoginScreen(),
     ),
     GoRoute(
-      path: '/login', 
-      builder: (context, state) => const LoginScreen(), // Login screen builder
-    ),
-    GoRoute(
-      path: '/admin-setup', // Path for the Admin setup screen
-      builder: (context, state) => const AdminSetupScreen(), // Admin setup screen builder
-    ),
-  
-    GoRoute(
-      path: '/404',
-      builder: (context, state) => const NotFoundScreen(),
-    ),
-  ],
+  path: '/admin-setup',
+  name: AppRoute.adminSetup.name, 
+  builder: (context, state) => const AdminSetupScreen(),
+),
+    
+    
+   ],
+  errorBuilder: (context, state) => const NotFoundScreen(),
 );
+
+
+
+
+
+

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:queue_management_system/src/router/router.dart'; // Import for GoRouter
 
 class WelcomScreen extends StatelessWidget {
   const WelcomScreen({super.key});
@@ -70,7 +71,8 @@ class WelcomScreen extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     // Navigate to AdminSetupScreen when the "Create Admin" button is pressed
-                    context.go('/admin-setup');
+                   context.go('/admin-setup');
+
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white, backgroundColor: Color(0xFF00796B),
