@@ -32,12 +32,16 @@ class AuthRepository {
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
     print("Admin inserted: ${admin.email}");
+
+    // Fetch and print all admins to verify
+    final admins = await getAdmins();
+    print("Admins in DB after insert: $admins");
   }
 
   // Get the list of admins from the database
   Future<List<Admin>> getAdmins() async {
     final List<Map<String, dynamic>> maps = await _database.query('admin');
-    print("Fetched admins: $maps");
+    print("Fetched admins from DB: $maps");
     return List.generate(maps.length, (i) {
       return Admin(
         id: maps[i]['id'],
@@ -57,6 +61,7 @@ class AuthRepository {
     }
     return false;
   }
+
   // Delete admin by id
   Future<void> deleteAdmin(String id) async {
     await _database.delete(

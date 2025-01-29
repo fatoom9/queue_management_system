@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:queue_management_system/src/features/auth/data/auth_repository.dart';
 import 'package:queue_management_system/src/features/auth/domain/models/admin.dart';
 
@@ -12,26 +13,32 @@ class AdminSetupScreen extends StatefulWidget {
 class _AdminSetupScreenState extends State<AdminSetupScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final AuthRepository _authRepo = AuthRepository(); // Initialize AuthRepository
-  List<Admin> _admins = []; // To store the list of admins
+  final AuthRepository _authRepo = AuthRepository();
+  List<Admin> _admins = [];
 
   @override
   void initState() {
     super.initState();
-    _authRepo.init();
+    _initializeDB();
+  }
+
+  // Initialize the database and load admins
+  void _initializeDB() async {
+    await _authRepo.init();
     _loadAdmins();
   }
 
   // Load the list of admins from the database
   void _loadAdmins() async {
     final admins = await _authRepo.getAdmins();
-    print("Loaded admins: $admins"); // Print loaded admins to debug
+    print("Loaded admins from DB: $admins");
 
     setState(() {
       _admins = admins;
     });
   }
 
+  // Create a new admin
   void _createAdmin() async {
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -56,8 +63,8 @@ class _AdminSetupScreenState extends State<AdminSetupScreen> {
       const SnackBar(content: Text('Admin created successfully!')),
     );
 
-    // Navigate back to the welcome screen or any other screen you want
-    Navigator.pop(context);
+    // Navigate to admin list screen
+    context.go('/adminList');
   }
 
   @override
@@ -98,8 +105,6 @@ class _AdminSetupScreenState extends State<AdminSetupScreen> {
                   return ListTile(
                     title: Text(admin.email),
                     subtitle: Text(admin.id),
-                    // ignore: avoid_print
-                    //print(admin.password),
                   );
                 },
               ),
