@@ -24,6 +24,9 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
+   
+    FocusScope.of(context).unfocus();
+
     setState(() {
       _isLoading = true;
     });
@@ -34,15 +37,16 @@ class _LoginScreenState extends State<LoginScreen> {
       _passwordController.text,
     );
 
+    if (!mounted) return;
+
     setState(() {
       _isLoading = false;
     });
 
     if (isValid) {
-      // If valid, navigate to Home screen
+      // Navigate to Home screen
       context.go('/home');
     } else {
-      // If not valid, show error message
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Invalid email or password')),
       );
@@ -57,23 +61,20 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: <Widget>[
-            // Email input field
             TextField(
               controller: _emailController,
               decoration: const InputDecoration(labelText: 'Email'),
             ),
-            // Password input field
             TextField(
               controller: _passwordController,
               decoration: const InputDecoration(labelText: 'Password'),
               obscureText: true,
             ),
             const SizedBox(height: 20),
-            // Login button
             ElevatedButton(
               onPressed: _isLoading ? null : _login,
               child: _isLoading
-                  ? const CircularProgressIndicator() // Show loader while validating
+                  ? const CircularProgressIndicator()
                   : const Text('Login'),
             ),
           ],

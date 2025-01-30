@@ -1,3 +1,4 @@
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:queue_management_system/src/features/auth/domain/models/admin.dart';
@@ -63,12 +64,34 @@ class AuthRepository {
   }
 
   // Delete admin by id
-  Future<void> deleteAdmin(String id) async {
+   Future<void> deleteAdmin(String id) async {
     await _database.delete(
       'admin',
       where: 'id = ?',
       whereArgs: [id],
     );
-    print("Admin deleted with id: $id");
   }
+
 }
+final authRepoProvider = Provider<AuthRepository>((ref){
+  final auth = AuthRepository();
+  ref.onDispose(() {
+
+  });
+  auth.init();
+  return auth;
+
+
+
+});
+
+// FutureProvider to fetch the list of admins
+final adminsProvider = FutureProvider<List<Admin>>((ref) async {
+  final authRepository = ref.watch(authRepoProvider);
+  return authRepository.getAdmins();
+});
+// FutureProvider for validating admin credentials
+final validateCredentialsProvider = FutureProvider.family<bool, Map<String, String>>((ref, credentials) async {
+  final authRepository = ref.watch(authRepoProvider);
+  return authRepository.validateCredentials(credentials['email']!, credentials['password']!);
+});
