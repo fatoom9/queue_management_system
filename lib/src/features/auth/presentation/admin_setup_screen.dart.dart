@@ -7,6 +7,7 @@ class AdminSetupScreen extends StatefulWidget {
   const AdminSetupScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _AdminSetupScreenState createState() => _AdminSetupScreenState();
 }
 
@@ -24,7 +25,7 @@ class _AdminSetupScreenState extends State<AdminSetupScreen> {
 
   // Initialize the database and load admins
   void _initializeDB() async {
-    await _authRepo.init();
+    await _authRepo.database; // Ensures database is initialized
     _loadAdmins();
   }
 
@@ -95,6 +96,14 @@ class _AdminSetupScreenState extends State<AdminSetupScreen> {
               child: const Text('Create Admin'),
             ),
             const SizedBox(height: 20),
+            const SizedBox(height: 10),
+            // Back to Welcome button
+            TextButton(
+              onPressed: () {
+                context.go('/welcome'); // Navigate back to Welcome Screen
+              },
+              child: const Text('Back '),
+            ),
             // Display the list of admins
             Text('Existing Admins:'),
             Expanded(

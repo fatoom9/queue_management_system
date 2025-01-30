@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:queue_management_system/src/features/auth/presentation/AdminSetupScreen.dart';
-import 'package:queue_management_system/src/features/auth/presentation/Welcom_screen.dart';
+import 'package:queue_management_system/src/features/auth/presentation/admin_setup_screen.dart.dart';
+import 'package:queue_management_system/src/features/auth/presentation/welcom_screen.dart';
 import 'package:queue_management_system/src/features/auth/presentation/login_screen.dart';
-import 'package:queue_management_system/src/features/auth/presentation/not_found_screen.dart';
-import 'package:queue_management_system/src/features/queue/presentation/home.dart';
+//import 'package:queue_management_system/src/features/auth/presentation/not_found_screen.dart';
+import 'package:queue_management_system/src/features/queue/presentation/home_screen.dart';
 
 enum AppRoute {
   welcome,
@@ -15,7 +15,7 @@ enum AppRoute {
 }
 
 final GoRouter router = GoRouter(
-  initialLocation: '/welcome', 
+  initialLocation: '/welcome',
   debugLogDiagnostics: false,
   routes: [
     GoRoute(
@@ -40,7 +40,7 @@ final GoRouter router = GoRouter(
     ),
   ],
   //errorPageBuilder: (context, state) => MaterialPage(
-   // key: state.pageKey,
-    //child: const NotFoundScreen(),
- // ),
+  // key: state.pageKey,
+  //child: const NotFoundScreen(),
+  // ),
 );

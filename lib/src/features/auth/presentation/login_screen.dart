@@ -24,7 +24,6 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-   
     FocusScope.of(context).unfocus();
 
     setState(() {
@@ -44,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     if (isValid) {
-      // Navigate to Home screen
+      // Navigate to Home screen if credentials are correct
       context.go('/home');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -60,6 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextField(
               controller: _emailController,
@@ -76,6 +76,14 @@ class _LoginScreenState extends State<LoginScreen> {
               child: _isLoading
                   ? const CircularProgressIndicator()
                   : const Text('Login'),
+            ),
+            const SizedBox(height: 10),
+            // Back to Welcome button
+            TextButton(
+              onPressed: () {
+                context.go('/welcome'); // Navigate back to Welcome Screen
+              },
+              child: const Text('Back '),
             ),
           ],
         ),
