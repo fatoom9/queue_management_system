@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 //import 'package:queue_management_system/src/router/router.dart'; // Import for GoRouter
@@ -11,7 +12,10 @@ class WelcomScreen extends StatelessWidget {
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFB3E5FC), Color(0xFFE1F5FE)], // Soft blue gradient
+            colors: [
+              Color(0xFFB3E5FC),
+              Color(0xFFE1F5FE)
+            ], // Soft blue gradient
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -24,34 +28,34 @@ class WelcomScreen extends StatelessWidget {
               children: <Widget>[
                 // App Logo
                 Image.asset(
-                  'assets/logo/logo.png', // Updated logo path
+                  'assets/logo/logo.png',
                   width: 180,
                   height: 180,
                 ),
                 const SizedBox(height: 30),
-                
+
                 // App Title with style
                 const Text(
                   'Queue Management System',
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF01579B), // Dark blue color
+                    color: Color(0xFF01579B),
                     letterSpacing: 1.5,
                   ),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 40),
 
-                // Login Button with soft color styling
                 ElevatedButton(
                   onPressed: () {
-                    // Navigate to LoginScreen when the "Login" button is pressed
                     context.go('/login');
                   },
                   style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white, backgroundColor: Color(0xFF0288D1),
-                    padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 16),
+                    foregroundColor: Colors.white,
+                    backgroundColor: Color(0xFF0288D1),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 60, vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
@@ -67,16 +71,15 @@ class WelcomScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
 
-                // Create Admin Button with soft color styling
                 ElevatedButton(
                   onPressed: () {
-                    // Navigate to AdminSetupScreen when the "Create Admin" button is pressed
-                   context.go('/admin-setup');
-
+                    context.go('/admin-setup');
                   },
                   style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white, backgroundColor: Color(0xFF00796B),
-                    padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 16),
+                    foregroundColor: Colors.white,
+                    backgroundColor: Color(0xFF00796B),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 60, vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),

@@ -1,116 +1,87 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:queue_management_system/src/features/auth/data/auth_repository.dart';
 import 'package:queue_management_system/src/features/auth/domain/models/admin.dart';
 
-class AdminSetupScreen extends StatefulWidget {
+class AdminSetupScreen extends HookConsumerWidget {
   const AdminSetupScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _AdminSetupScreenState createState() => _AdminSetupScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authRepo = ref.watch(authRepositoryProvider);
+    final emailController = useTextEditingController();
+    final passwordController = useTextEditingController();
+    final admins = useState<List<Admin>>([]);
 
-class _AdminSetupScreenState extends State<AdminSetupScreen> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final AuthRepository _authRepo = AuthRepository();
-  List<Admin> _admins = [];
+    useEffect(() {
+      Future<void> loadAdmins() async {
+        admins.value = await authRepo.getAdmins();
+      }
 
-  @override
-  void initState() {
-    super.initState();
-    _initializeDB();
-  }
+      loadAdmins();
+      return null;
+    }, []);
 
-  // Initialize the database and load admins
-  void _initializeDB() async {
-    await _authRepo.database; // Ensures database is initialized
-    _loadAdmins();
-  }
+    void createAdmin() async {
+      if (emailController.text.isEmpty || passwordController.text.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Email and password cannot be empty.')),
+        );
+        return;
+      }
 
-  // Load the list of admins from the database
-  void _loadAdmins() async {
-    final admins = await _authRepo.getAdmins();
-    print("Loaded admins from DB: $admins");
-
-    setState(() {
-      _admins = admins;
-    });
-  }
-
-  // Create a new admin
-  void _createAdmin() async {
-    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Email and password cannot be empty.')),
+      final admin = Admin(
+        id: DateTime.now().toString(),
+        email: emailController.text,
+        password: passwordController.text,
       );
-      return;
+
+      await authRepo.insertAdmin(admin);
+
+      admins.value = await authRepo.getAdmins(); // update the list of admins
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Admin created successfully!')),
+      );
+
+      context.go('/adminList');
     }
 
-    final admin = Admin(
-      id: DateTime.now().toString(), // Unique ID for the admin
-      email: _emailController.text,
-      password: _passwordController.text,
-    );
-
-    await _authRepo.insertAdmin(admin);
-
-    // Reload the list of admins
-    _loadAdmins();
-
-    // Show success message
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Admin created successfully!')),
-    );
-
-    // Navigate to admin list screen
-    context.go('/adminList');
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Create Admin'),
-      ),
+      appBar: AppBar(title: const Text('Create Admin')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: <Widget>[
-            // Email input field
             TextField(
-              controller: _emailController,
+              controller: emailController,
               decoration: const InputDecoration(labelText: 'Email'),
             ),
-            // Password input field
             TextField(
-              controller: _passwordController,
+              controller: passwordController,
               decoration: const InputDecoration(labelText: 'Password'),
               obscureText: true,
             ),
             const SizedBox(height: 20),
-            // Create Admin button
             ElevatedButton(
-              onPressed: _createAdmin,
+              onPressed: createAdmin,
               child: const Text('Create Admin'),
             ),
             const SizedBox(height: 20),
-            const SizedBox(height: 10),
-            // Back to Welcome button
             TextButton(
               onPressed: () {
-                context.go('/welcome'); // Navigate back to Welcome Screen
+                context.go('/welcome');
               },
-              child: const Text('Back '),
+              child: const Text('Back'),
             ),
-            // Display the list of admins
-            Text('Existing Admins:'),
+            const SizedBox(height: 10),
+            const Text('Existing Admins:'),
             Expanded(
               child: ListView.builder(
-                itemCount: _admins.length,
+                itemCount: admins.value.length,
                 itemBuilder: (context, index) {
-                  final admin = _admins[index];
+                  final admin = admins.value[index];
                   return ListTile(
                     title: Text(admin.email),
                     subtitle: Text(admin.id),
