@@ -6,7 +6,7 @@ import 'package:queue_management_system/src/features/auth/data/auth_repository.d
 import 'package:queue_management_system/src/features/auth/domain/models/admin.dart';
 
 class AdminSetupScreen extends HookConsumerWidget {
-  const AdminSetupScreen({super.key});
+  const AdminSetupScreen({super.key, required Null Function() onSetupComplete});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -44,8 +44,6 @@ class AdminSetupScreen extends HookConsumerWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Admin created successfully!')),
       );
-
-      context.go('/adminList');
     }
 
     return Scaffold(
@@ -69,14 +67,21 @@ class AdminSetupScreen extends HookConsumerWidget {
               child: const Text('Create Admin'),
             ),
             const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                context.go('/admin-list'); // Navigate to admin list
+              },
+              child: const Text('View Admin List'),
+            ),
+            const SizedBox(height: 20),
             TextButton(
               onPressed: () {
-                context.go('/welcome');
+                context.go('/welcome'); // Navigate back to welcome screen
               },
               child: const Text('Back'),
             ),
             const SizedBox(height: 10),
-            const Text('Existing Admins:'),
+            /* const Text('Existing Admins:'),
             Expanded(
               child: ListView.builder(
                 itemCount: admins.value.length,
@@ -89,6 +94,7 @@ class AdminSetupScreen extends HookConsumerWidget {
                 },
               ),
             ),
+            */
           ],
         ),
       ),

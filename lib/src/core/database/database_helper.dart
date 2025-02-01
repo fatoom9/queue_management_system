@@ -23,7 +23,7 @@ class DatabaseHelper {
             password TEXT NOT NULL
           )
         ''');
-        print("Admin table created");
+        //print("Admin table created");
 
         await db.execute('''
           CREATE TABLE queue_entries (
@@ -35,7 +35,7 @@ class DatabaseHelper {
             notes TEXT
           )
         ''');
-        print("Queue entries table created");
+        // print("Queue entries table created");
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 2) {
@@ -49,7 +49,7 @@ class DatabaseHelper {
               notes TEXT
             )
           ''');
-          print("Queue entries table added in upgrade");
+          //print("Queue entries table added in upgrade");
         }
       },
     );
