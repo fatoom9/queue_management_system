@@ -6,57 +6,82 @@ import 'package:sqflite/sqflite.dart';
 class QueueRepository {
   final DatabaseHelper _dbHelper;
   QueueRepository(this._dbHelper);
+
   Future<void> insertQueue(PersonDetails persondetails) async {
     final db = await _dbHelper.database;
-    await db.insert('queue_entries', persondetails.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace);
+    try {
+      await db.insert(
+        'queue_entries',
+        persondetails.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+      print("Person inserted into queue_entries table");
+    } catch (e) {
+      print("Error inserting person: $e");
+    }
   }
 
-  //view current queue
   Future<List<PersonDetails>> getQueue() async {
     final db = await _dbHelper.database;
-    final List<Map<String, dynamic>> maps = await db.query('queue_entries');
-    return maps.map((map) => PersonDetails.fromMap(map)).toList();
+    try {
+      final List<Map<String, dynamic>> maps = await db.query('queue_entries');
+      print("Fetched ${maps.length} entries from queue_entries table");
+      return maps.map((map) => PersonDetails.fromMap(map)).toList();
+    } catch (e) {
+      print("Error fetching queue: $e");
+      return [];
+    }
   }
-  //delete person from queue
 
-  Future<void> removeFromQueue(int id) async {
+  Future<void> removeFromQueue(String id) async {
     final db = await _dbHelper.database;
-    await db.delete(
-      'queue_entries',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
+    try {
+      await db.delete(
+        'queue_entries',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+      print("Person with ID $id removed from queue_entries table");
+    } catch (e) {
+      print("Error removing person: $e");
+    }
   }
 
-  // View person details by ID
   Future<PersonDetails?> getPersonDetails(int id) async {
     final db = await _dbHelper.database;
-    final List<Map<String, dynamic>> maps = await db.query(
-      'queue_entries',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
-
-    if (maps.isNotEmpty) {
-      return PersonDetails.fromMap(maps.first);
+    try {
+      final List<Map<String, dynamic>> maps = await db.query(
+        'queue_entries',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+      if (maps.isNotEmpty) {
+        return PersonDetails.fromMap(maps.first);
+      }
+    } catch (e) {
+      print("Error fetching person details: $e");
     }
     return null;
   }
 
-  // Edit person details
   Future<void> updatePersonDetails(PersonDetails personDetails) async {
     final db = await _dbHelper.database;
-    await db.update(
-      'queue_entries',
-      personDetails.toMap(),
-      where: 'id = ?',
-      whereArgs: [personDetails.id],
-    );
+    try {
+      await db.update(
+        'queue_entries',
+        personDetails.toMap(),
+        where: 'id = ?',
+        whereArgs: [personDetails.id],
+      );
+      print("Person details updated for ID ${personDetails.id}");
+    } catch (e) {
+      print("Error updating person details: $e");
+    }
   }
 }
 
-final queueRepositoryProvider = Provider<QueueRepository>((ref) {
-  final dbHelper = ref.read(databaseProvider);
+//add provider
+final queueRepoProvider = Provider<QueueRepository>((ref) {
+  final dbHelper = ref.watch(databaseProvider);
   return QueueRepository(dbHelper);
 });

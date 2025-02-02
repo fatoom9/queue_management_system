@@ -12,7 +12,7 @@ class HomeScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final queueRepo = ref.watch(queueRepositoryProvider);
+    final queueRepo = ref.watch(queueRepoProvider);
     final fullNameController = useTextEditingController();
     final phoneController = useTextEditingController();
     final notesController = useTextEditingController();
@@ -28,31 +28,66 @@ class HomeScreen extends HookConsumerWidget {
     }, []);
 
     void addPerson() async {
-      if (fullNameController.text.isEmpty || phoneController.text.isEmpty) {
+      String fullName = fullNameController.text.trim();
+      String phoneNumber = phoneController.text.trim();
+      String notes = notesController.text.trim();
+
+      if (fullName.isEmpty || phoneNumber.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-              content: Text('Full Name and Phone Number cannot be empty.')),
+            content: Text('Full Name and Phone Number cannot be empty.'),
+            backgroundColor: Colors.red,
+          ),
         );
         return;
       }
+
+      final currentQueue = await queueRepo.getQueue();
+      final nextQueueNumber =
+          currentQueue.isEmpty ? 1 : currentQueue.length + 1;
+
       final newPerson = PersonDetails(
-        fullName: fullNameController.text,
-        phoneNumber: phoneController.text,
-        queueNumber: person.value.length + 1,
-        timestampAdded: DateTime.now().millisecondsSinceEpoch,
-        notes: notesController.text.isNotEmpty ? notesController.text : null,
-        timestamp: DateTime.now().toString(),
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        fullName: fullName,
+        phoneNumber: phoneNumber,
+        queueNumber: nextQueueNumber,
+        timestamp: DateTime.now().millisecondsSinceEpoch,
+        notes: notes.isNotEmpty ? notes : null,
       );
-      await queueRepo.insertQueue(newPerson);
-      person.value = await queueRepo.getQueue();
-      fullNameController.clear();
-      phoneController.clear();
-      notesController.clear();
+
+      try {
+        await queueRepo.insertQueue(newPerson);
+        person.value = await queueRepo.getQueue();
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Person added successfully!')),
+        );
+
+        fullNameController.clear();
+        phoneController.clear();
+        notesController.clear();
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to add person: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
 
-    void removePerson(int id) async {
-      await queueRepo.removeFromQueue(id);
-      person.value = await queueRepo.getQueue();
+    void removePerson(String id) async {
+      try {
+        await queueRepo.removeFromQueue(id);
+        person.value = await queueRepo.getQueue();
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to remove person: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
 
     return Scaffold(
@@ -107,7 +142,7 @@ class HomeScreen extends HookConsumerWidget {
                           Text("#${currentPerson.queueNumber}"),
                           IconButton(
                             icon: const Icon(Icons.delete, color: Colors.red),
-                            onPressed: () => removePerson(currentPerson.id!),
+                            onPressed: () => removePerson(currentPerson.id),
                           ),
                         ],
                       ),
@@ -129,8 +164,7 @@ class HomeScreen extends HookConsumerWidget {
         ),
       ),
       floatingActionButton: Row(
-        mainAxisAlignment:
-            MainAxisAlignment.spaceBetween, // Aligns one left, one right
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const SizedBox(width: 16),
           FloatingActionButton(
@@ -153,11 +187,13 @@ class HomeScreen extends HookConsumerWidget {
                 MaterialPageRoute(
                   builder: (context) => AddPersonScreen(
                     id: person.value.length + 1,
+                    queueNumber: person.value.length + 1,
                   ),
                 ),
               );
               if (newPerson != null) {
-                person.value = List.from(person.value)..add(newPerson);
+                await queueRepo.insertQueue(newPerson);
+                person.value = await queueRepo.getQueue();
               }
             },
             backgroundColor: const Color(0xFF0288D1),

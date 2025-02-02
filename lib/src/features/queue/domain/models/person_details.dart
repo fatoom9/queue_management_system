@@ -1,21 +1,18 @@
 class PersonDetails {
-  final int? id;
+  final String id;
   final String fullName;
   final String phoneNumber;
   final int queueNumber;
-  final int timestampAdded;
+  final int timestamp;
   final String? notes;
-  final String timestamp; // Store timestamp as a string
 
-  // Constructor
   PersonDetails({
-    this.id,
+    required this.id,
     required this.fullName,
     required this.phoneNumber,
     required this.queueNumber,
-    required this.timestampAdded,
+    required this.timestamp,
     this.notes,
-    required this.timestamp, // Ensure timestamp is passed when creating a PersonDetails object
   });
 
   Map<String, dynamic> toMap() {
@@ -24,22 +21,19 @@ class PersonDetails {
       'full_name': fullName,
       'phone_number': phoneNumber,
       'queue_number': queueNumber,
-      'timestamp_added': timestampAdded,
+      'timestamp': timestamp,
       'notes': notes,
-      'timestamp': timestamp, // Include timestamp when converting to map
     };
   }
 
   factory PersonDetails.fromMap(Map<String, dynamic> map) {
     return PersonDetails(
-      id: map['id'],
-      fullName: map['full_name'],
-      phoneNumber: map['phone_number'],
-      queueNumber: map['queue_number'],
-      timestampAdded: map['timestamp_added'],
-      notes: map['notes'],
-      timestamp:
-          map['timestamp'] ?? '', // Safely handle missing timestamp in map
+      id: map['id'] as String? ?? '', // Ensuring it's a String
+      fullName: map['full_name'] as String? ?? '',
+      phoneNumber: map['phone_number'] as String? ?? '',
+      queueNumber: (map['queue_number'] as int?) ?? 0, // Default to 0 if null
+      timestamp: (map['timestamp'] as int?) ?? 0,
+      notes: map['notes'] as String?, // Nullable string is okay
     );
   }
 }

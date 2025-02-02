@@ -91,7 +91,7 @@ CREATE TABLE queue_entries (
 - [x] Add dependencies in pubspec.yaml
 - [x] Setup feature-first folder structure
 - [x] Configure GoRouter
-- [ ] Setup Riverpod providers
+- [x] Setup Riverpod providers
 - [x] Initialize SQLite database
 
 ### Authentication Feature
@@ -101,19 +101,19 @@ CREATE TABLE queue_entries (
 - [x] Create login screen
 - [x] Add form validation
 - [ ] Implement auth state provider
-- [ ] Add protected route navigation
+- [x] Add protected route navigation
 - [ ] Setup authentication service class
 - [ ] Integrate authentication service with UI
 
 ### Queue Feature
 
-- [ ] Create queue entry data model
-- [ ] Implement queue repository
-- [ ] Create queue list screen
-- [ ] Add new entry form
-- [ ] Implement queue state provider
+- [x] Create queue entry data model
+- [x] Implement queue repository
+- [x] Create queue list screen
+- [x] Add new entry form
+- [x] Implement queue state provider
 - [ ] Add queue operations (add/remove)
-- [ ] Create entry details view
+- [x] Create entry details view
 - [ ] Setup queue service class
 - [ ] Integrate queue service with UI
 
@@ -157,7 +157,7 @@ CREATE TABLE queue_entries (
 ```markdown
 ## Daily Progress Tracker
 
-Date: [30-1-2025]
+Date: [1-2-2025]
 
 ### Today's Tasks
 - [ ] Set up the SQLite database and configure local storage.
@@ -169,9 +169,9 @@ Date: [30-1-2025]
 ### Completed Tasks
 - [x] Completed task 1
 - [x] Completed task 2
-- [ ] Completed task 3
+- [x] Completed task 3
 - [x] Completed task 4
-- [ ] Completed task 5
+- [x] Completed task 5
 ### Blockers/Issues
 - No blockers encountered so far.
 
