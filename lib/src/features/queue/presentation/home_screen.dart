@@ -76,10 +76,27 @@ class HomeScreen extends HookConsumerWidget {
       }
     }
 
+    void updateQueueNumber() async {
+      final currentQueue = await queueRepo.getQueue();
+      for (int i = 0; i < currentQueue.length; i++) {
+        final newPerson = PersonDetails(
+          id: currentQueue[i].id,
+          fullName: currentQueue[i].fullName,
+          phoneNumber: currentQueue[i].phoneNumber,
+          queueNumber: i + 1,
+          timestamp: currentQueue[i].timestamp,
+          notes: currentQueue[i].notes,
+        );
+        await queueRepo.updatePersonDetails(newPerson);
+      }
+      person.value = await queueRepo.getQueue();
+    }
+
     void removePerson(String id) async {
       try {
         await queueRepo.removeFromQueue(id);
         person.value = await queueRepo.getQueue();
+        updateQueueNumber();
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -89,6 +106,8 @@ class HomeScreen extends HookConsumerWidget {
         );
       }
     }
+
+    //update id after remove person
 
     return Scaffold(
       appBar: AppBar(
@@ -143,6 +162,7 @@ class HomeScreen extends HookConsumerWidget {
                           IconButton(
                             icon: const Icon(Icons.delete, color: Colors.red),
                             onPressed: () => removePerson(currentPerson.id),
+                            //person.value = updateQueueNumber(),
                           ),
                         ],
                       ),
