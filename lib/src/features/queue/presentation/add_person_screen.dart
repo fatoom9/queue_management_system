@@ -14,7 +14,7 @@ class AddPersonScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add Person'),
-        backgroundColor: const Color(0xFF0288D1),
+        backgroundColor: const Color.fromARGB(255, 36, 172, 245),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

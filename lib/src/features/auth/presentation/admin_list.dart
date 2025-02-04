@@ -83,6 +83,18 @@ class AdminListScreen extends HookConsumerWidget {
                             subtitle: Text("ID: ${admin.id}"),
                             leading: const Icon(Icons.admin_panel_settings,
                                 color: Color(0xFF0288D1)),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text("#${admin.id}"),
+                                IconButton(
+                                  icon: const Icon(Icons.delete,
+                                      color: Colors.red),
+                                  onPressed: () =>
+                                      adminRepo.deleteAdmin(admin.id),
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       },
