@@ -65,7 +65,7 @@ class AdminListScreen extends HookConsumerWidget {
               child: admins.value.isEmpty
                   ? const Center(child: CircularProgressIndicator())
                   : ListView.builder(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 2),
                       itemCount: admins.value.length,
                       itemBuilder: (context, index) {
                         final admin = admins.value[index];
@@ -103,11 +103,11 @@ class AdminListScreen extends HookConsumerWidget {
             const SizedBox(height: 20),
             TextButton(
               onPressed: () {
-                context.go('/welcome'); // Navigate back to welcome screen
+                context.go('/welcome');
               },
               child: const Text('Back'),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 15),
           ],
         ),
       ),
