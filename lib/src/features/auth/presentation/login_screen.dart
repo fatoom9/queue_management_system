@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:queue_management_system/src/features/auth/data/auth_repository.dart';
+
+import '../../../router/router.dart';
 
 class LoginScreen extends HookConsumerWidget {
   const LoginScreen({super.key});
@@ -33,7 +34,8 @@ class LoginScreen extends HookConsumerWidget {
       isLoading.value = false;
 
       if (isValid) {
-        context.go('/home');
+        // context.go('/home');
+        ref.read(isLoggedInProvider.notifier).state = true;
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Invalid email or password')),
@@ -45,8 +47,7 @@ class LoginScreen extends HookConsumerWidget {
       appBar: AppBar(
         title: const Text(
           'Queue Management',
-          style: TextStyle(
-              fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         centerTitle: true,
         backgroundColor: const Color(0xFF0288D1),
@@ -82,8 +83,7 @@ class LoginScreen extends HookConsumerWidget {
                       ),
                       TextField(
                         controller: passwordController,
-                        decoration:
-                            const InputDecoration(labelText: 'Password'),
+                        decoration: const InputDecoration(labelText: 'Password'),
                         obscureText: true,
                       ),
                       const SizedBox(height: 20),
@@ -106,7 +106,7 @@ class LoginScreen extends HookConsumerWidget {
                       const SizedBox(height: 10),
                       TextButton(
                         onPressed: () {
-                          context.go('/welcome');
+                          // context.go('/welcome');
                         },
                         child: const Text('Back'),
                       ),

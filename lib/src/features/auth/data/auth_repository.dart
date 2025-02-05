@@ -10,8 +10,7 @@ class AuthRepository {
 
   Future<void> insertAdmin(Admin admin) async {
     final db = await _dbHelper.database;
-    await db.insert('admin', admin.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace);
+    await db.insert('admin', admin.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<List<Admin>> getAdmins() async {
@@ -22,8 +21,7 @@ class AuthRepository {
 
   Future<bool> validateCredentials(String email, String password) async {
     final admins = await getAdmins();
-    return admins
-        .any((admin) => admin.email == email && admin.password == password);
+    return admins.any((admin) => admin.email == email && admin.password == password);
   }
 
   Future<void> deleteAdmin(String id) async {
@@ -36,4 +34,9 @@ class AuthRepository {
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   final dbHelper = ref.read(databaseProvider);
   return AuthRepository(dbHelper);
+});
+
+final adminListProvider = FutureProvider.autoDispose<List<Admin>>((ref) async {
+  final authRepository = ref.watch(authRepositoryProvider);
+  return authRepository.getAdmins();
 });
