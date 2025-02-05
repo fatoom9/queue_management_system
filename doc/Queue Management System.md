@@ -87,33 +87,33 @@ CREATE TABLE queue_entries (
 
 ### Setup Phase
 
-- [ ] Create new Flutter project
-- [ ] Add dependencies in pubspec.yaml
-- [ ] Setup feature-first folder structure
-- [ ] Configure GoRouter
-- [ ] Setup Riverpod providers
-- [ ] Initialize SQLite database
+- [x] Create new Flutter project
+- [x] Add dependencies in pubspec.yaml
+- [x] Setup feature-first folder structure
+- [x] Configure GoRouter
+- [x] Setup Riverpod providers
+- [x] Initialize SQLite database
 
 ### Authentication Feature
 
-- [ ] Create admin data model
-- [ ] Implement local authentication repository
-- [ ] Create login screen
-- [ ] Add form validation
+- [x] Create admin data model
+- [x] Implement local authentication repository
+- [x] Create login screen
+- [x] Add form validation
 - [ ] Implement auth state provider
-- [ ] Add protected route navigation
+- [x] Add protected route navigation
 - [ ] Setup authentication service class
 - [ ] Integrate authentication service with UI
 
 ### Queue Feature
 
-- [ ] Create queue entry data model
-- [ ] Implement queue repository
-- [ ] Create queue list screen
-- [ ] Add new entry form
-- [ ] Implement queue state provider
+- [x] Create queue entry data model
+- [x] Implement queue repository
+- [x] Create queue list screen
+- [x] Add new entry form
+- [x] Implement queue state provider
 - [ ] Add queue operations (add/remove)
-- [ ] Create entry details view
+- [x] Create entry details view
 - [ ] Setup queue service class
 - [ ] Integrate queue service with UI
 
@@ -157,22 +157,27 @@ CREATE TABLE queue_entries (
 ```markdown
 ## Daily Progress Tracker
 
-Date: [Current Date]
+Date: [1-2-2025]
 
 ### Today's Tasks
-- [ ] Task 1
-- [ ] Task 2
-- [ ] Task 3
+- [ ] Set up the SQLite database and configure local storage.
+- [ ] Implement login screen and integrate AuthRepository for email/password validation.
+- [ ] Set up initial queue screen and list entries.
+- [ ] Configure GoRouter for routing, including protected routes.
+- [ ] Test navigation to the Home page after a successful login.
 
 ### Completed Tasks
 - [x] Completed task 1
 - [x] Completed task 2
-
+- [x] Completed task 3
+- [x] Completed task 4
+- [x] Completed task 5
 ### Blockers/Issues
-- List any blockers or issues encountered
+- No blockers encountered so far.
 
 ### Notes
-- Additional notes or observations
+- Double-check the integration of GoRouter for protected routes to ensure only authenticated users can access the Home page.
+- Test the flow from login to Home page and handle route transitions.
 ```
 
 ### MVP Deliverables Checklist
