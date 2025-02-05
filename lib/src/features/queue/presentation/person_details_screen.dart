@@ -4,7 +4,7 @@ import 'package:queue_management_system/src/features/queue/domain/models/person_
 class PersonDetailsScreen extends StatelessWidget {
   final PersonDetails person;
 
-  const PersonDetailsScreen({Key? key, required this.person}) : super(key: key);
+  const PersonDetailsScreen({super.key, required this.person});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class PersonDetailsScreen extends StatelessWidget {
           child: Card(
             margin: const EdgeInsets.all(20),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(16),
             ),
             elevation: 5,
             child: Padding(
@@ -46,8 +46,7 @@ class PersonDetailsScreen extends StatelessWidget {
                   _buildDetailRow(Icons.phone, 'Phone Number', person.phoneNumber),
                   _buildDetailRow(Icons.confirmation_number, 'Queue Number', '#${person.queueNumber}'),
                   _buildDetailRow(Icons.access_time, 'Added At', _formatTimestamp(person.timestamp)),
-                  if (person.notes?.isNotEmpty == true)
-                    _buildDetailRow(Icons.note, 'Notes', person.notes!),
+                  if (person.notes?.isNotEmpty == true) _buildDetailRow(Icons.note, 'Notes', person.notes!),
                 ],
               ),
             ),
