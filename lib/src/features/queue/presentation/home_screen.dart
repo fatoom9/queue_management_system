@@ -5,7 +5,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:queue_management_system/src/features/queue/data/repositories/queue_repository.dart';
 import 'package:queue_management_system/src/features/queue/domain/models/person_details.dart';
 import 'package:queue_management_system/src/features/queue/presentation/add_person_screen.dart';
-import 'package:queue_management_system/src/features/queue/presentation/person_details_screen';
+import 'package:queue_management_system/src/features/queue/presentation/person_details_screen.dart';
+
+import '../../../router/router.dart';
 
 class HomeScreen extends HookConsumerWidget {
   const HomeScreen({super.key});
@@ -43,8 +45,7 @@ class HomeScreen extends HookConsumerWidget {
       }
 
       final currentQueue = await queueRepo.getQueue();
-      final nextQueueNumber =
-          currentQueue.isEmpty ? 1 : currentQueue.length + 1;
+      final nextQueueNumber = currentQueue.isEmpty ? 1 : currentQueue.length + 1;
 
       final newPerson = PersonDetails(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -113,8 +114,7 @@ class HomeScreen extends HookConsumerWidget {
       appBar: AppBar(
         title: const Text(
           'Queue Management',
-          style: TextStyle(
-              fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         centerTitle: true,
         backgroundColor: const Color(0xFF0288D1),
@@ -151,8 +151,7 @@ class HomeScreen extends HookConsumerWidget {
                     child: ListTile(
                       title: Text(
                         currentPerson.fullName,
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       subtitle: Text(currentPerson.phoneNumber),
                       trailing: Row(
@@ -166,13 +165,11 @@ class HomeScreen extends HookConsumerWidget {
                           ),
                         ],
                       ),
-                      leading:
-                          const Icon(Icons.person, color: Color(0xFF0288D1)),
+                      leading: const Icon(Icons.person, color: Color(0xFF0288D1)),
                       onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              PersonDetailsScreen(person: currentPerson),
+                          builder: (context) => PersonDetailsScreen(person: currentPerson),
                         ),
                       ),
                     ),
@@ -190,7 +187,7 @@ class HomeScreen extends HookConsumerWidget {
           FloatingActionButton(
             heroTag: "logoutFAB",
             onPressed: () {
-              context.go('/welcome');
+              ref.read(isLoggedInProvider.notifier).state = false;
             },
             backgroundColor: const Color(0xFF0288D1),
             shape: RoundedRectangleBorder(
