@@ -10,17 +10,7 @@ class DatabaseHelper {
 
   Database? _database;
 
-  Future<void> _deleteDatabaseIfNeeded() async {
-    final dbPath = await getDatabasesPath();
-    final path = join(dbPath, 'queue_management.db');
-    if (await databaseExists(path)) {
-      await deleteDatabase(path);
-    }
-  }
-
   Future<Database> _initDatabase() async {
-    await _deleteDatabaseIfNeeded();
-
     final dbPath = await getDatabasesPath();
     return openDatabase(
       join(dbPath, 'queue_management.db'),
@@ -67,17 +57,6 @@ class DatabaseHelper {
   Future<Database> get database async {
     _database ??= await _initDatabase();
     return _database!;
-  }
-
-  // Verify if the `is_logged_in` column exists in the `admin` table
-  Future<void> checkSchema() async {
-    final db = await database;
-    List<Map<String, dynamic>> result =
-        await db.rawQuery('PRAGMA table_info(admin);');
-    print(result);
-
-    result = await db.rawQuery('PRAGMA table_info(queue_entries);');
-    print(result);
   }
 }
 
