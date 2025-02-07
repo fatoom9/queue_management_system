@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:queue_management_system/src/core/database/database_helper.dart';
-import 'package:queue_management_system/src/features/auth/data/auth_repository.dart';
-import '../../../router/router.dart';
+import 'package:queue_management_system/src/features/auth/presentation/controllers/auth_controller.dart';
 
 import '../../../router/router.dart';
 
@@ -12,10 +10,11 @@ class LoginScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authRepo = ref.watch(authRepositoryProvider);
     final emailController = useTextEditingController();
     final passwordController = useTextEditingController();
     final isLoading = useState(false);
+
+    final auth = ref.read(authControllerProvider.notifier);
 
     void login() async {
       if (emailController.text.isEmpty || passwordController.text.isEmpty) {
@@ -28,30 +27,14 @@ class LoginScreen extends HookConsumerWidget {
       FocusScope.of(context).unfocus();
       isLoading.value = true;
 
-      final isValid = await authRepo.validateCredentials(
+      final success = await auth.signIn(
         emailController.text,
         passwordController.text,
       );
 
       isLoading.value = false;
 
-      if (isValid) {
-        // Update login status
-        ref
-            .read(authRepositoryProvider)
-            .updateLoginStatus(emailController.text, true);
-        ref.read(isLoggedInProvider.notifier).state = true;
-
-        // Fetch the logged-in admin email asynchronously
-        final adminEmail =
-            await ref.read(authRepositoryProvider).getLoggedInAdminEmail();
-
-        if (adminEmail != null) {
-          //print('Admin Email: $adminEmail');
-        } else {
-          // print('No admin is logged in');
-        }
-      } else {
+      if (!success) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Invalid email or password')),
         );
@@ -134,7 +117,7 @@ class LoginScreen extends HookConsumerWidget {
           // Full-screen loading overlay
           if (isLoading.value)
             Container(
-              color: Colors.black,
+              color: Colors.black45,
               child: const Center(
                 child: CircularProgressIndicator(),
               ),

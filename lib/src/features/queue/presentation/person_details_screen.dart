@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:queue_management_system/src/features/queue/application/queue_services';
 import 'package:queue_management_system/src/features/queue/domain/models/person_details.dart';
 
 class PersonDetailsScreen extends HookConsumerWidget {
@@ -47,14 +44,10 @@ class PersonDetailsScreen extends HookConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildDetailRow(Icons.person, 'Full Name', person.fullName),
-                  _buildDetailRow(
-                      Icons.phone, 'Phone Number', person.phoneNumber),
-                  _buildDetailRow(Icons.confirmation_number, 'Queue Number',
-                      '#${person.queueNumber}'),
-                  _buildDetailRow(Icons.access_time, 'Added At',
-                      _formatTimestamp(person.timestamp)),
-                  if (person.notes?.isNotEmpty == true)
-                    _buildDetailRow(Icons.note, 'Notes', person.notes!),
+                  _buildDetailRow(Icons.phone, 'Phone Number', person.phoneNumber),
+                  _buildDetailRow(Icons.confirmation_number, 'Queue Number', '#${person.queueNumber}'),
+                  _buildDetailRow(Icons.access_time, 'Added At', _formatTimestamp(person.timestamp)),
+                  if (person.notes?.isNotEmpty == true) _buildDetailRow(Icons.note, 'Notes', person.notes!),
                 ],
               ),
             ),

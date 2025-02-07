@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:queue_management_system/src/features/queue/application/queue_services';
 import 'package:queue_management_system/src/features/queue/data/repositories/queue_repository.dart';
 import 'package:queue_management_system/src/features/queue/domain/models/person_details.dart';
 import 'package:queue_management_system/src/features/queue/presentation/add_person_screen.dart';
 import 'package:queue_management_system/src/features/queue/presentation/person_details_screen.dart';
-import '../../../router/router.dart';
+import 'package:queue_management_system/src/features/auth/presentation/controllers/auth_controller.dart';
 
 class HomeScreen extends HookConsumerWidget {
   const HomeScreen({super.key});
@@ -15,13 +13,11 @@ class HomeScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final queueRepo = ref.watch(queueRepoProvider);
+    final auth = ref.read(authControllerProvider.notifier);
     final fullNameController = useTextEditingController();
     final phoneController = useTextEditingController();
     final notesController = useTextEditingController();
     final person = useState<List<PersonDetails>>([]);
-    
-  
-
 
     useEffect(() {
       Future<void> loadQueue() async {
@@ -32,6 +28,7 @@ class HomeScreen extends HookConsumerWidget {
       return null;
     }, []);
 
+    // TODO: This logic should not be in the Presentation Layer - move to Application Layer
     void addPerson() async {
       String fullName = fullNameController.text.trim();
       String phoneNumber = phoneController.text.trim();
@@ -56,7 +53,6 @@ class HomeScreen extends HookConsumerWidget {
         phoneNumber: phoneNumber,
         queueNumber: nextQueueNumber,
         timestamp: DateTime.now().millisecondsSinceEpoch,
-        addedBy: ,
         notes: notes.isNotEmpty ? notes : null,
       );
 
@@ -81,6 +77,7 @@ class HomeScreen extends HookConsumerWidget {
       }
     }
 
+    // TODO: This logic should not be in the Presentation Layer - move to Application Layer
     void updateQueueNumber() async {
       final currentQueue = await queueRepo.getQueue();
       for (int i = 0; i < currentQueue.length; i++) {
@@ -97,6 +94,7 @@ class HomeScreen extends HookConsumerWidget {
       person.value = await queueRepo.getQueue();
     }
 
+    // TODO: This logic should not be in the Presentation Layer - move to Application Layer
     void removePerson(String id) async {
       try {
         await queueRepo.removeFromQueue(id);
@@ -190,9 +188,7 @@ class HomeScreen extends HookConsumerWidget {
           const SizedBox(width: 16),
           FloatingActionButton(
             heroTag: "logoutFAB",
-            onPressed: () {
-              ref.read(isLoggedInProvider.notifier).state = false;
-            },
+            onPressed: () => auth.signOut(),
             backgroundColor: const Color(0xFF0288D1),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
