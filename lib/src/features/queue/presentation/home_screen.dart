@@ -5,7 +5,12 @@ import 'package:queue_management_system/src/features/queue/data/repositories/que
 import 'package:queue_management_system/src/features/queue/domain/models/person_details.dart';
 import 'package:queue_management_system/src/features/queue/presentation/add_person_screen.dart';
 import 'package:queue_management_system/src/features/queue/presentation/person_details_screen.dart';
+<<<<<<< HEAD
 import 'package:queue_management_system/src/features/auth/presentation/controllers/auth_controller.dart';
+=======
+
+import '../../../router/router.dart';
+>>>>>>> f1c3e69bb1b2b2f04952dd658d679c6ffeaaba94
 
 class HomeScreen extends HookConsumerWidget {
   const HomeScreen({super.key});
@@ -188,7 +193,13 @@ class HomeScreen extends HookConsumerWidget {
           const SizedBox(width: 16),
           FloatingActionButton(
             heroTag: "logoutFAB",
+<<<<<<< HEAD
             onPressed: () => auth.signOut(),
+=======
+            onPressed: () {
+              ref.read(isLoggedInProvider.notifier).state = false;
+            },
+>>>>>>> f1c3e69bb1b2b2f04952dd658d679c6ffeaaba94
             backgroundColor: const Color(0xFF0288D1),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),

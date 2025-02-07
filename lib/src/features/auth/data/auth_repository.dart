@@ -47,8 +47,12 @@ class AuthRepository {
 
   Future<bool> validateCredentials(String email, String password) async {
     final admins = await getAdmins();
+<<<<<<< HEAD
     final isValid = admins.any((admin) => admin.email == email && admin.password == password);
     return isValid;
+=======
+    return admins.any((admin) => admin.email == email && admin.password == password);
+>>>>>>> f1c3e69bb1b2b2f04952dd658d679c6ffeaaba94
   }
 
   Future<void> deleteAdmin(String id) async {

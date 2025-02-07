@@ -12,8 +12,12 @@ class AdminListScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           'Admin Management',
+<<<<<<< HEAD
           style: TextStyle(
               fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+=======
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+>>>>>>> f1c3e69bb1b2b2f04952dd658d679c6ffeaaba94
         ),
         centerTitle: true,
         backgroundColor: const Color(0xFF0288D1),

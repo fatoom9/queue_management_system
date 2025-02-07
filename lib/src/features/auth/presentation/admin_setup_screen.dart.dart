@@ -41,14 +41,20 @@ class AdminSetupScreen extends HookConsumerWidget {
     }
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
+<<<<<<< HEAD
           'Create Admin',
+=======
+          'Creat Admin',
+>>>>>>> f1c3e69bb1b2b2f04952dd658d679c6ffeaaba94
           style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         centerTitle: true,
         backgroundColor: const Color(0xFF0288D1),
       ),
+<<<<<<< HEAD
       body: Stack(
         children: [
           Container(
@@ -57,6 +63,67 @@ class AdminSetupScreen extends HookConsumerWidget {
                 colors: [Color(0xFFB3E5FC), Color(0xFFE1F5FE)],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
+=======
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(height: 18),
+            Image.asset(
+              'assets/logo/logo.png',
+              width: MediaQuery.of(context).size.width,
+              height: 150,
+              fit: BoxFit.contain,
+            ),
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: <Widget>[
+                  TextField(
+                    controller: emailController,
+                    decoration: const InputDecoration(labelText: 'Email'),
+                  ),
+                  TextField(
+                    controller: passwordController,
+                    decoration: const InputDecoration(labelText: 'Password'),
+                    obscureText: true,
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: createAdmin,
+                    child: const Text('Create Admin'),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      context.go('/admin-list'); // Navigate to admin list
+                    },
+                    child: const Text('View Admin List'),
+                  ),
+                  const SizedBox(height: 20),
+                  TextButton(
+                    onPressed: () {
+                      context.go('/welcome'); // Navigate back to welcome screen
+                    },
+                    child: const Text('Back'),
+                  ),
+                  const SizedBox(height: 10),
+                  /* const Text('Existing Admins:'),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: admins.value.length,
+                      itemBuilder: (context, index) {
+                        final admin = admins.value[index];
+                        return ListTile(
+                          title: Text(admin.email),
+                          subtitle: Text(admin.id),
+                        );
+                      },
+                    ),
+                  ),
+                  */
+                ],
+>>>>>>> f1c3e69bb1b2b2f04952dd658d679c6ffeaaba94
               ),
             ),
             child: Column(

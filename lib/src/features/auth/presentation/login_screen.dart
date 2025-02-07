@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:queue_management_system/src/features/auth/presentation/controllers/auth_controller.dart';
+
+import '../../../router/router.dart';
 
 class LoginScreen extends HookConsumerWidget {
   const LoginScreen({super.key});
@@ -33,7 +34,14 @@ class LoginScreen extends HookConsumerWidget {
 
       isLoading.value = false;
 
+<<<<<<< HEAD
       if (!success) {
+=======
+      if (isValid) {
+        // context.go('/home');
+        ref.read(isLoggedInProvider.notifier).state = true;
+      } else {
+>>>>>>> f1c3e69bb1b2b2f04952dd658d679c6ffeaaba94
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Invalid email or password')),
         );
@@ -103,7 +111,7 @@ class LoginScreen extends HookConsumerWidget {
                       const SizedBox(height: 10),
                       TextButton(
                         onPressed: () {
-                          context.go('/welcome');
+                          // context.go('/welcome');
                         },
                         child: const Text('Back'),
                       ),

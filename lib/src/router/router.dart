@@ -20,6 +20,7 @@ enum AppRoute {
   adminList,
 }
 
+<<<<<<< HEAD
 final goRouterProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authControllerProvider);
 
@@ -54,6 +55,23 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       return null;
     },
     // refreshListenable: GoRouterRefreshStream(ref.read(authStateProvider.stream)),
+=======
+final isLoggedInProvider = StateProvider<bool>((ref) => false);
+
+final goRouterProvider = Provider<GoRouter>((ref) {
+  ref.watch(isLoggedInProvider);
+  return GoRouter(
+    initialLocation: '/welcome',
+    // refreshListenable: GoRouterRefreshStream(ref.read(authStateProvider.stream)),
+    redirect: (context, state) {
+      final isLoggedIn = ref.read(isLoggedInProvider);
+      if (isLoggedIn) {
+        return '/home';
+      }
+      return null;
+    },
+    debugLogDiagnostics: false,
+>>>>>>> f1c3e69bb1b2b2f04952dd658d679c6ffeaaba94
     routes: [
       GoRoute(
         path: '/welcome',
@@ -68,17 +86,34 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/admin-setup',
         name: AppRoute.adminSetup.name,
+<<<<<<< HEAD
         builder: (context, state) => const AdminSetupScreen(),
       ),
       GoRoute(
         path: '/admin-list',
         name: AppRoute.adminList.name,
+=======
+        builder: (context, state) => AdminSetupScreen(
+          onSetupComplete: () {
+            // Navigate to the welcome screen after admin setup is complete
+            context.goNamed(AppRoute.welcome.name);
+          },
+        ),
+      ),
+      GoRoute(
+        path: '/admin-list',
+        name: AppRoute.adminListScreen.name,
+>>>>>>> f1c3e69bb1b2b2f04952dd658d679c6ffeaaba94
         builder: (context, state) => const AdminListScreen(),
       ),
       GoRoute(
         path: '/home',
         name: AppRoute.home.name,
+<<<<<<< HEAD
         builder: (context, state) => const HomeScreen(),
+=======
+        builder: (context, state) => HomeScreen(),
+>>>>>>> f1c3e69bb1b2b2f04952dd658d679c6ffeaaba94
       ),
     ],
     errorPageBuilder: (context, state) => MaterialPage(
