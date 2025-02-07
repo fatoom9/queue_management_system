@@ -1,8 +1,8 @@
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:queue_management_system/src/core/database/database_helper.dart';
-import 'package:queue_management_system/src/features/queue/application/queue_services';
-import 'package:queue_management_system/src/features/queue/domain/models/person_details.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import 'package:queue_management_system/src/core/database/database_helper.dart';
+import 'package:queue_management_system/src/features/queue/domain/models/person_details.dart';
 
 class QueueRepository {
   final DatabaseHelper _dbHelper;

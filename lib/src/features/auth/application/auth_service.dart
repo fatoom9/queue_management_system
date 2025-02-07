@@ -1,22 +1,40 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:queue_management_system/src/features/auth/data/auth_repository.dart';
+import 'package:queue_management_system/src/features/auth/domain/models/admin.dart';
 
-final authStateProvider = StateNotifierProvider<AuthStateNotifier, bool>((ref) {
-  final authRepository = ref.read(authRepositoryProvider);
-  return AuthStateNotifier(authRepository);
-});
-
-class AuthStateNotifier extends StateNotifier<bool> {
+class AuthService {
   final AuthRepository _authRepository;
+  final Ref _ref;
 
-  AuthStateNotifier(this._authRepository) : super(false);
+  AuthService(this._authRepository, this._ref);
 
-  Future<void> checkLoginStatus(String id) async {
-    final status = await _authRepository.isLoggedIn(id);
-    state = status == 1; // true if logged in, false if not
+  Future<bool> validateCredentials(String email, String password) async {
+    return _authRepository.validateCredentials(email, password);
   }
 
-  void logOut() {
-    state = false;
+  Future<void> updateLoginStatus(String email, bool isLoggedIn) async {
+    await _authRepository.updateLoginStatus(email, isLoggedIn);
+  }
+
+  Future<void> createAdmin(Admin admin) async {
+    await _authRepository.insertAdmin(admin);
+  }
+
+  Future<String?> getLoggedInAdmin() async {
+    return _authRepository.getLoggedInAdminEmail();
+  }
+
+  Future<List<Admin>> getAllAdmins() async {
+    return _authRepository.getAdmins();
+  }
+
+  Future<void> deleteAdmin(String id) async {
+    await _authRepository.deleteAdmin(id);
   }
 }
+
+// Provider for AuthService
+final authServiceProvider = Provider<AuthService>((ref) {
+  final authRepository = ref.read(authRepositoryProvider);
+  return AuthService(authRepository, ref);
+});
