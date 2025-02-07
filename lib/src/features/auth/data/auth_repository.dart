@@ -19,14 +19,62 @@ class AuthRepository {
     return maps.map((map) => Admin.fromMap(map)).toList();
   }
 
+  Future<void> updateLoginStatus(String email, bool isLoggedIn) async {
+    final db = await _dbHelper.database;
+    await db.update(
+      'admin',
+      {'is_logged_in': isLoggedIn ? 1 : 0},
+      where: 'email = ?',
+      whereArgs: [email],
+    );
+  }
+
+  Future<String?> getLoggedInAdminEmail() async {
+    final db = await _dbHelper.database;
+
+    List<Map<String, dynamic>> result = await db.query(
+      'admin',
+      columns: ['email'],
+      where: 'is_logged_in = ?',
+      whereArgs: [1],
+    );
+
+    if (result.isNotEmpty) {
+      return result.first['email'] as String;
+    }
+    return null; // No admin is logged in
+  }
+
   Future<bool> validateCredentials(String email, String password) async {
     final admins = await getAdmins();
-    return admins.any((admin) => admin.email == email && admin.password == password);
+    final isValid = admins
+        .any((admin) => admin.email == email && admin.password == password);
+    return isValid;
   }
 
   Future<void> deleteAdmin(String id) async {
     final db = await _dbHelper.database;
     await db.delete('admin', where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<int> isLoggedIn(String id) async {
+    final db = await _dbHelper.database;
+
+    // Query the admin table where the id matches the provided id
+    final List<Map<String, dynamic>> maps = await db.query(
+      'admin',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+
+    // If the admin exists, check if the is_logged_in column is 1 (true)
+    if (maps.isNotEmpty) {
+      final admin = Admin.fromMap(
+          maps.first); // Get the first match (should be unique by id)
+      return admin.isLoggedIn ? 1 : 0; // Return 1 if logged in, otherwise 0
+    } else {
+      return 0; // Return 0 if the admin with the given id is not found
+    }
   }
 }
 

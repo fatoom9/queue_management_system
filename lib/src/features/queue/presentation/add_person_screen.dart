@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:queue_management_system/src/features/queue/domain/models/person_details.dart';
 
 class AddPersonScreen extends StatelessWidget {
-  final int queueNumber; // Use queueNumber instead of id
+  final int queueNumber;
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController notesController = TextEditingController();
-
   AddPersonScreen({required this.queueNumber, required int id});
 
   @override

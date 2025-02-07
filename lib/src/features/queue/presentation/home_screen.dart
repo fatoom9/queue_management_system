@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:queue_management_system/src/features/queue/application/queue_services';
 import 'package:queue_management_system/src/features/queue/data/repositories/queue_repository.dart';
 import 'package:queue_management_system/src/features/queue/domain/models/person_details.dart';
 import 'package:queue_management_system/src/features/queue/presentation/add_person_screen.dart';
 import 'package:queue_management_system/src/features/queue/presentation/person_details_screen.dart';
-
 import '../../../router/router.dart';
 
 class HomeScreen extends HookConsumerWidget {
@@ -19,6 +19,9 @@ class HomeScreen extends HookConsumerWidget {
     final phoneController = useTextEditingController();
     final notesController = useTextEditingController();
     final person = useState<List<PersonDetails>>([]);
+    
+  
+
 
     useEffect(() {
       Future<void> loadQueue() async {
@@ -53,6 +56,7 @@ class HomeScreen extends HookConsumerWidget {
         phoneNumber: phoneNumber,
         queueNumber: nextQueueNumber,
         timestamp: DateTime.now().millisecondsSinceEpoch,
+        addedBy: ,
         notes: notes.isNotEmpty ? notes : null,
       );
 

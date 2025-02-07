@@ -7,7 +7,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final dbHelper = DatabaseHelper();
   await dbHelper.database; // Ensure database is initialized
-  
+
   runApp(ProviderScope(
     child: MyApp(),
   ));
@@ -18,10 +18,10 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    
     return MaterialApp.router(
       // Use MaterialApp.router instead of MaterialApp
-      routerConfig: ref.watch(goRouterProvider), // Pass the router configuration to the routerConfig property
+      routerConfig: ref.watch(
+          goRouterProvider), // Pass the router configuration to the routerConfig property
       debugShowCheckedModeBanner: false, // Optional, hides the debug banner
     );
   }

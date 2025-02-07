@@ -1,6 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter/material.dart';
-
 import '../../data/auth_repository.dart';
 
 class AdminList extends HookConsumerWidget {
@@ -8,7 +7,6 @@ class AdminList extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final admins = ref.watch(adminListProvider);
-
     return admins.when(
       data: (admins) => admins.isEmpty
           ? const Center(child: CircularProgressIndicator())
@@ -25,10 +23,12 @@ class AdminList extends HookConsumerWidget {
                   child: ListTile(
                     title: Text(
                       admin.email,
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     subtitle: Text("ID: ${admin.id}"),
-                    leading: const Icon(Icons.admin_panel_settings, color: Color(0xFF0288D1)),
+                    leading: const Icon(Icons.admin_panel_settings,
+                        color: Color(0xFF0288D1)),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -36,7 +36,9 @@ class AdminList extends HookConsumerWidget {
                         IconButton(
                           icon: const Icon(Icons.delete, color: Colors.red),
                           onPressed: () async {
-                            await ref.read(authRepositoryProvider).deleteAdmin(admin.id);
+                            await ref
+                                .read(authRepositoryProvider)
+                                .deleteAdmin(admin.id);
                             ref.invalidate(adminListProvider);
                           },
                         ),

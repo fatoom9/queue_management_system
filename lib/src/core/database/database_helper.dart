@@ -10,46 +10,55 @@ class DatabaseHelper {
 
   Database? _database;
 
+  Future<void> _deleteDatabaseIfNeeded() async {
+    final dbPath = await getDatabasesPath();
+    final path = join(dbPath, 'queue_management.db');
+    if (await databaseExists(path)) {
+      await deleteDatabase(path);
+    }
+  }
+
   Future<Database> _initDatabase() async {
+    await _deleteDatabaseIfNeeded();
+
     final dbPath = await getDatabasesPath();
     return openDatabase(
       join(dbPath, 'queue_management.db'),
-      version: 2,
+      version: 3, // Increment version to 3
       onCreate: (db, version) async {
         await db.execute('''
-          CREATE TABLE admin(
-            id TEXT PRIMARY KEY,
-            email TEXT NOT NULL,
-            password TEXT NOT NULL
-          )
+          CREATE TABLE admin( 
+            id TEXT PRIMARY KEY, 
+            email TEXT NOT NULL, 
+            password TEXT NOT NULL, 
+            is_logged_in BOOLEAN DEFAULT FALSE 
+          ) 
         ''');
-        //print("Admin table created");
 
         await db.execute('''
-          CREATE TABLE queue_entries (
-            id TEXT PRIMARY KEY,
-            full_name TEXT NOT NULL,
-            phone_number TEXT NOT NULL,
-            queue_number INTEGER NOT NULL,
-            timestamp INTEGER NOT NULL,
-            notes TEXT
-          )
+          CREATE TABLE queue_entries( 
+            id TEXT PRIMARY KEY, 
+            full_name TEXT NOT NULL, 
+            phone_number TEXT NOT NULL, 
+            queue_number INTEGER NOT NULL, 
+            timestamp INTEGER NOT NULL, 
+            notes TEXT,
+            added_by TEXT NOT NULL
+          ) 
         ''');
-        // print("Queue entries table created");
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 2) {
+          // Add the `is_logged_in` column if upgrading from version 1
           await db.execute('''
-            CREATE TABLE queue_entries (
-              id TEXT PRIMARY KEY,
-              full_name TEXT NOT NULL,
-              phone_number TEXT NOT NULL,
-              queue_number INTEGER NOT NULL,
-              timestamp INTEGER NOT NULL,
-              notes TEXT
-            )
+            ALTER TABLE admin ADD COLUMN is_logged_in BOOLEAN DEFAULT FALSE 
           ''');
-          //print("Queue entries table added in upgrade");
+        }
+        if (oldVersion < 3) {
+          // Add the `added_by` column if upgrading from version 2
+          await db.execute('''
+            ALTER TABLE queue_entries ADD COLUMN added_by TEXT NOT NULL DEFAULT 'unknown'
+          ''');
         }
       },
     );
@@ -59,9 +68,19 @@ class DatabaseHelper {
     _database ??= await _initDatabase();
     return _database!;
   }
+
+  // Verify if the `is_logged_in` column exists in the `admin` table
+  Future<void> checkSchema() async {
+    final db = await database;
+    List<Map<String, dynamic>> result =
+        await db.rawQuery('PRAGMA table_info(admin);');
+    print(result);
+
+    result = await db.rawQuery('PRAGMA table_info(queue_entries);');
+    print(result);
+  }
 }
 
-/// Riverpod Provider for DatabaseHelper
 final databaseProvider = Provider<DatabaseHelper>((ref) {
   return DatabaseHelper();
 });

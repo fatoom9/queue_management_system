@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:queue_management_system/src/features/auth/presentation/admin_list_screen.dart';
+import 'package:queue_management_system/src/features/auth/presentation/admin_list.dart';
 import 'package:queue_management_system/src/features/auth/presentation/admin_setup_screen.dart.dart';
 import 'package:queue_management_system/src/features/auth/presentation/not_found_screen.dart';
 import 'package:queue_management_system/src/features/auth/presentation/welcome_screen.dart';
