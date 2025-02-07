@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:queue_management_system/src/features/queue/domain/models/person_details.dart';
 
-class PersonDetailsScreen extends StatelessWidget {
+class PersonDetailsScreen extends HookConsumerWidget {
   final PersonDetails person;
 
   const PersonDetailsScreen({super.key, required this.person});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: Text(

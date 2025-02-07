@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:queue_management_system/src/features/queue/domain/models/person_details.dart';
 
 class AddPersonScreen extends StatelessWidget {
-  final int queueNumber; // Use queueNumber instead of id
+  final int queueNumber;
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController notesController = TextEditingController();
-
-  AddPersonScreen({required this.queueNumber, required int id});
+  AddPersonScreen({super.key, required this.queueNumber, required int id});
 
   @override
   Widget build(BuildContext context) {
@@ -51,12 +50,10 @@ class AddPersonScreen extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
                   // Validate inputs
-                  if (nameController.text.isEmpty ||
-                      phoneController.text.isEmpty) {
+                  if (nameController.text.isEmpty || phoneController.text.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content:
-                            Text('Full Name and Phone Number cannot be empty.'),
+                        content: Text('Full Name and Phone Number cannot be empty.'),
                         backgroundColor: Colors.red,
                       ),
                     );
@@ -65,25 +62,21 @@ class AddPersonScreen extends StatelessWidget {
 
                   // Create a new PersonDetails object
                   final newPerson = PersonDetails(
-                    id: DateTime.now()
-                        .millisecondsSinceEpoch
-                        .toString(), // Unique ID
+                    id: DateTime.now().millisecondsSinceEpoch.toString(), // Unique ID
                     fullName: nameController.text,
                     phoneNumber: phoneController.text,
                     queueNumber: queueNumber,
                     timestamp: DateTime.now().millisecondsSinceEpoch,
-                    notes: notesController.text.isNotEmpty
-                        ? notesController.text
-                        : null,
+                    notes: notesController.text.isNotEmpty ? notesController.text : null,
                   );
 
                   // Return the new person data to the HomeScreen
                   Navigator.pop(context, newPerson);
                 },
-                child: const Text('Add Person'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF0288D1),
                 ),
+                child: const Text('Add Person'),
               ),
             ],
           ),

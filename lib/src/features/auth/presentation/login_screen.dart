@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:queue_management_system/src/features/auth/data/auth_repository.dart';
 
-import '../../../router/router.dart';
+import 'controllers/auth_controller.dart';
 
 class LoginScreen extends HookConsumerWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authRepo = ref.watch(authRepositoryProvider);
     final emailController = useTextEditingController();
     final passwordController = useTextEditingController();
     final isLoading = useState(false);
+
+    final auth = ref.read(authControllerProvider.notifier);
 
     void login() async {
       if (emailController.text.isEmpty || passwordController.text.isEmpty) {
@@ -26,17 +26,14 @@ class LoginScreen extends HookConsumerWidget {
       FocusScope.of(context).unfocus();
       isLoading.value = true;
 
-      final isValid = await authRepo.validateCredentials(
+      final success = await auth.signIn(
         emailController.text,
         passwordController.text,
       );
 
       isLoading.value = false;
 
-      if (isValid) {
-        // context.go('/home');
-        ref.read(isLoggedInProvider.notifier).state = true;
-      } else {
+      if (!success) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Invalid email or password')),
         );
@@ -116,11 +113,10 @@ class LoginScreen extends HookConsumerWidget {
               ],
             ),
           ),
-
           // Full-screen loading overlay
           if (isLoading.value)
             Container(
-              color: Colors.black.withOpacity(0.4),
+              color: Colors.black45,
               child: const Center(
                 child: CircularProgressIndicator(),
               ),

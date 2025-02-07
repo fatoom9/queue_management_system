@@ -1,13 +1,15 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:queue_management_system/src/features/auth/application/auth_service.dart';
 //import 'package:queue_management_system/src/router/router.dart'; // Import for GoRouter
 
-class WelcomScreen extends StatelessWidget {
+class WelcomScreen extends HookConsumerWidget {
   const WelcomScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -100,4 +102,6 @@ class WelcomScreen extends StatelessWidget {
       ),
     );
   }
+
+  //});
 }
