@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:queue_management_system/src/core/database/database_helper.dart';
 import 'package:queue_management_system/src/features/auth/data/auth_repository.dart';
+import '../../../router/router.dart';
 
 class LoginScreen extends HookConsumerWidget {
   const LoginScreen({super.key});
@@ -33,7 +35,21 @@ class LoginScreen extends HookConsumerWidget {
       isLoading.value = false;
 
       if (isValid) {
-        context.go('/home');
+        // Update login status
+        ref
+            .read(authRepositoryProvider)
+            .updateLoginStatus(emailController.text, true);
+        ref.read(isLoggedInProvider.notifier).state = true;
+
+        // Fetch the logged-in admin email asynchronously
+        final adminEmail =
+            await ref.read(authRepositoryProvider).getLoggedInAdminEmail();
+
+        if (adminEmail != null) {
+          //print('Admin Email: $adminEmail');
+        } else {
+          // print('No admin is logged in');
+        }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Invalid email or password')),
@@ -116,11 +132,10 @@ class LoginScreen extends HookConsumerWidget {
               ],
             ),
           ),
-
           // Full-screen loading overlay
           if (isLoading.value)
             Container(
-              color: Colors.black.withOpacity(0.4),
+              color: Colors.black,
               child: const Center(
                 child: CircularProgressIndicator(),
               ),
