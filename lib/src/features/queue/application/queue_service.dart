@@ -44,4 +44,9 @@ class QueueService {
   Future<void> updatePersonDetails(PersonDetails personDetails) async {
     await _queueRepository.updatePersonDetails(personDetails);
   }
+
+  /* Future<int?> getQueueNumberById(String id) async {
+   // await _queueRepository.getQueueNumberById(id);
+   }
+  */
 }

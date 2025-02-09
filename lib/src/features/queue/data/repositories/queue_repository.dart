@@ -79,6 +79,33 @@ class QueueRepository {
       print("Error updating person details: $e");
     }
   }
+
+  /* Future<int?> getQueueNumberById(String id) async {
+    final db = await _dbHelper.database;
+    try {
+      final List<Map<String, dynamic>> maps = await db.query(
+        'queue_entries',
+        columns: ['queueNumber'],
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+
+      if (maps.isNotEmpty) {
+        final queueNumber = maps.first['queueNumber'];
+        if (queueNumber != null) {
+          return queueNumber as int; //
+        } else {
+          print("Warning: queueNumber is NULL for ID: $id");
+        }
+      } else {
+        print("Warning: No record found for ID: $id");
+      }
+    } catch (e) {
+      print("Error fetching queue number: $e");
+    }
+    return null;
+  }
+  */
 }
 
 //add provider
