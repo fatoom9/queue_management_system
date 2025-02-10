@@ -1,19 +1,22 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:queue_management_system/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:queue_management_system/src/features/queue/application/queue_service.dart';
-import 'package:queue_management_system/src/features/queue/data/repositories/queue_repository.dart';
 import 'package:queue_management_system/src/features/queue/domain/models/person_details.dart';
 
 final queueControllerProvider =
     StateNotifierProvider<QueueController, List<PersonDetails>>((ref) {
   final queueService = ref.read(queueServiceProvider);
-  return QueueController(queueService);
+  return QueueController(queueService, ref);
 });
 
 class QueueController extends StateNotifier<List<PersonDetails>> {
   final QueueService _queueService;
-  QueueController(this._queueService) : super([]) {
+  final Ref ref; // إضافة الـ Ref هنا
+
+  QueueController(this._queueService, this.ref) : super([]) {
     _loadQueue();
   }
+
   Future<void> _loadQueue() async {
     try {
       final queue = await _queueService.getAllQueue();
@@ -26,7 +29,6 @@ class QueueController extends StateNotifier<List<PersonDetails>> {
   Future<void> addPersonToQueue(
       String fullName, String phoneNumber, String notes) async {
     try {
-      //
       final currentQueue = await _queueService.getAllQueue();
       final int newQueueNumber = currentQueue.length + 1;
 
@@ -61,7 +63,6 @@ class QueueController extends StateNotifier<List<PersonDetails>> {
 
   Future<void> updateQueueNumber() async {
     final currentQueueList = await _queueService.getAllQueue();
-    // print("Updated Queue List: $currentQueueList");
 
     for (int i = 0; i < currentQueueList.length; i++) {
       final currentPerson = currentQueueList[i];
@@ -76,7 +77,6 @@ class QueueController extends StateNotifier<List<PersonDetails>> {
         addedBy: currentPerson.addedBy,
       );
 
-      //  print('Update queue number: ${currentPerson.fullName}  ${i + 1}');
       await _queueService.updatePersonDetails(newPerson);
     }
   }
