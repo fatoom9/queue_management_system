@@ -32,21 +32,29 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       print('User email: ${authState.adminEmail}');
 
       // Public routes that don't require authentication
-      final publicRoutes = ['/welcome', '/login', '/admin-setup', '/admin-list'];
+      final publicRoutes = [
+        '/welcome',
+        '/login',
+        '/admin-setup',
+        '/admin-list'
+      ];
       final currentLocation = state.uri.toString();
 
       // If on a public route and not authenticated, allow access
-      if (publicRoutes.contains(currentLocation) && !authState.isAuthenticated) {
+      if (publicRoutes.contains(currentLocation) &&
+          !authState.isAuthenticated) {
         return null;
       }
 
       // If authenticated, automatically redirect to home if trying to access login/welcome
-      if (authState.isAuthenticated && (currentLocation == '/login' || currentLocation == '/welcome')) {
+      if (authState.isAuthenticated &&
+          (currentLocation == '/login' || currentLocation == '/welcome')) {
         return '/home';
       }
 
       // If not authenticated and trying to access protected route, redirect to login
-      if (!authState.isAuthenticated && !publicRoutes.contains(currentLocation)) {
+      if (!authState.isAuthenticated &&
+          !publicRoutes.contains(currentLocation)) {
         return '/login';
       }
 

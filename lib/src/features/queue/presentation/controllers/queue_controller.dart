@@ -25,33 +25,38 @@ class QueueController extends StateNotifier<List<PersonDetails>> {
 
   Future<void> addPersonToQueue(
       String fullName, String phoneNumber, String notes) async {
-    await Future.delayed(const Duration(milliseconds: 1000));
-    final nextQueueNumber = state.isEmpty ? 1 : state.length + 1;
-    final person = PersonDetails(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
-      fullName: fullName,
-      phoneNumber: phoneNumber,
-      queueNumber: nextQueueNumber,
-      timestamp: DateTime.now().millisecondsSinceEpoch,
-      notes: notes.isNotEmpty ? notes : null,
-    );
     try {
-      await _queueService.addPersonToQueue(person);
-      state = [...state, person];
+      //
+      final currentQueue = await _queueService.getAllQueue();
+      final int newQueueNumber = currentQueue.length + 1;
+
+      final personDetails = PersonDetails(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        fullName: fullName,
+        phoneNumber: phoneNumber,
+        queueNumber: newQueueNumber,
+        timestamp: DateTime.now().millisecondsSinceEpoch,
+        notes: notes.isNotEmpty ? notes : null,
+      );
+
+      await _queueService.addPersonToQueue(personDetails);
+
+      final updatedQueue = await _queueService.getAllQueue();
+      state = updatedQueue;
     } catch (e) {
-      print(" Error adding person to queue: $e");
+      print("Error adding person to queue: $e");
     }
   }
 
   Future<void> removePersonFromQueue(String id) async {
     try {
       await _queueService.removePersonFromQueue(id);
-
-      state = state.where((person) => person.id != id).toList();
+      await updateQueueNumber();
+      final updateQueu = await _queueService.getAllQueue();
+      state = updateQueu;
     } catch (e) {
       print("Error removing person from queue: $e");
     }
-    await updateQueueNumber();
   }
 
   Future<void> updateQueueNumber() async {

@@ -9,6 +9,10 @@ final queueServiceProvider = Provider<QueueService>((ref) {
   final queueRepository = ref.watch(queueRepoProvider);
   return QueueService(queueRepository, ref);
 });
+final queueAuth = Provider<QueueService>((ref) {
+  final queueRepository = ref.watch(queueRepoProvider);
+  return QueueService(queueRepository, ref);
+});
 
 class QueueService {
   QueueService(this._queueRepository, this._ref);

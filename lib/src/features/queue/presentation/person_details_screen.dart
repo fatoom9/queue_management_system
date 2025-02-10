@@ -44,10 +44,14 @@ class PersonDetailsScreen extends HookConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildDetailRow(Icons.person, 'Full Name', person.fullName),
-                  _buildDetailRow(Icons.phone, 'Phone Number', person.phoneNumber),
-                  _buildDetailRow(Icons.confirmation_number, 'Queue Number', '#${person.queueNumber}'),
-                  _buildDetailRow(Icons.access_time, 'Added At', _formatTimestamp(person.timestamp)),
-                  if (person.notes?.isNotEmpty == true) _buildDetailRow(Icons.note, 'Notes', person.notes!),
+                  _buildDetailRow(
+                      Icons.phone, 'Phone Number', person.phoneNumber),
+                  _buildDetailRow(Icons.confirmation_number, 'Queue Number',
+                      '#${person.queueNumber}'),
+                  _buildDetailRow(Icons.access_time, 'Added At',
+                      _formatTimestamp(person.timestamp)),
+                  if (person.notes?.isNotEmpty == true)
+                    _buildDetailRow(Icons.note, 'Notes', person.notes!),
                 ],
               ),
             ),

@@ -83,6 +83,12 @@ class PersonDetails {
 
   @override
   int get hashCode {
-    return id.hashCode ^ fullName.hashCode ^ phoneNumber.hashCode ^ queueNumber.hashCode ^ timestamp.hashCode ^ notes.hashCode ^ addedBy.hashCode;
+    return id.hashCode ^
+        fullName.hashCode ^
+        phoneNumber.hashCode ^
+        queueNumber.hashCode ^
+        timestamp.hashCode ^
+        notes.hashCode ^
+        addedBy.hashCode;
   }
 }
