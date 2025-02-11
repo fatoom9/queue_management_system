@@ -1,6 +1,6 @@
 import 'package:sqflite/sqflite.dart';
+import 'package:intl/intl.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
 import 'package:queue_management_system/src/core/database/database_helper.dart';
 import 'package:queue_management_system/src/features/queue/domain/models/person_details.dart';
 
@@ -8,12 +8,12 @@ class QueueRepository {
   final DatabaseHelper _dbHelper;
   QueueRepository(this._dbHelper);
 
-  Future<void> insertQueue(PersonDetails persondetails) async {
+  Future<void> insertQueue(PersonDetails personDetails) async {
     final db = await _dbHelper.database;
     try {
       await db.insert(
         'queue_entries',
-        persondetails.toMap(),
+        personDetails.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
       print("Person inserted into queue_entries table");
@@ -79,9 +79,27 @@ class QueueRepository {
       print("Error updating person details: $e");
     }
   }
+
+  Future<void> markAsCompleted(String id) async {
+    final db = await _dbHelper.database;
+    final timestamps = DateTime.now().millisecondsSinceEpoch;
+
+    try {
+      await db.update(
+        'queue_entries',
+        {'CompletedAt': timestamps},
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+      print(
+          "Person with ID $id marked as completed with timestamp $timestamps");
+    } catch (e) {
+      print("Error marking person as completed: $e");
+    }
+  }
 }
 
-//add provider
+// add provider
 final queueRepoProvider = Provider<QueueRepository>((ref) {
   final dbHelper = ref.watch(databaseProvider);
   return QueueRepository(dbHelper);

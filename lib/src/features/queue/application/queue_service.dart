@@ -9,6 +9,10 @@ final queueServiceProvider = Provider<QueueService>((ref) {
   final queueRepository = ref.watch(queueRepoProvider);
   return QueueService(queueRepository, ref);
 });
+final queueAuth = Provider<QueueService>((ref) {
+  final queueRepository = ref.watch(queueRepoProvider);
+  return QueueService(queueRepository, ref);
+});
 
 class QueueService {
   QueueService(this._queueRepository, this._ref);
@@ -43,5 +47,9 @@ class QueueService {
   // Update person details
   Future<void> updatePersonDetails(PersonDetails personDetails) async {
     await _queueRepository.updatePersonDetails(personDetails);
+  }
+
+  Future<void> markAsCompleted(String id) async {
+    await _queueRepository.markAsCompleted(id);
   }
 }

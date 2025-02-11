@@ -1,30 +1,28 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:queue_management_system/src/features/queue/data/repositories/queue_repository.dart';
-import 'package:queue_management_system/src/features/queue/domain/models/person_details.dart';
 import 'package:queue_management_system/src/features/queue/presentation/add_person_screen.dart';
-import 'package:queue_management_system/src/features/queue/presentation/completedPerson.dart';
 import 'package:queue_management_system/src/features/queue/presentation/controllers/queue_controller.dart';
+import 'package:queue_management_system/src/features/queue/presentation/home_screen.dart';
 import 'package:queue_management_system/src/features/queue/presentation/person_details_screen.dart';
-import 'package:queue_management_system/src/features/auth/presentation/controllers/auth_controller.dart';
 
-class HomeScreen extends HookConsumerWidget {
-  const HomeScreen({super.key});
-
+class Completedperson extends HookConsumerWidget {
+  const Completedperson({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // TODO: implement build
+    //throw UnimplementedError();
     final queueList = ref
-        .watch(queueControllerProvider)
+        .watch(queueControllerProvider) //queueControllerProvider is not defined
         .where(
-            (person) => person.completedAt == null || person.completedAt == 0)
+            (person) => person.completedAt != null && person.completedAt! > 0)
         .toList();
-
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Queue Management',
+          'Completed Person',
           style: TextStyle(
               fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
         ),
@@ -42,13 +40,6 @@ class HomeScreen extends HookConsumerWidget {
         child: Column(
           children: [
             const SizedBox(height: 18),
-            Image.asset(
-              'assets/logo/logo.png',
-              width: MediaQuery.of(context).size.width,
-              height: 150,
-              fit: BoxFit.contain,
-            ),
-            const SizedBox(height: 10),
             queueList.isEmpty
                 ? const Center(child: Text("No one in the queue"))
                 : ListView.builder(
@@ -74,8 +65,46 @@ class HomeScreen extends HookConsumerWidget {
                               if (currentPerson.completedAt != null &&
                                   currentPerson.completedAt! > 0)
                                 Text('')
+                              /*const Icon(Icons.check_circle,
+                                    color: Colors.green)
+                                    */
                               else
+                                // Text(''),
                                 Text("#${currentPerson.queueNumber}"),
+                              /*
+                            IconButton(
+  icon: const Icon(Icons.add, color: Colors.black),
+  onPressed: () async {
+    // Add the person to the queue
+    await ref.read(queueControllerProvider.notifier).addPersonToQueue(
+        currentPerson.fullName,
+        currentPerson.phoneNumber,
+        currentPerson.notes ?? '',
+    );
+    // Update the queue numbers after adding the person
+    await ref.read(queueControllerProvider.notifier).updateQueueNumber();
+    
+    // Navigate back to the HomeScreen to show the updated queue
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const HomeScreen()),
+    );
+  },
+),
+
+                            */
+                              IconButton(
+                                  icon: const Icon(Icons.add,
+                                      color: Colors.black),
+                                  onPressed: () async {
+                                    await ref
+                                        .read(queueControllerProvider.notifier)
+                                        .removePersonFromQueue(
+                                            currentPerson.id);
+                                    await ref
+                                        .read(queueControllerProvider.notifier)
+                                        .updateQueueNumber();
+                                  }),
                               IconButton(
                                 icon: Icon(
                                   currentPerson.completedAt != null &&
@@ -93,12 +122,6 @@ class HomeScreen extends HookConsumerWidget {
                                     await ref
                                         .read(queueControllerProvider.notifier)
                                         .markAsCompleted(currentPerson.id);
-
-                                    // Use Future.delayed to navigate after the async operation has completed
-                                    Future.delayed(Duration.zero, () {
-                                      // This ensures that navigation happens after the async task completes
-                                      context.go('/completedPerson');
-                                    });
                                   }
                                 },
                               ),
@@ -120,56 +143,31 @@ class HomeScreen extends HookConsumerWidget {
           ],
         ),
       ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end, // Corrected here
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          FloatingActionButton(
-            heroTag: "anotherFAB",
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const Completedperson(),
-                ),
-              );
-            },
-            backgroundColor: Color(0xFF335A7B),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: const Icon(Icons.check_circle, color: Colors.green),
-          ),
-          const SizedBox(height: 10),
-          FloatingActionButton(
-            heroTag: "logoutFAB",
-            onPressed: () =>
-                ref.read(authControllerProvider.notifier).signOut(),
-            backgroundColor: const Color(0xFF0288D1),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: const Icon(Icons.exit_to_app, color: Colors.white),
-          ),
-          const SizedBox(height: 10),
+          const SizedBox(width: 16),
+          const Spacer(),
           FloatingActionButton(
             heroTag: "addPersonFAB",
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const AddPersonScreen(),
+                  builder: (context) => const HomeScreen(),
                 ),
               );
             },
-            backgroundColor: const Color(0xFF335A7B),
+            backgroundColor: const Color(0xFF0288D1),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
             child: const Icon(Icons.add, color: Colors.white),
           ),
+          const SizedBox(width: 45),
         ],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
     );
   }
 }

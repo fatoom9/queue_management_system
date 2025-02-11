@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:queue_management_system/src/features/queue/domain/models/person_details.dart';
+import 'package:queue_management_system/src/features/queue/presentation/controllers/queue_controller.dart';
 
 class PersonDetailsScreen extends HookConsumerWidget {
   final PersonDetails person;
@@ -44,10 +45,24 @@ class PersonDetailsScreen extends HookConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildDetailRow(Icons.person, 'Full Name', person.fullName),
-                  _buildDetailRow(Icons.phone, 'Phone Number', person.phoneNumber),
-                  _buildDetailRow(Icons.confirmation_number, 'Queue Number', '#${person.queueNumber}'),
-                  _buildDetailRow(Icons.access_time, 'Added At', _formatTimestamp(person.timestamp)),
-                  if (person.notes?.isNotEmpty == true) _buildDetailRow(Icons.note, 'Notes', person.notes!),
+                  _buildDetailRow(Icons.timelapse, 'ID', person.id.toString()),
+                  _buildDetailRow(
+                      Icons.phone, 'Phone Number', person.phoneNumber),
+                  if (!(person.completedAt != null && person.completedAt! > 0))
+                    _buildDetailRow(Icons.confirmation_number, 'Queue Number',
+                        '#${person.queueNumber}'),
+                  _buildDetailRow(Icons.access_time, 'Added At',
+                      _formatTimestamp(person.timestamp)),
+                  _buildDetailRow(
+                      Icons.add, 'Added by', person.addedBy.toString()),
+                  if (person.notes?.isNotEmpty == true)
+                    _buildDetailRow(Icons.note, 'Notes', person.notes!),
+                  if (person.completedAt != null && person.completedAt! > 0)
+                    _buildDetailRow(
+                      Icons.person,
+                      'Completed At',
+                      _formatTimestamp(person.completedAt),
+                    ),
                 ],
               ),
             ),

@@ -1,85 +1,60 @@
 import 'package:flutter/material.dart';
-import 'package:queue_management_system/src/features/queue/domain/models/person_details.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:queue_management_system/src/features/queue/presentation/controllers/queue_controller.dart';
 
-class AddPersonScreen extends StatelessWidget {
-  final int queueNumber;
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
-  final TextEditingController notesController = TextEditingController();
-  AddPersonScreen({super.key, required this.queueNumber, required int id});
+class AddPersonScreen extends ConsumerStatefulWidget {
+  const AddPersonScreen({Key? key}) : super(key: key);
+
+  @override
+  _AddPersonScreenState createState() => _AddPersonScreenState();
+}
+
+class _AddPersonScreenState extends ConsumerState<AddPersonScreen> {
+  final _fullNameController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _notesController = TextEditingController();
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add Person'),
-        backgroundColor: const Color.fromARGB(255, 36, 172, 245),
-      ),
+      appBar: AppBar(title: const Text('Add Person to Queue')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          child: Column(
-            children: [
-              TextFormField(
-                controller: nameController,
-                decoration: const InputDecoration(labelText: 'Full Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Full Name cannot be empty';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 10),
-              TextFormField(
-                controller: phoneController,
-                decoration: const InputDecoration(labelText: 'Phone Number'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Phone Number cannot be empty';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 10),
-              TextFormField(
-                controller: notesController,
-                decoration: const InputDecoration(labelText: 'Notes'),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  // Validate inputs
-                  if (nameController.text.isEmpty || phoneController.text.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Full Name and Phone Number cannot be empty.'),
-                        backgroundColor: Colors.red,
-                      ),
-                    );
-                    return;
-                  }
-
-                  // Create a new PersonDetails object
-                  final newPerson = PersonDetails(
-                    id: DateTime.now().millisecondsSinceEpoch.toString(), // Unique ID
-                    fullName: nameController.text,
-                    phoneNumber: phoneController.text,
-                    queueNumber: queueNumber,
-                    timestamp: DateTime.now().millisecondsSinceEpoch,
-                    notes: notesController.text.isNotEmpty ? notesController.text : null,
-                  );
-
-                  // Return the new person data to the HomeScreen
-                  Navigator.pop(context, newPerson);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF0288D1),
-                ),
-                child: const Text('Add Person'),
-              ),
-            ],
-          ),
+        child: Column(
+          children: [
+            TextField(
+              controller: _fullNameController,
+              decoration: const InputDecoration(labelText: 'Full Name'),
+            ),
+            TextField(
+              controller: _phoneController,
+              decoration: const InputDecoration(labelText: 'Phone Number'),
+              keyboardType: TextInputType.phone,
+            ),
+            TextField(
+              controller: _notesController,
+              decoration: const InputDecoration(labelText: 'Notes (optional)'),
+            ),
+            const SizedBox(height: 20),
+            _isLoading
+                ? const CircularProgressIndicator()
+                : ElevatedButton(
+                    onPressed: () async {
+                      setState(() => _isLoading = true);
+                      await ref
+                          .read(queueControllerProvider.notifier)
+                          .addPersonToQueue(
+                            _fullNameController.text,
+                            _phoneController.text,
+                            _notesController.text,
+                          );
+                      setState(() => _isLoading = false);
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Add to Queue'),
+                  ),
+          ],
         ),
       ),
     );

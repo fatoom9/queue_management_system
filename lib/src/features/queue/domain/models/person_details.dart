@@ -9,6 +9,7 @@ class PersonDetails {
   final int timestamp;
   final String? notes;
   final String? addedBy;
+  final int? completedAt;
 
   const PersonDetails({
     required this.id,
@@ -18,6 +19,7 @@ class PersonDetails {
     required this.timestamp,
     this.notes,
     this.addedBy,
+    this.completedAt,
   });
 
   Map<String, dynamic> toMap() {
@@ -29,6 +31,7 @@ class PersonDetails {
       'timestamp': timestamp,
       'notes': notes,
       'added_by': addedBy,
+      'completedAt': completedAt,
     };
   }
 
@@ -40,7 +43,8 @@ class PersonDetails {
         queueNumber: (map['queue_number'] as int?) ?? 0, // Default to 0 if null
         timestamp: (map['timestamp'] as int?) ?? 0,
         notes: map['notes'] as String?, // Nullable string is okay
-        addedBy: map['added_by'] as String? ?? '');
+        addedBy: map['added_by'] as String? ?? '',
+        completedAt: map['completedAt'] as int? ?? 0);
   }
 
   PersonDetails copyWith({
@@ -51,6 +55,7 @@ class PersonDetails {
     int? timestamp,
     String? notes,
     String? addedBy,
+    int? completedAt,
   }) {
     return PersonDetails(
       id: id ?? this.id,
@@ -60,12 +65,13 @@ class PersonDetails {
       timestamp: timestamp ?? this.timestamp,
       notes: notes ?? this.notes,
       addedBy: addedBy ?? this.addedBy,
+      completedAt: completedAt ?? this.completedAt,
     );
   }
 
   @override
   String toString() {
-    return 'PersonDetails(id: $id, fullName: $fullName, phoneNumber: $phoneNumber, queueNumber: $queueNumber, timestamp: $timestamp, notes: $notes, addedBy: $addedBy)';
+    return 'PersonDetails(id: $id, fullName: $fullName, phoneNumber: $phoneNumber, queueNumber: $queueNumber, timestamp: $timestamp, notes: $notes, addedBy: $addedBy, completedAt: $completedAt)';
   }
 
   @override
@@ -78,11 +84,19 @@ class PersonDetails {
         queueNumber == other.queueNumber &&
         timestamp == other.timestamp &&
         notes == other.notes &&
-        addedBy == other.addedBy;
+        addedBy == other.addedBy &&
+        completedAt == other.completedAt;
   }
 
   @override
   int get hashCode {
-    return id.hashCode ^ fullName.hashCode ^ phoneNumber.hashCode ^ queueNumber.hashCode ^ timestamp.hashCode ^ notes.hashCode ^ addedBy.hashCode;
+    return id.hashCode ^
+        fullName.hashCode ^
+        phoneNumber.hashCode ^
+        queueNumber.hashCode ^
+        timestamp.hashCode ^
+        notes.hashCode ^
+        addedBy.hashCode ^
+        completedAt.hashCode;
   }
 }

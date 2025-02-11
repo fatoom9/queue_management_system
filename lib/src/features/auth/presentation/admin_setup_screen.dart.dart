@@ -45,7 +45,8 @@ class AdminSetupScreen extends HookConsumerWidget {
       appBar: AppBar(
         title: const Text(
           'Create Admin',
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(
+              fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         centerTitle: true,
         backgroundColor: const Color(0xFF0288D1),
@@ -80,7 +81,8 @@ class AdminSetupScreen extends HookConsumerWidget {
                       ),
                       TextField(
                         controller: passwordController,
-                        decoration: const InputDecoration(labelText: 'Password'),
+                        decoration:
+                            const InputDecoration(labelText: 'Password'),
                         obscureText: true,
                       ),
                       const SizedBox(height: 20),

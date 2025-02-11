@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'controllers/auth_controller.dart';
@@ -44,7 +45,8 @@ class LoginScreen extends HookConsumerWidget {
       appBar: AppBar(
         title: const Text(
           'Queue Management',
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(
+              fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         centerTitle: true,
         backgroundColor: const Color(0xFF0288D1),
@@ -80,7 +82,8 @@ class LoginScreen extends HookConsumerWidget {
                       ),
                       TextField(
                         controller: passwordController,
-                        decoration: const InputDecoration(labelText: 'Password'),
+                        decoration:
+                            const InputDecoration(labelText: 'Password'),
                         obscureText: true,
                       ),
                       const SizedBox(height: 20),
@@ -103,7 +106,7 @@ class LoginScreen extends HookConsumerWidget {
                       const SizedBox(height: 10),
                       TextButton(
                         onPressed: () {
-                          // context.go('/welcome');
+                          context.go('/welcome');
                         },
                         child: const Text('Back'),
                       ),

@@ -14,7 +14,7 @@ class DatabaseHelper {
     final dbPath = await getDatabasesPath();
     return openDatabase(
       join(dbPath, 'queue_management.db'),
-      version: 3, // Increment version to 3
+      version: 4, // Updated version
       onCreate: (db, version) async {
         await db.execute('''
           CREATE TABLE admin( 
@@ -32,23 +32,25 @@ class DatabaseHelper {
             phone_number TEXT NOT NULL, 
             queue_number INTEGER NOT NULL, 
             timestamp INTEGER NOT NULL, 
-            notes TEXT,
-            added_by TEXT NOT NULL
+            notes TEXT, 
+            added_by TEXT NOT NULL, 
+            completedAt INTEGER NOT NULL
           ) 
         ''');
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 2) {
-          // Add the `is_logged_in` column if upgrading from version 1
-          await db.execute('''
-            ALTER TABLE admin ADD COLUMN is_logged_in BOOLEAN DEFAULT FALSE 
-          ''');
+          await db.execute(
+              'ALTER TABLE admin ADD COLUMN is_logged_in BOOLEAN DEFAULT FALSE');
         }
         if (oldVersion < 3) {
-          // Add the `added_by` column if upgrading from version 2
-          await db.execute('''
-            ALTER TABLE queue_entries ADD COLUMN added_by TEXT NOT NULL DEFAULT 'unknown'
-          ''');
+          await db.execute(
+              'ALTER TABLE queue_entries ADD COLUMN added_by TEXT NOT NULL DEFAULT "unknown"');
+        }
+        if (oldVersion < 4) {
+          // Ensure column exists
+          await db.execute(
+              'ALTER TABLE queue_entries ADD COLUMN completedAt INTEGER DEFAULT NULL');
         }
       },
     );
