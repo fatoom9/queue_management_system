@@ -15,10 +15,11 @@ class Completedperson extends HookConsumerWidget {
     // TODO: implement build
     //throw UnimplementedError();
     final queueList = ref
-        .watch(queueControllerProvider) //queueControllerProvider is not defined
+        .watch(queueControllerProvider)
         .where(
             (person) => person.completedAt != null && person.completedAt! > 0)
         .toList();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -71,32 +72,37 @@ class Completedperson extends HookConsumerWidget {
                               else
                                 // Text(''),
                                 Text("#${currentPerson.queueNumber}"),
-                              /*
-                            IconButton(
-  icon: const Icon(Icons.add, color: Colors.black),
-  onPressed: () async {
-    // Add the person to the queue
-    await ref.read(queueControllerProvider.notifier).addPersonToQueue(
-        currentPerson.fullName,
-        currentPerson.phoneNumber,
-        currentPerson.notes ?? '',
-    );
-    // Update the queue numbers after adding the person
-    await ref.read(queueControllerProvider.notifier).updateQueueNumber();
-    
-    // Navigate back to the HomeScreen to show the updated queue
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const HomeScreen()),
-    );
-  },
-),
-
-                            */
                               IconButton(
-                                  icon: const Icon(Icons.add,
-                                      color: Colors.black),
-                                  onPressed: () async {
+                                icon: const Icon(Icons.delete,
+                                    color: Color(0xFFBB594F)),
+                                onPressed: () async {
+                                  bool confirmDelete = await showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text("Confirm Delete"),
+                                        content: const Text("Are you sure ?"),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.of(context)
+                                                    .pop(false), // Cancel
+                                            child: const Text("Cancel"),
+                                          ),
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.of(context)
+                                                    .pop(true), // Confirm
+                                            child: const Text("Delete",
+                                                style: TextStyle(
+                                                    color: Colors.red)),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+
+                                  if (confirmDelete == true) {
                                     await ref
                                         .read(queueControllerProvider.notifier)
                                         .removePersonFromQueue(
@@ -104,7 +110,34 @@ class Completedperson extends HookConsumerWidget {
                                     await ref
                                         .read(queueControllerProvider.notifier)
                                         .updateQueueNumber();
-                                  }),
+                                  }
+                                },
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.add,
+                                    color: Color(0xFF335a7b)),
+                                onPressed: () async {
+                                  // Step 1: Remove person from completedPerson screen
+                                  await ref
+                                      .read(queueControllerProvider.notifier)
+                                      .removeFromCompletedList(
+                                          currentPerson.id);
+
+                                  // Step 2: Re-add them to the home screen
+                                  await ref
+                                      .read(queueControllerProvider.notifier)
+                                      .addPersonToQueue(
+                                          currentPerson.fullName,
+                                          currentPerson.phoneNumber,
+                                          currentPerson.notes ?? '');
+
+                                  // Step 3: Update the queue numbers after modification
+                                  await ref
+                                      .read(queueControllerProvider.notifier)
+                                      .updateQueueNumber();
+                                  //Fref.invalidate(queueControllerProvider);
+                                },
+                              ),
                               IconButton(
                                 icon: Icon(
                                   currentPerson.completedAt != null &&
@@ -158,11 +191,11 @@ class Completedperson extends HookConsumerWidget {
                 ),
               );
             },
-            backgroundColor: const Color(0xFF0288D1),
+            backgroundColor: const Color(0xFF335A7B),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
-            child: const Icon(Icons.add, color: Colors.white),
+            child: const Icon(Icons.undo, color: Colors.white),
           ),
           const SizedBox(width: 45),
         ],
