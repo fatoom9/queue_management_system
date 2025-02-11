@@ -144,7 +144,7 @@ class HomeScreen extends HookConsumerWidget {
             heroTag: "logoutFAB",
             onPressed: () =>
                 ref.read(authControllerProvider.notifier).signOut(),
-            backgroundColor: const Color(0xFF0288D1),
+            backgroundColor: const Color(0xFF335A7B),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),

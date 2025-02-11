@@ -63,6 +63,10 @@ class QueueController extends StateNotifier<List<PersonDetails>> {
     }
   }
 
+  Future<void> removeFromCompletedList(String id) async {
+    state = state.where((person) => person.id != id).toList();
+  }
+
   Future<void> markAsCompleted(String id) async {
     try {
       // Mark the person as completed
