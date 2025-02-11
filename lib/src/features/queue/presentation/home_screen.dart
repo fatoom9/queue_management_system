@@ -94,9 +94,7 @@ class HomeScreen extends HookConsumerWidget {
                                         .read(queueControllerProvider.notifier)
                                         .markAsCompleted(currentPerson.id);
 
-                                    // Use Future.delayed to navigate after the async operation has completed
                                     Future.delayed(Duration.zero, () {
-                                      // This ensures that navigation happens after the async task completes
                                       context.go('/completedPerson');
                                     });
                                   }
@@ -142,8 +140,10 @@ class HomeScreen extends HookConsumerWidget {
           const SizedBox(height: 10),
           FloatingActionButton(
             heroTag: "logoutFAB",
-            onPressed: () =>
-                ref.read(authControllerProvider.notifier).signOut(),
+            onPressed: () {
+              ref.read(authControllerProvider.notifier).signOut();
+              context.go('/login');
+            },
             backgroundColor: const Color(0xFF335A7B),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),

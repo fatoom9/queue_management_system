@@ -13,7 +13,8 @@ import 'package:queue_management_system/src/features/auth/domain/models/auth_sta
 // - Redirect unauthenticated users to login
 // - Prevent authenticated users from accessing login/welcome screens
 // - Allow/deny access to protected routes
-final authControllerProvider = StateNotifierProvider<AuthController, AuthState>((ref) {
+final authControllerProvider =
+    StateNotifierProvider<AuthController, AuthState>((ref) {
   final authService = ref.read(authServiceProvider);
   return AuthController(authService);
 });
@@ -49,7 +50,8 @@ class AuthController extends StateNotifier<AuthState> {
   }
 
   Future<void> createAdmin(String email, String password) async {
-    await Future.delayed(const Duration(milliseconds: 1000)); // Add a small delay to simulate a network call
+    await Future.delayed(const Duration(
+        milliseconds: 1000)); // Add a small delay to simulate a network call
     final admin = Admin(
       id: DateTime.now().toString(),
       email: email,
