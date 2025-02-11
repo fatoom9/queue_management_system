@@ -69,12 +69,9 @@ class QueueController extends StateNotifier<List<PersonDetails>> {
 
   Future<void> markAsCompleted(String id) async {
     try {
-      // Mark the person as completed
-
       await _queueService.markAsCompleted(id);
       await updateQueueNumber();
 
-      // Fetch the updated queue list (optional, depends on how your state is managed)
       final updatedQueueList = state.map((person) {
         if (person.id == id) {
           return person.copyWith(
@@ -87,14 +84,9 @@ class QueueController extends StateNotifier<List<PersonDetails>> {
 
       final updateQueue = await _queueService.getAllQueue();
 
-      // Update state with the new queue list
-
-      // Optionally update queue numbers if necessary
-
       state = updateQueue;
 
-      print('hhhhhhhgggggggggggggbbbbbbbbbbbbbbbbbbbbbbddddddddddddddd');
-      print("Updated queue list: $updateQueue");
+      // print("Updated queue list: $updateQueue");
     } catch (e) {
       print("Error marking person as completed: $e");
     }
@@ -114,7 +106,7 @@ class QueueController extends StateNotifier<List<PersonDetails>> {
         id: currentPerson.id,
         fullName: currentPerson.fullName,
         phoneNumber: currentPerson.phoneNumber,
-        queueNumber: i + 1, // Assign new queue number
+        queueNumber: i + 1,
         timestamp: currentPerson.timestamp,
         notes: currentPerson.notes,
         addedBy: currentPerson.addedBy,

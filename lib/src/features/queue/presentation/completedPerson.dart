@@ -117,13 +117,11 @@ class Completedperson extends HookConsumerWidget {
                                 icon: const Icon(Icons.add,
                                     color: Color(0xFF335a7b)),
                                 onPressed: () async {
-                                  // Step 1: Remove person from completedPerson screen
                                   await ref
                                       .read(queueControllerProvider.notifier)
                                       .removeFromCompletedList(
                                           currentPerson.id);
 
-                                  // Step 2: Re-add them to the home screen
                                   await ref
                                       .read(queueControllerProvider.notifier)
                                       .addPersonToQueue(
@@ -131,11 +129,10 @@ class Completedperson extends HookConsumerWidget {
                                           currentPerson.phoneNumber,
                                           currentPerson.notes ?? '');
 
-                                  // Step 3: Update the queue numbers after modification
                                   await ref
                                       .read(queueControllerProvider.notifier)
                                       .updateQueueNumber();
-                                  //Fref.invalidate(queueControllerProvider);
+                                  //ref.invalidate(queueControllerProvider);
                                 },
                               ),
                               IconButton(
