@@ -1,6 +1,6 @@
 import 'package:sqflite/sqflite.dart';
+import 'package:intl/intl.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
 import 'package:queue_management_system/src/core/database/database_helper.dart';
 import 'package:queue_management_system/src/features/queue/domain/models/person_details.dart';
 
@@ -8,12 +8,12 @@ class QueueRepository {
   final DatabaseHelper _dbHelper;
   QueueRepository(this._dbHelper);
 
-  Future<void> insertQueue(PersonDetails persondetails) async {
+  Future<void> insertQueue(PersonDetails personDetails) async {
     final db = await _dbHelper.database;
     try {
       await db.insert(
         'queue_entries',
-        persondetails.toMap(),
+        personDetails.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
       print("Person inserted into queue_entries table");
@@ -80,35 +80,26 @@ class QueueRepository {
     }
   }
 
-  /* Future<int?> getQueueNumberById(String id) async {
+  Future<void> markAsCompleted(String id) async {
     final db = await _dbHelper.database;
+    final timestamps = DateTime.now().millisecondsSinceEpoch;
+
     try {
-      final List<Map<String, dynamic>> maps = await db.query(
+      await db.update(
         'queue_entries',
-        columns: ['queueNumber'],
+        {'CompletedAt': timestamps},
         where: 'id = ?',
         whereArgs: [id],
       );
-
-      if (maps.isNotEmpty) {
-        final queueNumber = maps.first['queueNumber'];
-        if (queueNumber != null) {
-          return queueNumber as int; //
-        } else {
-          print("Warning: queueNumber is NULL for ID: $id");
-        }
-      } else {
-        print("Warning: No record found for ID: $id");
-      }
+      print(
+          "Person with ID $id marked as completed with timestamp $timestamps");
     } catch (e) {
-      print("Error fetching queue number: $e");
+      print("Error marking person as completed: $e");
     }
-    return null;
   }
-  */
 }
 
-//add provider
+// add provider
 final queueRepoProvider = Provider<QueueRepository>((ref) {
   final dbHelper = ref.watch(databaseProvider);
   return QueueRepository(dbHelper);

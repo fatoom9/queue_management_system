@@ -49,8 +49,7 @@ class QueueService {
     await _queueRepository.updatePersonDetails(personDetails);
   }
 
-  /* Future<int?> getQueueNumberById(String id) async {
-   // await _queueRepository.getQueueNumberById(id);
-   }
-  */
+  Future<void> markAsCompleted(String id) async {
+    await _queueRepository.markAsCompleted(id);
+  }
 }

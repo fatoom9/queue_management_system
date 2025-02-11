@@ -11,7 +11,7 @@ final queueControllerProvider =
 
 class QueueController extends StateNotifier<List<PersonDetails>> {
   final QueueService _queueService;
-  final Ref ref; // إضافة الـ Ref هنا
+  final Ref ref;
 
   QueueController(this._queueService, this.ref) : super([]) {
     _loadQueue();
@@ -38,10 +38,12 @@ class QueueController extends StateNotifier<List<PersonDetails>> {
         phoneNumber: phoneNumber,
         queueNumber: newQueueNumber,
         timestamp: DateTime.now().millisecondsSinceEpoch,
+        completedAt: 0,
         notes: notes.isNotEmpty ? notes : null,
       );
 
       await _queueService.addPersonToQueue(personDetails);
+      await updateQueueNumber();
 
       final updatedQueue = await _queueService.getAllQueue();
       state = updatedQueue;
@@ -54,30 +56,68 @@ class QueueController extends StateNotifier<List<PersonDetails>> {
     try {
       await _queueService.removePersonFromQueue(id);
       await updateQueueNumber();
-      final updateQueu = await _queueService.getAllQueue();
-      state = updateQueu;
+      final updateQueue = await _queueService.getAllQueue();
+      state = updateQueue;
     } catch (e) {
       print("Error removing person from queue: $e");
     }
   }
 
+  Future<void> markAsCompleted(String id) async {
+    try {
+      // Mark the person as completed
+
+      await _queueService.markAsCompleted(id);
+      await updateQueueNumber();
+
+      // Fetch the updated queue list (optional, depends on how your state is managed)
+      final updatedQueueList = state.map((person) {
+        if (person.id == id) {
+          return person.copyWith(
+              completedAt: DateTime.now().millisecondsSinceEpoch,
+              queueNumber: 0);
+        }
+        return person;
+      }).toList();
+      await updateQueueNumber();
+
+      final updateQueue = await _queueService.getAllQueue();
+
+      // Update state with the new queue list
+
+      // Optionally update queue numbers if necessary
+
+      state = updateQueue;
+
+      print('hhhhhhhgggggggggggggbbbbbbbbbbbbbbbbbbbbbbddddddddddddddd');
+      print("Updated queue list: $updateQueue");
+    } catch (e) {
+      print("Error marking person as completed: $e");
+    }
+  }
+
   Future<void> updateQueueNumber() async {
     final currentQueueList = await _queueService.getAllQueue();
+    List<PersonDetails> activeQueue = currentQueueList
+        .where(
+            (person) => person.completedAt == null || person.completedAt == 0)
+        .toList();
 
-    for (int i = 0; i < currentQueueList.length; i++) {
-      final currentPerson = currentQueueList[i];
+    for (int i = 0; i < activeQueue.length; i++) {
+      final currentPerson = activeQueue[i];
 
-      final newPerson = PersonDetails(
+      final updatedPerson = PersonDetails(
         id: currentPerson.id,
         fullName: currentPerson.fullName,
         phoneNumber: currentPerson.phoneNumber,
-        queueNumber: i + 1,
+        queueNumber: i + 1, // Assign new queue number
         timestamp: currentPerson.timestamp,
         notes: currentPerson.notes,
         addedBy: currentPerson.addedBy,
+        completedAt: currentPerson.completedAt, // Preserve completion status
       );
 
-      await _queueService.updatePersonDetails(newPerson);
+      await _queueService.updatePersonDetails(updatedPerson);
     }
   }
 }

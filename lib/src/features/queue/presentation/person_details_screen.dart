@@ -10,7 +10,6 @@ class PersonDetailsScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    //print(person);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -46,17 +45,24 @@ class PersonDetailsScreen extends HookConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildDetailRow(Icons.person, 'Full Name', person.fullName),
-                  _buildDetailRow(Icons.timelapse, 'id', person.id),
+                  _buildDetailRow(Icons.timelapse, 'ID', person.id.toString()),
                   _buildDetailRow(
                       Icons.phone, 'Phone Number', person.phoneNumber),
-                  _buildDetailRow(Icons.confirmation_number, 'Queue Number',
-                      '#${person.queueNumber}'),
+                  if (!(person.completedAt != null && person.completedAt! > 0))
+                    _buildDetailRow(Icons.confirmation_number, 'Queue Number',
+                        '#${person.queueNumber}'),
                   _buildDetailRow(Icons.access_time, 'Added At',
                       _formatTimestamp(person.timestamp)),
                   _buildDetailRow(
                       Icons.add, 'Added by', person.addedBy.toString()),
                   if (person.notes?.isNotEmpty == true)
                     _buildDetailRow(Icons.note, 'Notes', person.notes!),
+                  if (person.completedAt != null && person.completedAt! > 0)
+                    _buildDetailRow(
+                      Icons.person,
+                      'Completed At',
+                      _formatTimestamp(person.completedAt),
+                    ),
                 ],
               ),
             ),

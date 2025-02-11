@@ -8,6 +8,7 @@ import 'package:queue_management_system/src/features/auth/presentation/admin_set
 import 'package:queue_management_system/src/features/auth/presentation/not_found_screen.dart';
 import 'package:queue_management_system/src/features/auth/presentation/welcome_screen.dart';
 import 'package:queue_management_system/src/features/auth/presentation/login_screen.dart';
+import 'package:queue_management_system/src/features/queue/presentation/completedPerson.dart';
 import 'package:queue_management_system/src/features/queue/presentation/home_screen.dart';
 import 'package:queue_management_system/src/features/auth/presentation/controllers/auth_controller.dart';
 
@@ -87,6 +88,11 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/home',
         name: AppRoute.home.name,
         builder: (context, state) => const HomeScreen(),
+      ),
+      GoRoute(
+        path: '/completedPerson',
+        name: 'completedPerson',
+        builder: (context, state) => const Completedperson(),
       ),
     ],
     errorPageBuilder: (context, state) => MaterialPage(
