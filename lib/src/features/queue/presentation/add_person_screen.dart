@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:queue_management_system/src/common_widgets/button.dart';
 import 'package:queue_management_system/src/common_widgets/text_feild.dart';
+import 'package:queue_management_system/src/constants/app_theme.dart';
 import 'package:queue_management_system/src/features/queue/presentation/controllers/queue_controller.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -19,7 +20,18 @@ class _AddPersonScreenState extends ConsumerState<AddPersonScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Add Person to Queue')),
+      appBar: AppBar(
+        title: Text(
+          'Add Person',
+          style: GoogleFonts.poppins(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: AppTheme.theme.scaffoldBackgroundColor,
+          ),
+        ),
+        centerTitle: true,
+        backgroundColor: AppTheme.theme.primaryColor,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:queue_management_system/src/common_widgets/button.dart';
+import 'package:queue_management_system/src/constants/app_theme.dart';
 import 'package:queue_management_system/src/features/queue/domain/models/person_details.dart';
 import 'package:queue_management_system/src/features/queue/presentation/controllers/queue_controller.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,19 +17,19 @@ class PersonDetailsScreen extends HookConsumerWidget {
       appBar: AppBar(
         title: Text(
           person.fullName,
-          style: const TextStyle(
+          style: GoogleFonts.poppins(
             fontSize: 22,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: AppTheme.theme.scaffoldBackgroundColor,
           ),
         ),
         centerTitle: true,
-        backgroundColor: const Color(0xFF0288D1),
+        backgroundColor: AppTheme.theme.primaryColor,
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFB3E5FC), Color(0xFFE1F5FE)],
+            colors: [secondaryColor, secondaryColor],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -78,12 +80,16 @@ class PersonDetailsScreen extends HookConsumerWidget {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         children: [
-          Icon(icon, color: const Color(0xFF0288D1)),
+          Icon(icon, color: AppTheme.theme.primaryColor), // Using primary color
           const SizedBox(width: 10),
           Expanded(
             child: Text(
               '$title: $value',
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: AppTheme.theme.primaryColor, // Using primary color
+              ),
             ),
           ),
         ],
