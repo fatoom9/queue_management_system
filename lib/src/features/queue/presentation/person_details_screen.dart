@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:queue_management_system/src/features/queue/domain/models/person_details.dart';
 import 'package:queue_management_system/src/features/queue/presentation/controllers/queue_controller.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PersonDetailsScreen extends HookConsumerWidget {
   final PersonDetails person;

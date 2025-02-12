@@ -9,6 +9,8 @@ import 'package:queue_management_system/src/features/queue/presentation/complete
 import 'package:queue_management_system/src/features/queue/presentation/controllers/queue_controller.dart';
 import 'package:queue_management_system/src/features/queue/presentation/person_details_screen.dart';
 import 'package:queue_management_system/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:queue_management_system/src/features/reports/presentation/reports_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends HookConsumerWidget {
   const HomeScreen({super.key});
@@ -118,58 +120,93 @@ class HomeScreen extends HookConsumerWidget {
           ],
         ),
       ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end, // Corrected here
+      floatingActionButton: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween, //
         children: [
-          FloatingActionButton(
-            heroTag: "anotherFAB",
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const Completedperson(),
-                ),
-              );
-            },
-            backgroundColor: Color(0xFF335A7B),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0), //
+            child: FloatingActionButton(
+              heroTag: "logoutFAB",
+              onPressed: () {
+                ref.read(authControllerProvider.notifier).signOut();
+                context.go('/login');
+              },
+              backgroundColor: const Color(0xFF335A7B),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Icon(Icons.exit_to_app, color: Colors.white),
             ),
-            child: const Icon(Icons.check_circle, color: Colors.green),
           ),
-          const SizedBox(height: 10),
-          FloatingActionButton(
-            heroTag: "logoutFAB",
-            onPressed: () {
-              ref.read(authControllerProvider.notifier).signOut();
-              context.go('/login');
-            },
-            backgroundColor: const Color(0xFF335A7B),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: const Icon(Icons.exit_to_app, color: Colors.white),
-          ),
-          const SizedBox(height: 10),
-          FloatingActionButton(
-            heroTag: "addPersonFAB",
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const AddPersonScreen(),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 40.0),
+                child: FloatingActionButton(
+                  heroTag: "reportFAB",
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ReportsScreen(),
+                      ),
+                    );
+                  },
+                  backgroundColor: const Color(0xFF335A7B),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(Icons.bar_chart, color: Colors.white),
                 ),
-              );
-            },
-            backgroundColor: const Color(0xFF335A7B),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: const Icon(Icons.add, color: Colors.white),
+              ),
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.only(right: 40.0),
+                child: FloatingActionButton(
+                  heroTag: "completedPersonFAB",
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const Completedperson(),
+                      ),
+                    );
+                  },
+                  backgroundColor: const Color(0xFF335A7B),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(Icons.check_circle, color: Colors.green),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.only(right: 40.0),
+                child: FloatingActionButton(
+                  heroTag: "addPersonFAB",
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AddPersonScreen(),
+                      ),
+                    );
+                  },
+                  backgroundColor: const Color(0xFF335A7B),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(Icons.add, color: Colors.white),
+                ),
+              ),
+            ],
           ),
         ],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
     );
   }
 }

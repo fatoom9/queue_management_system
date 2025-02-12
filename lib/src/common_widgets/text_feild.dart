@@ -1,57 +1,56 @@
 import 'package:flutter/material.dart';
+//import 'package:google_fonts/google_fonts.dart';
+
+const Color primaryColor = Color(0xFF335A7B);
+const Color secondaryColor = Color(0xFFf1f2ed);
+const Color accentColor = Color(0xFFAD534A);
 
 class AppTextFormField extends StatelessWidget {
   const AppTextFormField({
-    super.key,
+    Key? key,
     required this.controller,
     required this.hintText,
     required this.helpText,
     required this.obscureText,
-    required this.icon, //
-  });
+    required this.icon,
+    this.keyboardType = TextInputType.text,
+    this.textColor = primaryColor,
+    this.fillColor = primaryColor,
+  }) : super(key: key);
 
   final TextEditingController controller;
   final String hintText;
   final String helpText;
   final bool obscureText;
-  final IconData icon; //
+  final IconData icon;
+  final TextInputType keyboardType;
+  final Color textColor;
+  final Color fillColor;
 
   @override
   Widget build(BuildContext context) {
-    const Color primaryColor = Color(0xFF335A7B);
-    const Color foregroundColor = Colors.white;
-
     return TextFormField(
       controller: controller,
       obscureText: obscureText,
-      enabled: true,
-      style: const TextStyle(color: primaryColor),
+      style: TextStyle(color: textColor),
+      keyboardType: keyboardType,
       decoration: InputDecoration(
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: primaryColor,
-            width: 1.5,
-          ),
+          borderSide: BorderSide(color: textColor, width: 1.5),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: primaryColor,
-            width: 1.5,
-          ),
+          borderSide: BorderSide(color: textColor, width: 1.5),
         ),
         border: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: primaryColor,
-            width: 1.5,
-          ),
+          borderSide: BorderSide(color: textColor, width: 1.5),
         ),
         hintText: hintText,
-        hintStyle: const TextStyle(color: foregroundColor),
+        hintStyle: TextStyle(color: Colors.white),
         helperText: helpText,
-        helperStyle: const TextStyle(color: primaryColor),
-        prefixIcon: Icon(icon, color: primaryColor), //
+        helperStyle: TextStyle(color: textColor),
+        prefixIcon: Icon(icon, color: textColor),
         filled: true,
-        fillColor: primaryColor.withOpacity(0.1),
+        fillColor: fillColor.withOpacity(0.1),
       ),
     );
   }
