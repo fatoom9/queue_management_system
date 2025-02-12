@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:queue_management_system/src/common_widgets/button.dart'
+    as button;
+import 'package:queue_management_system/src/common_widgets/text_feild.dart';
+import 'package:queue_management_system/src/constants/app_theme.dart';
 import 'package:queue_management_system/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -42,7 +46,6 @@ class AdminSetupScreen extends HookConsumerWidget {
     }
 
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
           'Create Admin',
@@ -50,14 +53,14 @@ class AdminSetupScreen extends HookConsumerWidget {
               fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor: const Color(0xFF0288D1),
+        backgroundColor: primaryColor, // Use primaryColor from your theme
       ),
       body: Stack(
         children: [
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [Color(0xFFB3E5FC), Color(0xFFE1F5FE)],
+                colors: [Color(0xFFF1F2ED), Color(0xFFF1F2ED)],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               ),
@@ -76,20 +79,30 @@ class AdminSetupScreen extends HookConsumerWidget {
                   padding: const EdgeInsets.all(20),
                   child: Column(
                     children: <Widget>[
-                      TextField(
+                      AppTextFormField(
                         controller: emailController,
-                        decoration: const InputDecoration(labelText: 'Email'),
+                        hintText: 'Email',
+                        helpText: 'Enter your email address',
+                        obscureText: false,
+                        icon: Icons.email,
                       ),
-                      TextField(
+                      const SizedBox(height: 16),
+                      AppTextFormField(
                         controller: passwordController,
-                        decoration:
-                            const InputDecoration(labelText: 'Password'),
+                        hintText: 'Password',
+                        helpText: 'Enter your password',
                         obscureText: true,
+                        icon: Icons.lock,
                       ),
                       const SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: isLoading.value ? null : createAdmin,
                         style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFF335A7B),
+                          side: BorderSide(color: AppTheme.theme.primaryColor),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
                           minimumSize: const Size(double.infinity, 50),
                         ),
                         child: isLoading.value
@@ -97,28 +110,34 @@ class AdminSetupScreen extends HookConsumerWidget {
                                 width: 24,
                                 height: 24,
                                 child: CircularProgressIndicator(
-                                  color: Colors.white,
+                                  color: Color(0xFF335A7B),
                                   strokeWidth: 2.5,
                                 ),
                               )
-                            : const Text('Create Admin'),
+                            : Text(
+                                'Login',
+                                style: TextStyle(
+                                  color: AppTheme.theme.scaffoldBackgroundColor,
+                                  fontSize: 16.5, //
+                                  fontWeight: FontWeight.bold, //
+                                ),
+                              ),
                       ),
-                      const SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: () {
+                      const SizedBox(height: 10),
+                      button.Btn(
+                        onPress: () {
                           context.go('/admin-list');
                         },
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(double.infinity, 50),
-                        ),
-                        child: const Text('View Admin List'),
+                        text: 'View Admin List',
+                        backgroundColor: primaryColor,
                       ),
                       const SizedBox(height: 20),
-                      TextButton(
-                        onPressed: () {
+                      button.Btn(
+                        onPress: () {
                           context.go('/welcome');
                         },
-                        child: const Text('Back'),
+                        text: 'Back',
+                        backgroundColor: primaryColor,
                       ),
                     ],
                   ),
