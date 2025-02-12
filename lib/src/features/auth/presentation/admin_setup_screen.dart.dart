@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:queue_management_system/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AdminSetupScreen extends HookConsumerWidget {
   const AdminSetupScreen({super.key});

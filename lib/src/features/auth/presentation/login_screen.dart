@@ -56,7 +56,7 @@ class LoginScreen extends HookConsumerWidget {
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [Color(0xFFB3E5FC), Color(0xFFE1F5FE)],
+                colors: [Color(0xFFF1F2ED), Color(0xFFF1F2ED)],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               ),

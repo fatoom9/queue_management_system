@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:queue_management_system/src/features/queue/presentation/controllers/queue_controller.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AddPersonScreen extends ConsumerStatefulWidget {
   const AddPersonScreen({Key? key}) : super(key: key);

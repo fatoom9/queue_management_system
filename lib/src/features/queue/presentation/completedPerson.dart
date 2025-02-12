@@ -7,6 +7,7 @@ import 'package:queue_management_system/src/features/queue/presentation/add_pers
 import 'package:queue_management_system/src/features/queue/presentation/controllers/queue_controller.dart';
 import 'package:queue_management_system/src/features/queue/presentation/home_screen.dart';
 import 'package:queue_management_system/src/features/queue/presentation/person_details_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Completedperson extends HookConsumerWidget {
   const Completedperson({super.key});
