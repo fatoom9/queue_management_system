@@ -7,7 +7,6 @@ import 'package:queue_management_system/src/common_widgets/button.dart'
 import 'package:queue_management_system/src/common_widgets/text_feild.dart';
 import 'package:queue_management_system/src/constants/app_theme.dart';
 import 'package:queue_management_system/src/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AdminSetupScreen extends HookConsumerWidget {
   const AdminSetupScreen({super.key});
@@ -17,10 +16,7 @@ class AdminSetupScreen extends HookConsumerWidget {
     final emailController = useTextEditingController();
     final passwordController = useTextEditingController();
     final isLoading = useState(false);
-
-    // Get auth controller
     final auth = ref.read(authControllerProvider.notifier);
-
     void createAdmin() async {
       if (emailController.text.isEmpty || passwordController.text.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -28,12 +24,9 @@ class AdminSetupScreen extends HookConsumerWidget {
         );
         return;
       }
-
       isLoading.value = true;
       await auth.createAdmin(emailController.text, passwordController.text);
       isLoading.value = false;
-
-      // Clear the form
       emailController.clear();
       passwordController.clear();
 

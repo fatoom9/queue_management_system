@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class NotFoundScreen extends StatelessWidget {
   const NotFoundScreen({super.key});
