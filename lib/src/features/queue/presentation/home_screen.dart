@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:queue_management_system/src/features/queue/data/repositories/queue_repository.dart';
-import 'package:queue_management_system/src/features/queue/domain/models/person_details.dart';
+import 'package:queue_management_system/src/common_widgets/button.dart';
+import 'package:queue_management_system/src/constants/app_theme.dart';
 import 'package:queue_management_system/src/features/queue/presentation/add_person_screen.dart';
 import 'package:queue_management_system/src/features/queue/presentation/completedPerson.dart';
 import 'package:queue_management_system/src/features/queue/presentation/controllers/queue_controller.dart';
@@ -26,17 +26,17 @@ class HomeScreen extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Queue Management',
+          'Queue List',
           style: TextStyle(
               fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor: const Color(0xFF0288D1),
+        backgroundColor: AppTheme.theme.primaryColor,
       ),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFB3E5FC), Color(0xFFE1F5FE)],
+            colors: [secondaryColor, secondaryColor],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -66,8 +66,11 @@ class HomeScreen extends HookConsumerWidget {
                         child: ListTile(
                           title: Text(
                             currentPerson.fullName,
-                            style: const TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                            style: GoogleFonts.poppins(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: AppTheme.theme.primaryColor,
+                            ),
                           ),
                           subtitle: Text(currentPerson.phoneNumber),
                           trailing: Row(
@@ -87,7 +90,7 @@ class HomeScreen extends HookConsumerWidget {
                                   color: currentPerson.completedAt != null &&
                                           currentPerson.completedAt! > 0
                                       ? Colors.green
-                                      : Color(0xFF335A7B),
+                                      : AppTheme.theme.primaryColor,
                                 ),
                                 onPressed: () async {
                                   if (currentPerson.completedAt == null ||
@@ -104,8 +107,10 @@ class HomeScreen extends HookConsumerWidget {
                               ),
                             ],
                           ),
-                          leading: const Icon(Icons.person,
-                              color: Color(0xFF0288D1)),
+                          leading: const FaIcon(
+                            FontAwesomeIcons.person, //
+                            color: primaryColor,
+                          ),
                           onTap: () => Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -122,21 +127,25 @@ class HomeScreen extends HookConsumerWidget {
       ),
       floatingActionButton: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween, //
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 8.0), //
+            padding: const EdgeInsets.only(left: 8.0),
             child: FloatingActionButton(
               heroTag: "logoutFAB",
               onPressed: () {
                 ref.read(authControllerProvider.notifier).signOut();
                 context.go('/login');
               },
-              backgroundColor: const Color(0xFF335A7B),
+              backgroundColor: AppTheme.theme.primaryColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: const Icon(Icons.exit_to_app, color: Colors.white),
+              child: const FaIcon(
+                FontAwesomeIcons.outdent, //
+                color: secondaryColor,
+              ),
+              //child: const Icon(Icons.exit_to_app, color: Colors.white),
             ),
           ),
           Column(
@@ -155,11 +164,15 @@ class HomeScreen extends HookConsumerWidget {
                       ),
                     );
                   },
-                  backgroundColor: const Color(0xFF335A7B),
+                  backgroundColor: AppTheme.theme.primaryColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: const Icon(Icons.bar_chart, color: Colors.white),
+                  child: const FaIcon(
+                    FontAwesomeIcons.chartColumn, //
+                    color: secondaryColor,
+                  ),
+                  // child: const Icon(Icons.bar_chart, color: Colors.white),
                 ),
               ),
               const SizedBox(height: 10),
@@ -175,7 +188,7 @@ class HomeScreen extends HookConsumerWidget {
                       ),
                     );
                   },
-                  backgroundColor: const Color(0xFF335A7B),
+                  backgroundColor: AppTheme.theme.primaryColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -195,7 +208,7 @@ class HomeScreen extends HookConsumerWidget {
                       ),
                     );
                   },
-                  backgroundColor: const Color(0xFF335A7B),
+                  backgroundColor: AppTheme.theme.primaryColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),

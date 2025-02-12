@@ -11,14 +11,12 @@ import 'package:google_fonts/google_fonts.dart';
 
 class Completedperson extends HookConsumerWidget {
   const Completedperson({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // TODO: implement build
-    //throw UnimplementedError();
     final queueList = ref
         .watch(queueControllerProvider)
-        .where(
-            (person) => person.completedAt != null && person.completedAt! > 0)
+        .where((person) => (person.completedAt ?? 0) > 0)
         .toList();
 
     return Scaffold(
@@ -64,15 +62,7 @@ class Completedperson extends HookConsumerWidget {
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              if (currentPerson.completedAt != null &&
-                                  currentPerson.completedAt! > 0)
-                                Text('')
-                              /*const Icon(Icons.check_circle,
-                                    color: Colors.green)
-                                    */
-                              else
-                                // Text(''),
-                                Text("#${currentPerson.queueNumber}"),
+                              Text("#${currentPerson.queueNumber}"),
                               IconButton(
                                 icon: const Icon(Icons.delete,
                                     color: Color(0xFFBB594F)),
@@ -82,7 +72,7 @@ class Completedperson extends HookConsumerWidget {
                                     builder: (BuildContext context) {
                                       return AlertDialog(
                                         title: const Text("Confirm Delete"),
-                                        content: const Text("Are you sure ?"),
+                                        content: const Text("Are you sure?"),
                                         actions: [
                                           TextButton(
                                             onPressed: () =>
@@ -133,23 +123,19 @@ class Completedperson extends HookConsumerWidget {
                                   await ref
                                       .read(queueControllerProvider.notifier)
                                       .updateQueueNumber();
-                                  //ref.invalidate(queueControllerProvider);
                                 },
                               ),
                               IconButton(
                                 icon: Icon(
-                                  currentPerson.completedAt != null &&
-                                          currentPerson.completedAt! > 0
+                                  (currentPerson.completedAt ?? 0) > 0
                                       ? Icons.check_circle
                                       : Icons.check_circle_outline,
-                                  color: currentPerson.completedAt != null &&
-                                          currentPerson.completedAt! > 0
+                                  color: (currentPerson.completedAt ?? 0) > 0
                                       ? Colors.green
                                       : Color(0xFF335A7B),
                                 ),
                                 onPressed: () async {
-                                  if (currentPerson.completedAt == null ||
-                                      currentPerson.completedAt == 0) {
+                                  if ((currentPerson.completedAt ?? 0) == 0) {
                                     await ref
                                         .read(queueControllerProvider.notifier)
                                         .markAsCompleted(currentPerson.id);

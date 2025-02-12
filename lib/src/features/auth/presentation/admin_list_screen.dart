@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:queue_management_system/src/common_widgets/button.dart';
 import 'widget/admin_list.dart';
-import 'package:queue_management_system/src/constants/app_theme.dart';
 
 class AdminListScreen extends StatelessWidget {
   const AdminListScreen({super.key});

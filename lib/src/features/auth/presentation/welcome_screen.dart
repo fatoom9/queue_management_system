@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:queue_management_system/src/common_widgets/button.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:queue_management_system/src/constants/app_theme.dart';
 
 class WelcomScreen extends HookConsumerWidget {

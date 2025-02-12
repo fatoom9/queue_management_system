@@ -1,5 +1,4 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:queue_management_system/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:queue_management_system/src/features/queue/application/queue_service.dart';
 import 'package:queue_management_system/src/features/queue/domain/models/person_details.dart';
 
