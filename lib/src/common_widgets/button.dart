@@ -11,7 +11,7 @@ class Btn extends StatelessWidget {
     required this.onPress,
     required this.text,
     this.backgroundColor = primaryColor,
-    this.textColor = Colors.white,
+    this.textColor = secondaryColor,
     this.borderRadius = 8.0,
     this.padding = const EdgeInsets.symmetric(vertical: 15),
   }) : super(key: key);
