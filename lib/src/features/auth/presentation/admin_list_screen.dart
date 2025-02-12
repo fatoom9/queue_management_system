@@ -1,28 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:queue_management_system/src/common_widgets/button.dart';
 import 'widget/admin_list.dart';
+import 'package:queue_management_system/src/constants/app_theme.dart';
 
 class AdminListScreen extends StatelessWidget {
   const AdminListScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Admin Management',
-          style: TextStyle(
-              fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+        title: Text(
+          'Admin Management Screen',
+          style: GoogleFonts.poppins(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: secondaryColor,
+          ),
         ),
         centerTitle: true,
-        backgroundColor: const Color(0xFF0288D1),
+        backgroundColor: primaryColor,
       ),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFB3E5FC), Color(0xFFE1F5FE)],
+            colors: [secondaryColor, secondaryColor],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -40,23 +43,31 @@ class AdminListScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
                 'Existing Admins:',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: GoogleFonts.poppins(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: primaryColor,
+                ),
               ),
             ),
             const SizedBox(height: 10),
-            Expanded(
-              child: const AdminList(),
+            const Expanded(
+              child: AdminList(),
             ),
             const SizedBox(height: 20),
-            TextButton(
-              onPressed: () {
-                context.go('/welcome');
-              },
-              child: const Text('Back'),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: SizedBox(
+                width: double.infinity,
+                child: Btn(
+                  onPress: () => context.go('/welcome'),
+                  text: 'Back',
+                ),
+              ),
             ),
             const SizedBox(height: 15),
           ],
