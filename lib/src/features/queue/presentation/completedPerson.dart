@@ -1,13 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/widgets.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:queue_management_system/src/features/queue/presentation/add_person_screen.dart';
+import 'package:queue_management_system/src/common_widgets/button.dart';
+import 'package:queue_management_system/src/constants/app_theme.dart';
 import 'package:queue_management_system/src/features/queue/presentation/controllers/queue_controller.dart';
 import 'package:queue_management_system/src/features/queue/presentation/home_screen.dart';
 import 'package:queue_management_system/src/features/queue/presentation/person_details_screen.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import '../../../common_widgets/button.dart';
 
 class Completedperson extends HookConsumerWidget {
   const Completedperson({super.key});
@@ -22,17 +21,17 @@ class Completedperson extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Completed Person',
+          'Completed Queue',
           style: TextStyle(
-              fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+              fontSize: 22, fontWeight: FontWeight.bold, color: secondaryColor),
         ),
         centerTitle: true,
-        backgroundColor: const Color(0xFF0288D1),
+        backgroundColor: AppTheme.theme.primaryColor,
       ),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFB3E5FC), Color(0xFFE1F5FE)],
+            colors: [secondaryColor, secondaryColor],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -55,17 +54,16 @@ class Completedperson extends HookConsumerWidget {
                         child: ListTile(
                           title: Text(
                             currentPerson.fullName,
-                            style: const TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                            style: AppTheme.theme.textTheme.bodyMedium
+                                ?.copyWith(fontWeight: FontWeight.bold),
                           ),
                           subtitle: Text(currentPerson.phoneNumber),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text("#${currentPerson.queueNumber}"),
                               IconButton(
                                 icon: const Icon(Icons.delete,
-                                    color: Color(0xFFBB594F)),
+                                    color: accentColor),
                                 onPressed: () async {
                                   bool confirmDelete = await showDialog(
                                     context: context,
@@ -105,8 +103,8 @@ class Completedperson extends HookConsumerWidget {
                                 },
                               ),
                               IconButton(
-                                icon: const Icon(Icons.add,
-                                    color: Color(0xFF335a7b)),
+                                icon:
+                                    const Icon(Icons.add, color: primaryColor),
                                 onPressed: () async {
                                   await ref
                                       .read(queueControllerProvider.notifier)
@@ -132,7 +130,7 @@ class Completedperson extends HookConsumerWidget {
                                       : Icons.check_circle_outline,
                                   color: (currentPerson.completedAt ?? 0) > 0
                                       ? Colors.green
-                                      : Color(0xFF335A7B),
+                                      : primaryColor,
                                 ),
                                 onPressed: () async {
                                   if ((currentPerson.completedAt ?? 0) == 0) {
@@ -144,8 +142,8 @@ class Completedperson extends HookConsumerWidget {
                               ),
                             ],
                           ),
-                          leading: const Icon(Icons.person,
-                              color: Color(0xFF0288D1)),
+                          leading:
+                              const Icon(Icons.person, color: primaryColor),
                           onTap: () => Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -175,7 +173,7 @@ class Completedperson extends HookConsumerWidget {
                 ),
               );
             },
-            backgroundColor: const Color(0xFF335A7B),
+            backgroundColor: primaryColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
