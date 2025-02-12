@@ -29,8 +29,8 @@ final goRouterProvider = Provider<GoRouter>((ref) {
     debugLogDiagnostics: false,
     redirect: (context, state) {
       // TODO: Remove this - it's for illustrating the auth state check firing on each navigation event + auth state change
-      print('Auth State: ${authState.isAuthenticated}');
-      print('User email: ${authState.adminEmail}');
+      //print('Auth State: ${authState.isAuthenticated}');
+      //print('User email: ${authState.adminEmail}');
 
       // Public routes that don't require authentication
       final publicRoutes = [
