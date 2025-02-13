@@ -28,6 +28,7 @@ A local queue management system built with Flutter, following a feature-first ar
 - Remove person from queue
 - View person details
 - Edit person details (if needed)
+- Mark person as "Completed"
 
 ### 3. Person Details
 
@@ -38,6 +39,15 @@ Required fields for each person in queue:
 - Queue Number (auto-generated)
 - Timestamp Added
 - Optional Notes
+- Status (Pending / Completed)
+
+### 4. Reports
+
+- View total number of people served
+
+- View average wait time
+
+- Generate daily and weekly queue reports
 
 ## Project Structure
 
@@ -50,7 +60,12 @@ lib/
 │   │   │   ├── domain/
 │   │   │   ├── application/ 
 │   │   │   └── presentation/
-│   │   └── queue/
+│   │   ├── queue/
+│   │   │   ├── data/
+│   │   │   ├── domain/
+│   │   │   ├── application/
+│   │   │   └── presentation/
+│   │   └── reports/
 │   │       ├── data/
 │   │       ├── domain/
 │   │       ├── application/
@@ -59,6 +74,7 @@ lib/
 │   ├── router/
 │   ├── utils/
 │   └── common_widgets/
+|   |__ core/
 └── main.dart
 ```
 
@@ -67,19 +83,22 @@ lib/
 ```sql
 -- Admin Table
 CREATE TABLE admin (
-    id TEXT PRIMARY KEY,
-    email TEXT NOT NULL,
-    password TEXT NOT NULL
+    id TEXT PRIMARY KEY, 
+    email TEXT NOT NULL, 
+    password TEXT NOT NULL, 
+    is_logged_in BOOLEAN DEFAULT FALSE 
 );
 
 -- Queue Table
 CREATE TABLE queue_entries (
-    id TEXT PRIMARY KEY,
-    full_name TEXT NOT NULL,
-    phone_number TEXT NOT NULL,
-    queue_number INTEGER NOT NULL,
-    timestamp INTEGER NOT NULL,
-    notes TEXT
+    id TEXT PRIMARY KEY, 
+    full_name TEXT NOT NULL, 
+    phone_number TEXT NOT NULL, 
+    queue_number INTEGER NOT NULL, 
+    timestamp INTEGER NOT NULL, 
+    notes TEXT, 
+    added_by TEXT NOT NULL, 
+    completedAt INTEGER NOT NULL
 );
 ```
 
@@ -87,35 +106,44 @@ CREATE TABLE queue_entries (
 
 ### Setup Phase
 
-- [x] Create new Flutter project
-- [x] Add dependencies in pubspec.yaml
-- [x] Setup feature-first folder structure
-- [x] Configure GoRouter
-- [x] Setup Riverpod providers
-- [x] Initialize SQLite database
+- [ ] Create new Flutter project
+- [ ] Add dependencies in pubspec.yaml
+- [ ] Setup feature-first folder structure
+- [ ] Configure GoRouter
+- [ ] Setup Riverpod providers
+- [ ] Initialize SQLite database
 
 ### Authentication Feature
 
-- [x] Create admin data model
-- [x] Implement local authentication repository
-- [x] Create login screen
-- [x] Add form validation
+- [ ] Create admin data model
+- [ ] Implement local authentication repository
+- [ ] Create login screen
+- [ ] Add form validation
 - [ ] Implement auth state provider
-- [x] Add protected route navigation
+- [ ] Add protected route navigation
 - [ ] Setup authentication service class
 - [ ] Integrate authentication service with UI
 
 ### Queue Feature
 
-- [x] Create queue entry data model
-- [x] Implement queue repository
-- [x] Create queue list screen
-- [x] Add new entry form
-- [x] Implement queue state provider
+- [ ] Create queue entry data model
+- [ ] Implement queue repository
+- [ ] Create queue list screen
+- [ ] Add new entry form
+- [ ] Implement queue state provider
 - [ ] Add queue operations (add/remove)
-- [x] Create entry details view
+- [ ] Create entry details view
 - [ ] Setup queue service class
 - [ ] Integrate queue service with UI
+
+### Reports Feature
+
+- [ ] View total number of people served
+
+- [ ] View average wait time
+
+- [ ] Generate daily and weekly queue reports
+
 
 ### UI/UX
 
@@ -157,27 +185,17 @@ CREATE TABLE queue_entries (
 ```markdown
 ## Daily Progress Tracker
 
-Date: [1-2-2025]
+Date: []
 
 ### Today's Tasks
-- [ ] Set up the SQLite database and configure local storage.
-- [ ] Implement login screen and integrate AuthRepository for email/password validation.
-- [ ] Set up initial queue screen and list entries.
-- [ ] Configure GoRouter for routing, including protected routes.
-- [ ] Test navigation to the Home page after a successful login.
 
 ### Completed Tasks
-- [x] Completed task 1
-- [x] Completed task 2
-- [x] Completed task 3
-- [x] Completed task 4
-- [x] Completed task 5
+
 ### Blockers/Issues
 - No blockers encountered so far.
 
 ### Notes
-- Double-check the integration of GoRouter for protected routes to ensure only authenticated users can access the Home page.
-- Test the flow from login to Home page and handle route transitions.
+
 ```
 
 ### MVP Deliverables Checklist
