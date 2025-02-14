@@ -25,6 +25,7 @@ class QueueRepository {
     final db = await _dbHelper.database;
     try {
       final List<Map<String, dynamic>> maps = await db.query('queue_entries');
+      // print('QUEUE');
       print("Fetched ${maps.length} entries from queue_entries table");
       return maps.map((map) => PersonDetails.fromMap(map)).toList();
     } catch (e) {

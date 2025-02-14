@@ -1,31 +1,63 @@
-//import 'package:flutter/src/widgets/framework.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:queue_management_system/src/features/queue/data/repositories/queue_repository.dart';
-import 'package:queue_management_system/src/features/queue/domain/models/person_details.dart';
+import 'package:queue_management_system/src/features/reports/domain/report_models.dart';
+import 'package:queue_management_system/src/features/reports/data/repositories/reports_repositories.dart';
+import 'package:queue_management_system/src/features/reports/application/reports_services.dart';
 
 final reportsControllerProvider =
-    StateNotifierProvider<ReportsControllerScreen, ReportsState>((ref) {
-  return ReportsControllerScreen(ref);
-});
+    StateNotifierProvider<ReportsController, ReportsState>(
+        (ref) => ReportsController(ref));
 
-class ReportsControllerScreen extends StateNotifier<ReportsState> {
+class ReportsController extends StateNotifier<ReportsState> {
   final Ref ref;
 
-  ReportsControllerScreen(this.ref) : super(ReportsState());
+  ReportsController(this.ref) : super(ReportsState(isEmpty: true)) {
+    fetchQueueData(); // Fetch data on init
+  }
 
   Future<void> fetchQueueData() async {
-    final queueRepository = ref.read(queueRepoProvider);
+    try {
+      state = ReportsState(isLoading: true, isEmpty: false);
 
-    final queueData = await queueRepository.getQueue();
+      // Fetch data from ReportsServices (not itself)
+      final queueData = await ref.read(reportsServicesProvider).getAllPersons();
 
-    state = ReportsState(queueData);
-    //print('gggggggggggggggggggggggggggggg');
-    //print(queueData);
+      int totalItems = queueData.length;
+      int completedItems =
+          queueData.where((p) => p['completedAt'] != null).length;
+      double avgWaitingTime = queueData.isNotEmpty
+          ? queueData
+                  .map((p) => (p['timestamp'] ?? 0))
+                  .fold<int>(0, (a, b) => a + b as int) /
+              totalItems
+          : 0.0;
+
+      final report = ReportModel(
+        totalQueueItems: totalItems,
+        completedQueueItems: completedItems,
+        averageWaitingTime: avgWaitingTime,
+      );
+
+      state = ReportsState(
+          queueData: queueData, report: report, isEmpty: queueData.isEmpty);
+    } catch (e) {
+      state =
+          ReportsState(error: "Failed to fetch queue data: $e", isEmpty: true);
+    }
   }
 }
 
 class ReportsState {
-  final List<PersonDetails> queueData;
+  final List<dynamic> queueData;
+  final ReportModel? report;
+  final bool isLoading;
+  final bool isEmpty;
+  final String? error;
 
-  ReportsState([this.queueData = const []]);
+  ReportsState({
+    this.queueData = const [],
+    this.report,
+    this.isLoading = false,
+    this.isEmpty = false,
+    this.error,
+  });
 }
