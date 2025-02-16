@@ -1,27 +1,22 @@
-import 'package:queue_management_system/src/features/queue/domain/models/person_details.dart';
-
 class ReportModel {
+  final String date;
   final int totalQueueItems;
   final int completedQueueItems;
-  final double averageWaitingTime;
+  final double avgWaitingTime;
 
   ReportModel({
+    required this.date,
     required this.totalQueueItems,
     required this.completedQueueItems,
-    required this.averageWaitingTime,
+    required this.avgWaitingTime,
   });
-}
 
-class ReportsState {
-  final List<PersonDetails> queueData;
-  final ReportModel? report;
-  final bool isLoading;
-  final String? error;
-
-  ReportsState({
-    this.queueData = const [],
-    this.report,
-    this.isLoading = false,
-    this.error,
-  });
+  factory ReportModel.fromMap(Map<String, dynamic> map) {
+    return ReportModel(
+      date: map['date'] ?? '',
+      totalQueueItems: map['totalItems'] ?? 0,
+      completedQueueItems: map['completedItems'] ?? 0,
+      avgWaitingTime: (map['avgWaitingTime'] ?? 0).toDouble(),
+    );
+  }
 }
