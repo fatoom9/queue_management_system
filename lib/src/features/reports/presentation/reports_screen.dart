@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:queue_management_system/src/common_widgets/button.dart';
 import 'package:queue_management_system/src/constants/app_theme.dart';
-import 'package:queue_management_system/src/features/reports/presentation/controllers/reports_controller_screen.dart';
+import 'package:queue_management_system/src/features/reports/application/reports_services.dart';
+import 'package:queue_management_system/src/features/reports/domain/report_models.dart';
 
-class ReportsScreen extends HookConsumerWidget {
-  const ReportsScreen({super.key});
+final reportsProvider = FutureProvider<List<ReportModel>>((ref) async {
+  final service = ref.read(reportsServiceProvider);
+  return service.getReports();
+});
 
+class ReportsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final reportsState = ref.watch(reportsControllerProvider);
-    final queueData = reportsState.queueData;
+    final reportsAsync = ref.watch(reportsProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -22,41 +24,30 @@ class ReportsScreen extends HookConsumerWidget {
         centerTitle: true,
         backgroundColor: AppTheme.theme.primaryColor,
       ),
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [secondaryColor, secondaryColor],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
+      body: reportsAsync.when(
+        data: (reports) => ListView.builder(
+          itemCount: reports.length,
+          itemBuilder: (context, index) {
+            final report = reports[index];
+            return Card(
+              child: ListTile(
+                title: Text("Date: ${report.date}"),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Total Queue Items: ${report.totalQueueItems}"),
+                    Text(
+                        "Completed Queue Items: ${report.completedQueueItems}"),
+                    Text(
+                        "Average Waiting Time: ${report.avgWaitingTime.toStringAsFixed(2)} seconds"),
+                  ],
+                ),
+              ),
+            );
+          },
         ),
-        child: reportsState.isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : reportsState.isEmpty
-                ? const Center(child: Text("No one in the queue"))
-                : Column(
-                    children: [
-                      const SizedBox(height: 10),
-                      Text(
-                        "Total in Queue: ${queueData.length}",
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: queueData.length,
-                          itemBuilder: (context, index) {
-                            final person = queueData[index];
-                            return ListTile(
-                              title: Text(person['full_name']),
-                              subtitle: Text(
-                                  "Queue Number: ${person['queue_number']}"),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
+        loading: () => Center(child: CircularProgressIndicator()),
+        error: (e, _) => Center(child: Text("Error: $e")),
       ),
     );
   }

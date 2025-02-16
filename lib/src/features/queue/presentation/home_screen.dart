@@ -160,7 +160,7 @@ class HomeScreen extends HookConsumerWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const ReportsScreen(),
+                        builder: (context) => ReportsScreen(),
                       ),
                     );
                   },
