@@ -3,14 +3,18 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:path/path.dart';
 import 'package:queue_management_system/src/features/auth/presentation/admin_list_screen.dart';
 import 'package:queue_management_system/src/features/auth/presentation/admin_setup_screen.dart.dart';
 import 'package:queue_management_system/src/features/auth/presentation/not_found_screen.dart';
 import 'package:queue_management_system/src/features/auth/presentation/welcome_screen.dart';
 import 'package:queue_management_system/src/features/auth/presentation/login_screen.dart';
+import 'package:queue_management_system/src/features/queue/presentation/add_person_screen.dart';
 import 'package:queue_management_system/src/features/queue/presentation/completedPerson.dart';
 import 'package:queue_management_system/src/features/queue/presentation/home_screen.dart';
 import 'package:queue_management_system/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:queue_management_system/src/features/queue/presentation/person_details_screen.dart';
+import 'package:queue_management_system/src/features/reports/presentation/reports_screen.dart';
 
 enum AppRoute {
   welcome,
@@ -19,6 +23,9 @@ enum AppRoute {
   home,
   notFound,
   adminList,
+  addPersonScreen,
+  completedPerson,
+  reports
 }
 
 final goRouterProvider = Provider<GoRouter>((ref) {
@@ -37,7 +44,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         '/welcome',
         '/login',
         '/admin-setup',
-        '/admin-list'
+        '/admin-list',
       ];
       final currentLocation = state.uri.toString();
 
@@ -91,9 +98,19 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/completedPerson',
-        name: 'completedPerson',
+        name: AppRoute.completedPerson.name,
         builder: (context, state) => const Completedperson(),
       ),
+      GoRoute(
+        path: '/addPersonScreen',
+        name: AppRoute.addPersonScreen.name,
+        builder: (context, state) => const AddPersonScreen(),
+      ),
+      GoRoute(
+        path: '/reports',
+        name: AppRoute.reports.name,
+        builder: (context, state) => ReportsScreen(),
+      )
     ],
     errorPageBuilder: (context, state) => MaterialPage(
       key: state.pageKey,

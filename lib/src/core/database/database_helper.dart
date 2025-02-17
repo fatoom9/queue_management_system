@@ -16,6 +16,7 @@ class DatabaseHelper {
       join(dbPath, 'queue_management.db'),
       version: 4, // Updated version
       onCreate: (db, version) async {
+        // Create `admin` table
         await db.execute('''
           CREATE TABLE admin( 
             id TEXT PRIMARY KEY, 
@@ -25,6 +26,7 @@ class DatabaseHelper {
           ) 
         ''');
 
+        // Create `queue_entries` table
         await db.execute('''
           CREATE TABLE queue_entries( 
             id TEXT PRIMARY KEY, 
@@ -33,25 +35,39 @@ class DatabaseHelper {
             queue_number INTEGER NOT NULL, 
             timestamp INTEGER NOT NULL, 
             notes TEXT, 
-            added_by TEXT NOT NULL, 
-            completedAt INTEGER NOT NULL
+            added_by TEXT NOT NULL DEFAULT "unknown", 
+            completedAt INTEGER DEFAULT NULL -- Allow NULL for completedAt
           ) 
         ''');
+
+        // Add indexes for faster queries
+        await db.execute(
+            'CREATE INDEX idx_queue_timestamp ON queue_entries(timestamp)');
+        await db.execute(
+            'CREATE INDEX idx_queue_completedAt ON queue_entries(completedAt)');
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 2) {
           await db.execute(
-              'ALTER TABLE admin ADD COLUMN is_logged_in BOOLEAN DEFAULT FALSE');
+            'ALTER TABLE admin ADD COLUMN is_logged_in BOOLEAN DEFAULT FALSE',
+          );
         }
         if (oldVersion < 3) {
           await db.execute(
-              'ALTER TABLE queue_entries ADD COLUMN added_by TEXT NOT NULL DEFAULT "unknown"');
+            'ALTER TABLE queue_entries ADD COLUMN added_by TEXT NOT NULL DEFAULT "unknown"',
+          );
         }
         if (oldVersion < 4) {
-          // Ensure column exists
           await db.execute(
-              'ALTER TABLE queue_entries ADD COLUMN completedAt INTEGER DEFAULT NULL');
+            'ALTER TABLE queue_entries ADD COLUMN completedAt INTEGER DEFAULT NULL',
+          );
         }
+
+        // Ensure indexes are created during upgrades
+        await db.execute(
+            'CREATE INDEX IF NOT EXISTS idx_queue_timestamp ON queue_entries(timestamp)');
+        await db.execute(
+            'CREATE INDEX IF NOT EXISTS idx_queue_completedAt ON queue_entries(completedAt)');
       },
     );
   }
