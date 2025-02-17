@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:queue_management_system/src/common_widgets/button.dart';
 import 'package:queue_management_system/src/common_widgets/text_feild.dart';
 import 'package:queue_management_system/src/constants/app_theme.dart';
 import 'package:queue_management_system/src/features/queue/presentation/controllers/queue_controller.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:queue_management_system/src/features/queue/presentation/home_screen.dart';
 
 class AddPersonScreen extends ConsumerStatefulWidget {
   const AddPersonScreen({Key? key}) : super(key: key);
@@ -17,6 +19,7 @@ class _AddPersonScreenState extends ConsumerState<AddPersonScreen> {
   final _phoneController = TextEditingController();
   final _notesController = TextEditingController();
   bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +63,6 @@ class _AddPersonScreenState extends ConsumerState<AddPersonScreen> {
               icon: Icons.note,
             ),
             const SizedBox(height: 20),
-            // Use Btn for the button
             _isLoading
                 ? const CircularProgressIndicator()
                 : Btn(
@@ -84,12 +86,23 @@ class _AddPersonScreenState extends ConsumerState<AddPersonScreen> {
                             _notesController.text,
                           );
                       setState(() => _isLoading = false);
-                      Navigator.pop(context);
+                      //context.pop();
                     },
                     text: 'Add to Queue',
                   ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        heroTag: "backToHomeFAB",
+        onPressed: () {
+          context.go('/home');
+        },
+        backgroundColor: const Color(0xFF335A7B),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: const Icon(Icons.home, color: Colors.white),
       ),
     );
   }
