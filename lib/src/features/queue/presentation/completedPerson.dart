@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:queue_management_system/src/common_widgets/button.dart';
 import 'package:queue_management_system/src/constants/app_theme.dart';
 import 'package:queue_management_system/src/features/queue/presentation/controllers/queue_controller.dart';
@@ -166,12 +167,7 @@ class Completedperson extends HookConsumerWidget {
           FloatingActionButton(
             heroTag: "addPersonFAB",
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const HomeScreen(),
-                ),
-              );
+              context.go('/home');
             },
             backgroundColor: primaryColor,
             shape: RoundedRectangleBorder(

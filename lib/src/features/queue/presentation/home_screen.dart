@@ -157,12 +157,7 @@ class HomeScreen extends HookConsumerWidget {
                 child: FloatingActionButton(
                   heroTag: "reportFAB",
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ReportsScreen(),
-                      ),
-                    );
+                    context.go('/reports');
                   },
                   backgroundColor: AppTheme.theme.primaryColor,
                   shape: RoundedRectangleBorder(
@@ -181,12 +176,7 @@ class HomeScreen extends HookConsumerWidget {
                 child: FloatingActionButton(
                   heroTag: "completedPersonFAB",
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const Completedperson(),
-                      ),
-                    );
+                    context.go('/completedPerson');
                   },
                   backgroundColor: AppTheme.theme.primaryColor,
                   shape: RoundedRectangleBorder(
@@ -201,12 +191,7 @@ class HomeScreen extends HookConsumerWidget {
                 child: FloatingActionButton(
                   heroTag: "addPersonFAB",
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AddPersonScreen(),
-                      ),
-                    );
+                    context.go('/addPersonScreen');
                   },
                   backgroundColor: AppTheme.theme.primaryColor,
                   shape: RoundedRectangleBorder(
