@@ -28,9 +28,6 @@ enum AppRoute {
   addPersonScreen,
   completedPerson,
   reports
-  addPersonScreen,
-  completedPerson,
-  reports
 }
 
 final goRouterProvider = Provider<GoRouter>((ref) {
@@ -105,19 +102,8 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/completedPerson',
         name: AppRoute.completedPerson.name,
-        name: AppRoute.completedPerson.name,
         builder: (context, state) => const Completedperson(),
       ),
-      GoRoute(
-        path: '/addPersonScreen',
-        name: AppRoute.addPersonScreen.name,
-        builder: (context, state) => const AddPersonScreen(),
-      ),
-      GoRoute(
-        path: '/reports',
-        name: AppRoute.reports.name,
-        builder: (context, state) => ReportsScreen(),
-      )
       GoRoute(
         path: '/addPersonScreen',
         name: AppRoute.addPersonScreen.name,
