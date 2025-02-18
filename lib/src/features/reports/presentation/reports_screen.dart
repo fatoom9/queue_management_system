@@ -11,6 +11,10 @@ class ReportsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final reportsAsync = ref.watch(reportServicesFutureProvider);
+    final primaryColor = AppTheme.theme.primaryColor;
+    final secondaryColor = button.secondaryColor;
+    final boldTextStyle =
+        const TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
 
     return Scaffold(
       appBar: AppBar(
@@ -23,12 +27,12 @@ class ReportsScreen extends ConsumerWidget {
           ),
         ),
         centerTitle: true,
-        backgroundColor: AppTheme.theme.primaryColor,
+        backgroundColor: primaryColor,
       ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [button.secondaryColor, button.secondaryColor],
+            colors: [secondaryColor, secondaryColor],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -36,10 +40,10 @@ class ReportsScreen extends ConsumerWidget {
         child: reportsAsync.when(
           data: (reports) {
             if (reports.isEmpty) {
-              return const Center(
+              return Center(
                 child: Text(
                   "No reports available.",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: boldTextStyle,
                 ),
               );
             }
@@ -70,8 +74,7 @@ class ReportsScreen extends ConsumerWidget {
                   child: ExpansionTile(
                     title: Text(
                       "Date: $date",
-                      style: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold),
+                      style: boldTextStyle,
                     ),
                     children: [
                       Padding(
@@ -82,7 +85,8 @@ class ReportsScreen extends ConsumerWidget {
                             Text("Total Queue Items: $totalQueueItems"),
                             Text("Completed Queue Items: $completedQueueItems"),
                             Text(
-                                "Average Waiting Time: ${avgWaitingTime.toStringAsFixed(2)} seconds"),
+                              "Average Waiting Time: ${avgWaitingTime.toStringAsFixed(2)} seconds",
+                            ),
                           ],
                         ),
                       ),
@@ -96,7 +100,7 @@ class ReportsScreen extends ConsumerWidget {
           error: (e, _) => Center(
             child: Text(
               "Error: $e",
-              style: const TextStyle(color: Colors.red, fontSize: 16),
+              style: TextStyle(color: button.accentColor, fontSize: 16),
             ),
           ),
         ),
@@ -107,8 +111,8 @@ class ReportsScreen extends ConsumerWidget {
           FloatingActionButton(
             heroTag: "refreshReportsFAB",
             onPressed: () => ref.refresh(reportServicesFutureProvider),
-            backgroundColor: AppTheme.theme.primaryColor,
-            child: const Icon(Icons.refresh),
+            backgroundColor: primaryColor,
+            child: Icon(Icons.refresh, color: secondaryColor),
           ),
           const SizedBox(height: 16),
           FloatingActionButton(
@@ -120,7 +124,7 @@ class ReportsScreen extends ConsumerWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
-            child: const Icon(Icons.home, color: Colors.white),
+            child: Icon(Icons.home, color: secondaryColor),
           ),
         ],
       ),
