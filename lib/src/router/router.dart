@@ -10,10 +10,12 @@ import 'package:queue_management_system/src/features/auth/presentation/not_found
 import 'package:queue_management_system/src/features/auth/presentation/welcome_screen.dart';
 import 'package:queue_management_system/src/features/auth/presentation/login_screen.dart';
 import 'package:queue_management_system/src/features/queue/presentation/add_person_screen.dart';
+import 'package:queue_management_system/src/features/queue/presentation/add_person_screen.dart';
 import 'package:queue_management_system/src/features/queue/presentation/completedPerson.dart';
 import 'package:queue_management_system/src/features/queue/presentation/home_screen.dart';
 import 'package:queue_management_system/src/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:queue_management_system/src/features/queue/presentation/person_details_screen.dart';
+import 'package:queue_management_system/src/features/reports/presentation/reports_screen.dart';
 import 'package:queue_management_system/src/features/reports/presentation/reports_screen.dart';
 
 enum AppRoute {
@@ -44,6 +46,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         '/welcome',
         '/login',
         '/admin-setup',
+        '/admin-list',
         '/admin-list',
       ];
       final currentLocation = state.uri.toString();

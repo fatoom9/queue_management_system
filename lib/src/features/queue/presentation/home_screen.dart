@@ -59,6 +59,7 @@ class HomeScreen extends HookConsumerWidget {
                     itemBuilder: (context, index) {
                       final currentPerson = queueList[index];
                       return Card(
+                        color: secondaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),

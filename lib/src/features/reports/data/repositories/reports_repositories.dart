@@ -9,15 +9,20 @@ class ReportsRepository {
   Future<List<Map<String, dynamic>>> fetchQueueData() async {
     final db = await _dbHelper.database;
     final result = await db.rawQuery('''
-      SELECT 
-        DATE(timestamp, 'unixepoch') AS date, 
-        COUNT(*) AS totalItems, 
-        SUM(CASE WHEN completedAt IS NOT NULL THEN 1 ELSE 0 END) AS completedItems, 
-        AVG(CASE WHEN completedAt IS NOT NULL THEN (completedAt - timestamp) ELSE NULL END) AS avgWaitingTime
-      FROM queue_entries
-      GROUP BY date
-      ORDER BY date DESC
-    ''');
+  SELECT 
+    DATE(timestamp / 1000, 'unixepoch') AS date,
+    COUNT(*) AS totalItems, 
+    SUM(CASE WHEN completedAt IS NOT NULL AND completedAt > 0 THEN 1 ELSE 0 END) AS completedItems, 
+    AVG(CASE WHEN completedAt IS NOT NULL AND completedAt > 0 THEN ((completedAt - timestamp) / 1000) ELSE NULL END) AS avgWaitingTime
+  FROM queue_entries
+  GROUP BY date
+  ORDER BY date DESC
+''');
+
+    for (var row in result) {
+      print("Row: $row");
+    }
+
     return result;
   }
 }
