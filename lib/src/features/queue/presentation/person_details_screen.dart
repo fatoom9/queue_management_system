@@ -37,6 +37,7 @@ class PersonDetailsScreen extends HookConsumerWidget {
         child: Center(
           child: Card(
             margin: const EdgeInsets.all(20),
+            color: secondaryColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),

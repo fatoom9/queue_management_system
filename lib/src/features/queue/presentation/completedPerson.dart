@@ -51,6 +51,7 @@ class Completedperson extends HookConsumerWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
+                        color: secondaryColor,
                         elevation: 3,
                         child: ListTile(
                           title: Text(
