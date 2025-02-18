@@ -124,6 +124,7 @@ CREATE TABLE queue_entries (
 - [ ] Setup authentication service class
 - [ ] Integrate authentication service with UI
 
+
 ### Queue Feature
 
 - [ ] Create queue entry data model
@@ -136,13 +137,14 @@ CREATE TABLE queue_entries (
 - [ ] Setup queue service class
 - [ ] Integrate queue service with UI
 
+
+
 ### Reports Feature
 
 - [ ] View total number of people served
-
 - [ ] View average wait time
-
 - [ ] Generate daily and weekly queue reports
+- [ ] Using FutureProvider in the application layer.
 
 
 ### UI/UX

@@ -3,27 +3,24 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:queue_management_system/src/common_widgets/button.dart'
     as button;
 import 'package:queue_management_system/src/constants/app_theme.dart';
+import 'package:queue_management_system/src/features/reports/application/reports_services.dart';
 import 'package:queue_management_system/src/features/reports/domain/report_models.dart';
-import 'package:queue_management_system/src/features/reports/presentation/controllers/reports_controller_screen.dart';
 import 'package:go_router/go_router.dart';
-
-final reportsProvider = FutureProvider<List<ReportModel>>((ref) async {
-  final controller = ref.read(reportsControllerProvider.notifier);
-  await controller.fetchReports();
-  return ref.watch(reportsControllerProvider);
-});
 
 class ReportsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final reportsAsync = ref.watch(reportsProvider);
+    final reportsAsync = ref.watch(reportServicesFutureProvider);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text(
           'Reports Screen',
           style: TextStyle(
-              fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
         ),
         centerTitle: true,
         backgroundColor: AppTheme.theme.primaryColor,
@@ -109,7 +106,7 @@ class ReportsScreen extends ConsumerWidget {
         children: [
           FloatingActionButton(
             heroTag: "refreshReportsFAB",
-            onPressed: () => ref.refresh(reportsProvider),
+            onPressed: () => ref.refresh(reportServicesFutureProvider),
             backgroundColor: AppTheme.theme.primaryColor,
             child: const Icon(Icons.refresh),
           ),

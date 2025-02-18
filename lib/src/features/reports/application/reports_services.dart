@@ -16,3 +16,9 @@ class ReportsService {
 final reportsServiceProvider = Provider<ReportsService>((ref) {
   return ReportsService(ref.read(reportsRepositoryProvider));
 });
+//Future Provider
+final reportServicesFutureProvider =
+    FutureProvider<List<ReportModel>>((ref) async {
+  final reportsService = ref.read(reportsServiceProvider);
+  return await reportsService.getReports();
+});
