@@ -71,6 +71,7 @@ class ReportsScreen extends ConsumerWidget {
                 return Card(
                   elevation: 3,
                   margin: const EdgeInsets.all(8),
+                  color: secondaryColor,
                   child: ExpansionTile(
                     title: Text(
                       "Date: $date",
