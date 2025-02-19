@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:queue_management_system/src/common_widgets/button.dart'
     as button;
 import 'package:queue_management_system/src/constants/app_theme.dart';
@@ -88,6 +89,21 @@ class ReportsScreen extends ConsumerWidget {
                             Text(
                               "Average Waiting Time: ${avgWaitingTime.toStringAsFixed(2)} seconds",
                             ),
+                            const SizedBox(height: 8),
+                            ElevatedButton.icon(
+                              onPressed: () {
+                                // Navigate to show items with the date
+                                context.push('/showItems', extra: date);
+                              },
+                              icon: Icon(Icons.list, color: primaryColor),
+                              label: Text(
+                                'Show Items for $date',
+                                style: TextStyle(color: primaryColor),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -131,4 +147,10 @@ class ReportsScreen extends ConsumerWidget {
       ),
     );
   }
+}
+
+String _formatTimeOnly(int timestamp) {
+  final dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
+  final timeFormat = DateFormat('HH:mm');
+  return timeFormat.format(dateTime);
 }
