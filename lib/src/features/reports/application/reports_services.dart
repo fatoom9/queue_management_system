@@ -12,9 +12,8 @@ class ReportsService {
     return rawData.map((data) => ReportModel.fromMap(data)).toList();
   }
 
-  // جلب تفاصيل العناصر الفردية في القائمة
   Future<List<QueueItemModel>> getItemsDetails(String date) async {
-    final rawData = await _repository.fetchQueueItems(date); // تمرير التاريخ
+    final rawData = await _repository.fetchQueueItems(date); //
     return rawData.map((data) => QueueItemModel.fromMap(data)).toList();
   }
 }

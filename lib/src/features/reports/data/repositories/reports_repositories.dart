@@ -19,9 +19,10 @@ class ReportsRepository {
   ORDER BY date DESC
 ''');
 
-    for (var row in result) {
+    /* for (var row in result) {
       print("Row: $row");
     }
+    */
 
     return result;
   }
@@ -38,10 +39,10 @@ class ReportsRepository {
     WHERE DATE(timestamp / 1000, 'unixepoch') = ?
     ORDER BY timestamp DESC
   ''', [date]);
-    // print('ll');
-    for (var row in result) {
+    /*for (var row in result) {
       print("Row: $row");
     }
+    */
 
     return result;
   }
