@@ -92,8 +92,6 @@ class ReportsScreen extends ConsumerWidget {
                             const SizedBox(height: 8),
                             ElevatedButton.icon(
                               onPressed: () {
-                                // ref.refresh(itemsDetailsFutureProvider(date));
-
                                 context.push('/showItems', extra: date);
                               },
                               icon: Icon(Icons.list, color: primaryColor),

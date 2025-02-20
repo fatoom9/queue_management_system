@@ -23,13 +23,13 @@ final reportsServiceProvider = Provider<ReportsService>((ref) {
 });
 
 final reportServicesFutureProvider =
-    FutureProvider<List<ReportModel>>((ref) async {
+    FutureProvider.autoDispose<List<ReportModel>>((ref) async {
   final reportsService = ref.read(reportsServiceProvider);
   return await reportsService.getReports();
 });
 
-final itemsDetailsFutureProvider =
-    FutureProvider.family<List<QueueItemModel>, String>((ref, date) async {
+final itemsDetailsFutureProvider = FutureProvider.family
+    .autoDispose<List<QueueItemModel>, String>((ref, date) async {
   final reportsService = ref.read(reportsServiceProvider);
   return await reportsService.getItemsDetails(date);
 });

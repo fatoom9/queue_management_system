@@ -63,7 +63,7 @@ class AdminListScreen extends StatelessWidget {
               child: SizedBox(
                 width: double.infinity,
                 child: Btn(
-                  onPress: () => context.go('/welcome'),
+                  onPress: () => context.goNamed('welcome'),
                   text: 'Back',
                 ),
               ),

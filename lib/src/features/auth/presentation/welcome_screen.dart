@@ -40,12 +40,12 @@ class WelcomScreen extends HookConsumerWidget {
                 ),
                 const SizedBox(height: 40),
                 Btn(
-                  onPress: () => context.go('/login'),
+                  onPress: () => context.goNamed('login'),
                   text: 'Login',
                 ),
                 const SizedBox(height: 20),
                 Btn(
-                  onPress: () => context.go('/admin-setup'),
+                  onPress: () => context.goNamed('adminSetup'),
                   text: 'Create Admin',
                 ),
               ],

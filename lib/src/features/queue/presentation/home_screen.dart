@@ -102,7 +102,7 @@ class HomeScreen extends HookConsumerWidget {
                                         .markAsCompleted(currentPerson.id);
 
                                     Future.delayed(Duration.zero, () {
-                                      context.go('/completedPerson');
+                                      context.goNamed('completedPerson');
                                     });
                                   }
                                 },
@@ -137,7 +137,7 @@ class HomeScreen extends HookConsumerWidget {
               heroTag: "logoutFAB",
               onPressed: () {
                 ref.read(authControllerProvider.notifier).signOut();
-                context.go('/login');
+                context.goNamed('login');
               },
               backgroundColor: AppTheme.theme.primaryColor,
               shape: RoundedRectangleBorder(
@@ -159,8 +159,6 @@ class HomeScreen extends HookConsumerWidget {
                 child: FloatingActionButton(
                   heroTag: "reportFAB",
                   onPressed: () {
-                    //ref.refresh(reportServicesFutureProvider);
-
                     context.goNamed('reports');
                   },
                   backgroundColor: AppTheme.theme.primaryColor,
@@ -180,7 +178,7 @@ class HomeScreen extends HookConsumerWidget {
                 child: FloatingActionButton(
                   heroTag: "completedPersonFAB",
                   onPressed: () {
-                    context.go('/completedPerson');
+                    context.goNamed('completedPerson');
                   },
                   backgroundColor: AppTheme.theme.primaryColor,
                   shape: RoundedRectangleBorder(
@@ -195,7 +193,7 @@ class HomeScreen extends HookConsumerWidget {
                 child: FloatingActionButton(
                   heroTag: "addPersonFAB",
                   onPressed: () {
-                    context.go('/addPersonScreen');
+                    context.goNamed('addPersonScreen');
                   },
                   backgroundColor: AppTheme.theme.primaryColor,
                   shape: RoundedRectangleBorder(
