@@ -92,7 +92,8 @@ class ReportsScreen extends ConsumerWidget {
                             const SizedBox(height: 8),
                             ElevatedButton.icon(
                               onPressed: () {
-                                // Navigate to show items with the date
+                                // ref.refresh(itemsDetailsFutureProvider(date));
+
                                 context.push('/showItems', extra: date);
                               },
                               icon: Icon(Icons.list, color: primaryColor),
@@ -125,12 +126,13 @@ class ReportsScreen extends ConsumerWidget {
       floatingActionButton: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          FloatingActionButton(
+          /* FloatingActionButton(
             heroTag: "refreshReportsFAB",
             onPressed: () => ref.refresh(reportServicesFutureProvider),
             backgroundColor: primaryColor,
             child: Icon(Icons.refresh, color: secondaryColor),
           ),
+          */
           const SizedBox(height: 16),
           FloatingActionButton(
             heroTag: "backToHomeFAB",

@@ -9,6 +9,7 @@ import 'package:queue_management_system/src/features/queue/presentation/complete
 import 'package:queue_management_system/src/features/queue/presentation/controllers/queue_controller.dart';
 import 'package:queue_management_system/src/features/queue/presentation/person_details_screen.dart';
 import 'package:queue_management_system/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:queue_management_system/src/features/reports/application/reports_services.dart';
 import 'package:queue_management_system/src/features/reports/presentation/reports_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -158,7 +159,9 @@ class HomeScreen extends HookConsumerWidget {
                 child: FloatingActionButton(
                   heroTag: "reportFAB",
                   onPressed: () {
-                    context.go('/reports');
+                    //ref.refresh(reportServicesFutureProvider);
+
+                    context.goNamed('reports');
                   },
                   backgroundColor: AppTheme.theme.primaryColor,
                   shape: RoundedRectangleBorder(
