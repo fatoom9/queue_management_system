@@ -119,7 +119,7 @@ class LoginScreen extends HookConsumerWidget {
                       ),
                       const SizedBox(height: 10),
                       Btn(
-                        onPress: () => context.go('/welcome'),
+                        onPress: () => context.goNamed('welcome'),
                         text: 'Back',
                       ),
                     ],

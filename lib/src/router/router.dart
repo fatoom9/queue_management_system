@@ -17,6 +17,7 @@ import 'package:queue_management_system/src/features/auth/presentation/controlle
 import 'package:queue_management_system/src/features/queue/presentation/person_details_screen.dart';
 import 'package:queue_management_system/src/features/reports/presentation/reports_screen.dart';
 import 'package:queue_management_system/src/features/reports/presentation/reports_screen.dart';
+import 'package:queue_management_system/src/features/reports/presentation/show_items_screen.dart';
 
 enum AppRoute {
   welcome,
@@ -27,7 +28,8 @@ enum AppRoute {
   adminList,
   addPersonScreen,
   completedPerson,
-  reports
+  reports,
+  showItems
 }
 
 final goRouterProvider = Provider<GoRouter>((ref) {
@@ -113,7 +115,15 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/reports',
         name: AppRoute.reports.name,
         builder: (context, state) => ReportsScreen(),
-      )
+      ),
+      GoRoute(
+        path: '/showItems',
+        builder: (context, state) {
+          final date = state.extra as String; // Extract the date from extra
+          return ShowItemsScreen(
+              date: date); // Pass the date to ShowItemsScreen
+        },
+      ),
     ],
     errorPageBuilder: (context, state) => MaterialPage(
       key: state.pageKey,

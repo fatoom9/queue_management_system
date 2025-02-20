@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:queue_management_system/src/common_widgets/button.dart'
     as button;
 import 'package:queue_management_system/src/constants/app_theme.dart';
@@ -88,6 +89,20 @@ class ReportsScreen extends ConsumerWidget {
                             Text(
                               "Average Waiting Time: ${avgWaitingTime.toStringAsFixed(2)} seconds",
                             ),
+                            const SizedBox(height: 8),
+                            ElevatedButton.icon(
+                              onPressed: () {
+                                context.push('/showItems', extra: date);
+                              },
+                              icon: Icon(Icons.list, color: primaryColor),
+                              label: Text(
+                                'Show Items for $date',
+                                style: TextStyle(color: primaryColor),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -109,12 +124,13 @@ class ReportsScreen extends ConsumerWidget {
       floatingActionButton: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          FloatingActionButton(
+          /* FloatingActionButton(
             heroTag: "refreshReportsFAB",
             onPressed: () => ref.refresh(reportServicesFutureProvider),
             backgroundColor: primaryColor,
             child: Icon(Icons.refresh, color: secondaryColor),
           ),
+          */
           const SizedBox(height: 16),
           FloatingActionButton(
             heroTag: "backToHomeFAB",
@@ -131,4 +147,10 @@ class ReportsScreen extends ConsumerWidget {
       ),
     );
   }
+}
+
+String _formatTimeOnly(int timestamp) {
+  final dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
+  final timeFormat = DateFormat('HH:mm');
+  return timeFormat.format(dateTime);
 }

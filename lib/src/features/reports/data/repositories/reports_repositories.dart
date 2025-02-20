@@ -19,6 +19,27 @@ class ReportsRepository {
   ORDER BY date DESC
 ''');
 
+    /* for (var row in result) {
+      print("Row: $row");
+    }
+    */
+
+    return result;
+  }
+
+  Future<List<Map<String, dynamic>>> fetchQueueItems(String date) async {
+    final db = await _dbHelper.database;
+    final result = await db.rawQuery('''
+    SELECT 
+      id, 
+      full_name, 
+      timestamp, 
+      completedAt 
+    FROM queue_entries
+    WHERE DATE(timestamp / 1000, 'unixepoch') = ?
+    ORDER BY timestamp DESC
+  ''', [date]);
+    print('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh');
     for (var row in result) {
       print("Row: $row");
     }

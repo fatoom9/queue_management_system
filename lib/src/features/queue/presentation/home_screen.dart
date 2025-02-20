@@ -9,6 +9,7 @@ import 'package:queue_management_system/src/features/queue/presentation/complete
 import 'package:queue_management_system/src/features/queue/presentation/controllers/queue_controller.dart';
 import 'package:queue_management_system/src/features/queue/presentation/person_details_screen.dart';
 import 'package:queue_management_system/src/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:queue_management_system/src/features/reports/application/reports_services.dart';
 import 'package:queue_management_system/src/features/reports/presentation/reports_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -101,7 +102,7 @@ class HomeScreen extends HookConsumerWidget {
                                         .markAsCompleted(currentPerson.id);
 
                                     Future.delayed(Duration.zero, () {
-                                      context.go('/completedPerson');
+                                      context.goNamed('completedPerson');
                                     });
                                   }
                                 },
@@ -136,7 +137,7 @@ class HomeScreen extends HookConsumerWidget {
               heroTag: "logoutFAB",
               onPressed: () {
                 ref.read(authControllerProvider.notifier).signOut();
-                context.go('/login');
+                context.goNamed('login');
               },
               backgroundColor: AppTheme.theme.primaryColor,
               shape: RoundedRectangleBorder(
@@ -158,7 +159,7 @@ class HomeScreen extends HookConsumerWidget {
                 child: FloatingActionButton(
                   heroTag: "reportFAB",
                   onPressed: () {
-                    context.go('/reports');
+                    context.goNamed('reports');
                   },
                   backgroundColor: AppTheme.theme.primaryColor,
                   shape: RoundedRectangleBorder(
@@ -177,7 +178,7 @@ class HomeScreen extends HookConsumerWidget {
                 child: FloatingActionButton(
                   heroTag: "completedPersonFAB",
                   onPressed: () {
-                    context.go('/completedPerson');
+                    context.goNamed('completedPerson');
                   },
                   backgroundColor: AppTheme.theme.primaryColor,
                   shape: RoundedRectangleBorder(
@@ -192,7 +193,7 @@ class HomeScreen extends HookConsumerWidget {
                 child: FloatingActionButton(
                   heroTag: "addPersonFAB",
                   onPressed: () {
-                    context.go('/addPersonScreen');
+                    context.goNamed('addPersonScreen');
                   },
                   backgroundColor: AppTheme.theme.primaryColor,
                   shape: RoundedRectangleBorder(

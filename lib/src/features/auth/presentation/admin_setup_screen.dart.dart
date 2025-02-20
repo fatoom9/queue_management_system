@@ -34,7 +34,7 @@ class AdminSetupScreen extends HookConsumerWidget {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Admin created successfully!')),
         );
-        context.go('/welcome');
+        context.goNamed('welcome');
       }
     }
 
@@ -119,7 +119,7 @@ class AdminSetupScreen extends HookConsumerWidget {
                       const SizedBox(height: 10),
                       button.Btn(
                         onPress: () {
-                          context.go('/admin-list');
+                          context.goNamed('adminList');
                         },
                         text: 'View Admin List',
                         backgroundColor: primaryColor,
@@ -127,7 +127,7 @@ class AdminSetupScreen extends HookConsumerWidget {
                       const SizedBox(height: 20),
                       button.Btn(
                         onPress: () {
-                          context.go('/welcome');
+                          context.goNamed('welcome');
                         },
                         text: 'Back',
                         backgroundColor: primaryColor,
