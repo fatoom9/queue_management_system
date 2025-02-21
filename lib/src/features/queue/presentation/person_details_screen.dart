@@ -49,7 +49,7 @@ class PersonDetailsScreen extends HookConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildDetailRow(Icons.person, 'Full Name', person.fullName),
-                  _buildDetailRow(Icons.timelapse, 'ID', person.id.toString()),
+                  _buildDetailRow(Icons.timelapse, 'ID', _formatId(person.id)),
                   _buildDetailRow(
                       Icons.phone, 'Phone Number', person.phoneNumber),
                   if (!(person.completedAt != null && person.completedAt! > 0))
@@ -96,6 +96,11 @@ class PersonDetailsScreen extends HookConsumerWidget {
         ],
       ),
     );
+  }
+
+  String _formatId(String id) {
+    final parsedId = int.tryParse(id);
+    return parsedId != null ? parsedId.toString() : "Invalid ID";
   }
 
   String _formatTimestamp(int? timestamp) {

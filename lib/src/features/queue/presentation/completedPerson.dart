@@ -116,6 +116,7 @@ class Completedperson extends HookConsumerWidget {
                                   await ref
                                       .read(queueControllerProvider.notifier)
                                       .addPersonToQueue(
+                                          currentPerson.id,
                                           currentPerson.fullName,
                                           currentPerson.phoneNumber,
                                           currentPerson.notes ?? '');

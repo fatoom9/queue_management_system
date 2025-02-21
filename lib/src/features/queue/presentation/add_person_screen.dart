@@ -15,6 +15,7 @@ class AddPersonScreen extends ConsumerStatefulWidget {
 
 class _AddPersonScreenState extends ConsumerState<AddPersonScreen> {
   final _formKey = GlobalKey<FormState>(); // Form key for validation
+  final _idController = TextEditingController();
   final _fullNameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _notesController = TextEditingController();
@@ -41,6 +42,25 @@ class _AddPersonScreenState extends ConsumerState<AddPersonScreen> {
           key: _formKey,
           child: Column(
             children: [
+              TextFormField(
+                controller: _idController,
+                decoration: const InputDecoration(
+                  hintText: 'Id',
+                  labelText: 'Id',
+                  prefixIcon: Icon(Icons.person),
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter id';
+                  }
+                  if (!RegExp(r'^\d{9}$').hasMatch(value)) {
+                    return 'ID must be 9 digits';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 20),
               TextFormField(
                 controller: _fullNameController,
                 decoration: const InputDecoration(
@@ -96,6 +116,7 @@ class _AddPersonScreenState extends ConsumerState<AddPersonScreen> {
                           await ref
                               .read(queueControllerProvider.notifier)
                               .addPersonToQueue(
+                                _idController.text,
                                 _fullNameController.text,
                                 _phoneController.text,
                                 _notesController.text,

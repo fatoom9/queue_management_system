@@ -26,13 +26,13 @@ class QueueController extends StateNotifier<List<PersonDetails>> {
   }
 
   Future<void> addPersonToQueue(
-      String fullName, String phoneNumber, String notes) async {
+      String id, String fullName, String phoneNumber, String notes) async {
     try {
       final currentQueue = await _queueService.getAllQueue();
       final int newQueueNumber = currentQueue.length + 1;
 
       final personDetails = PersonDetails(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        id: id,
         fullName: fullName,
         phoneNumber: phoneNumber,
         queueNumber: newQueueNumber,
