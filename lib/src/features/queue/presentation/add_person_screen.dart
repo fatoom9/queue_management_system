@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:queue_management_system/src/common_widgets/button.dart';
-import 'package:queue_management_system/src/common_widgets/text_feild.dart';
 import 'package:queue_management_system/src/constants/app_theme.dart';
-import 'package:queue_management_system/src/features/queue/presentation/controllers/queue_controller.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:queue_management_system/src/features/queue/presentation/home_screen.dart';
+import 'package:queue_management_system/src/features/queue/presentation/controllers/queue_controller.dart';
 
 class AddPersonScreen extends ConsumerStatefulWidget {
   const AddPersonScreen({Key? key}) : super(key: key);
+
   @override
   _AddPersonScreenState createState() => _AddPersonScreenState();
 }
 
 class _AddPersonScreenState extends ConsumerState<AddPersonScreen> {
+  final _formKey = GlobalKey<FormState>(); // Form key for validation
   final _fullNameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _notesController = TextEditingController();
@@ -37,66 +37,83 @@ class _AddPersonScreenState extends ConsumerState<AddPersonScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            AppTextFormField(
-              controller: _fullNameController,
-              hintText: 'Name',
-              helpText: 'Name of Person',
-              obscureText: false,
-              icon: Icons.person,
-            ),
-            const SizedBox(height: 20),
-            AppTextFormField(
-              controller: _phoneController,
-              hintText: 'Phone Number',
-              helpText: 'phone number',
-              obscureText: true,
-              icon: Icons.phone,
-            ),
-            const SizedBox(height: 20),
-            AppTextFormField(
-              controller: _notesController,
-              hintText: 'Notes',
-              helpText: 'Notes(optional)',
-              obscureText: false,
-              icon: Icons.note,
-            ),
-            const SizedBox(height: 20),
-            _isLoading
-                ? const CircularProgressIndicator()
-                : Btn(
-                    onPress: () async {
-                      if (_fullNameController.text.isEmpty ||
-                          _phoneController.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content:
-                                Text('Please enter both name and phone number'),
-                          ),
-                        );
-                        return;
-                      }
-                      setState(() => _isLoading = true);
-                      await ref
-                          .read(queueControllerProvider.notifier)
-                          .addPersonToQueue(
-                            _fullNameController.text,
-                            _phoneController.text,
-                            _notesController.text,
-                          );
-                      setState(() => _isLoading = false);
-                      //context.pop();
-                    },
-                    text: 'Add to Queue',
-                  ),
-          ],
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                controller: _fullNameController,
+                decoration: const InputDecoration(
+                  hintText: 'Name',
+                  labelText: 'Full Name',
+                  prefixIcon: Icon(Icons.person),
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a name';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 20),
+              TextFormField(
+                controller: _phoneController,
+                decoration: const InputDecoration(
+                  hintText: 'Phone Number',
+                  labelText: 'Phone Number',
+                  prefixIcon: Icon(Icons.phone),
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.phone,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a phone number';
+                  }
+                  if (!RegExp(r'^\d{10}$').hasMatch(value)) {
+                    return ' phone number must be 10-digit';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 20),
+              TextFormField(
+                controller: _notesController,
+                decoration: const InputDecoration(
+                  hintText: 'Notes',
+                  labelText: 'Notes (Optional)',
+                  prefixIcon: Icon(Icons.note),
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 20),
+              _isLoading
+                  ? const CircularProgressIndicator()
+                  : Btn(
+                      onPress: () async {
+                        if (_formKey.currentState!.validate()) {
+                          setState(() => _isLoading = true);
+                          await ref
+                              .read(queueControllerProvider.notifier)
+                              .addPersonToQueue(
+                                _fullNameController.text,
+                                _phoneController.text,
+                                _notesController.text,
+                              );
+                          setState(() => _isLoading = false);
+                          // context.pop();
+                        }
+                      },
+                      text: 'Add to Queue',
+                    ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         heroTag: "backToHomeFAB",
         onPressed: () {
-          context.go('/home');
+          context.goNamed('home');
         },
         backgroundColor: const Color(0xFF335A7B),
         shape: RoundedRectangleBorder(
