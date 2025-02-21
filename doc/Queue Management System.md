@@ -123,6 +123,7 @@ CREATE TABLE queue_entries (
 - [ ] Add protected route navigation
 - [ ] Setup authentication service class
 - [ ] Integrate authentication service with UI
+- [ ] Build a form with validation for admin setup
 
 
 ### Queue Feature
@@ -136,6 +137,7 @@ CREATE TABLE queue_entries (
 - [ ] Create entry details view
 - [ ] Setup queue service class
 - [ ] Integrate queue service with UI
+- [ ] Build a form with validation for person information 
 
 
 
@@ -145,6 +147,8 @@ CREATE TABLE queue_entries (
 - [ ] View average wait time
 - [ ] Generate daily and weekly queue reports
 - [ ] Using FutureProvider in the application layer.
+- [ ] Display a "show items" button for each date.
+- [ ] Display addition time and completion time 
 
 
 ### UI/UX
