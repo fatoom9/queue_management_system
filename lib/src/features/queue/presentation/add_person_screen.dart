@@ -30,104 +30,106 @@ class _AddPersonScreenState extends ConsumerState<AddPersonScreen> {
           style: GoogleFonts.poppins(
             fontSize: 22,
             fontWeight: FontWeight.bold,
-            color: AppTheme.theme.scaffoldBackgroundColor,
+            color: primaryColor,
           ),
         ),
         centerTitle: true,
-        backgroundColor: AppTheme.theme.primaryColor,
+        backgroundColor: primaryColor,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                controller: _idController,
-                decoration: const InputDecoration(
-                  hintText: 'Id',
-                  labelText: 'Id',
-                  prefixIcon: Icon(Icons.person),
-                  border: OutlineInputBorder(),
+      body: Container(
+        color: secondaryColor, // Setting background color
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: _idController,
+                  decoration: const InputDecoration(
+                    hintText: 'ID',
+                    labelText: 'ID',
+                    prefixIcon: Icon(Icons.person),
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter ID';
+                    }
+                    if (!RegExp(r'^\d{9}$').hasMatch(value)) {
+                      return 'ID must be 9 digits';
+                    }
+                    return null;
+                  },
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter id';
-                  }
-                  if (!RegExp(r'^\d{9}$').hasMatch(value)) {
-                    return 'ID must be 9 digits';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 20),
-              TextFormField(
-                controller: _fullNameController,
-                decoration: const InputDecoration(
-                  hintText: 'Name',
-                  labelText: 'Full Name',
-                  prefixIcon: Icon(Icons.person),
-                  border: OutlineInputBorder(),
+                const SizedBox(height: 20),
+                TextFormField(
+                  controller: _fullNameController,
+                  decoration: const InputDecoration(
+                    hintText: 'Name',
+                    labelText: 'Full Name',
+                    prefixIcon: Icon(Icons.person),
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a name';
+                    }
+                    return null;
+                  },
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a name';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 20),
-              TextFormField(
-                controller: _phoneController,
-                decoration: const InputDecoration(
-                  hintText: 'Phone Number',
-                  labelText: 'Phone Number',
-                  prefixIcon: Icon(Icons.phone),
-                  border: OutlineInputBorder(),
+                const SizedBox(height: 20),
+                TextFormField(
+                  controller: _phoneController,
+                  decoration: const InputDecoration(
+                    hintText: 'Phone Number',
+                    labelText: 'Phone Number',
+                    prefixIcon: Icon(Icons.phone),
+                    border: OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.phone,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a phone number';
+                    }
+                    if (!RegExp(r'^\d{10}$').hasMatch(value)) {
+                      return 'Phone number must be 10 digits';
+                    }
+                    return null;
+                  },
                 ),
-                keyboardType: TextInputType.phone,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a phone number';
-                  }
-                  if (!RegExp(r'^\d{10}$').hasMatch(value)) {
-                    return ' phone number must be 10-digit';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 20),
-              TextFormField(
-                controller: _notesController,
-                decoration: const InputDecoration(
-                  hintText: 'Notes',
-                  labelText: 'Notes (Optional)',
-                  prefixIcon: Icon(Icons.note),
-                  border: OutlineInputBorder(),
+                const SizedBox(height: 20),
+                TextFormField(
+                  controller: _notesController,
+                  decoration: const InputDecoration(
+                    hintText: 'Notes',
+                    labelText: 'Notes (Optional)',
+                    prefixIcon: Icon(Icons.note),
+                    border: OutlineInputBorder(),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              _isLoading
-                  ? const CircularProgressIndicator()
-                  : Btn(
-                      onPress: () async {
-                        if (_formKey.currentState!.validate()) {
-                          setState(() => _isLoading = true);
-                          await ref
-                              .read(queueControllerProvider.notifier)
-                              .addPersonToQueue(
-                                _idController.text,
-                                _fullNameController.text,
-                                _phoneController.text,
-                                _notesController.text,
-                              );
-                          setState(() => _isLoading = false);
-                          // context.pop();
-                        }
-                      },
-                      text: 'Add to Queue',
-                    ),
-            ],
+                const SizedBox(height: 20),
+                _isLoading
+                    ? const CircularProgressIndicator()
+                    : Btn(
+                        onPress: () async {
+                          if (_formKey.currentState!.validate()) {
+                            setState(() => _isLoading = true);
+                            await ref
+                                .read(queueControllerProvider.notifier)
+                                .addPersonToQueue(
+                                  _idController.text,
+                                  _fullNameController.text,
+                                  _phoneController.text,
+                                  _notesController.text,
+                                );
+                            setState(() => _isLoading = false);
+                          }
+                        },
+                        text: 'Add to Queue',
+                      ),
+              ],
+            ),
           ),
         ),
       ),

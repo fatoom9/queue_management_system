@@ -39,7 +39,7 @@ class ReportsRepository {
     WHERE DATE(timestamp / 1000, 'unixepoch') = ?
     ORDER BY timestamp DESC
   ''', [date]);
-    print('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh');
+    //print('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh');
     for (var row in result) {
       print("Row: $row");
     }
