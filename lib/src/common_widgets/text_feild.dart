@@ -16,6 +16,7 @@ class AppTextFormField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.textColor = primaryColor,
     this.fillColor = primaryColor,
+    this.validator,
   }) : super(key: key);
 
   final TextEditingController controller;
@@ -26,6 +27,7 @@ class AppTextFormField extends StatelessWidget {
   final TextInputType keyboardType;
   final Color textColor;
   final Color fillColor;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +54,7 @@ class AppTextFormField extends StatelessWidget {
         filled: true,
         fillColor: fillColor.withOpacity(0.1),
       ),
+      validator: validator,
     );
   }
 }

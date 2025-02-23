@@ -3,7 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:queue_management_system/src/common_widgets/button.dart';
 import 'package:queue_management_system/src/constants/app_theme.dart';
 import 'package:queue_management_system/src/features/queue/domain/models/person_details.dart';
-import 'package:queue_management_system/src/features/queue/presentation/controllers/queue_controller.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PersonDetailsScreen extends HookConsumerWidget {
@@ -49,7 +48,7 @@ class PersonDetailsScreen extends HookConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildDetailRow(Icons.person, 'Full Name', person.fullName),
-                  _buildDetailRow(Icons.timelapse, 'ID', person.id.toString()),
+                  _buildDetailRow(Icons.timelapse, 'ID', _formatId(person.id)),
                   _buildDetailRow(
                       Icons.phone, 'Phone Number', person.phoneNumber),
                   if (!(person.completedAt != null && person.completedAt! > 0))
@@ -96,6 +95,11 @@ class PersonDetailsScreen extends HookConsumerWidget {
         ],
       ),
     );
+  }
+
+  String _formatId(String id) {
+    final parsedId = int.tryParse(id);
+    return parsedId != null ? parsedId.toString() : "Invalid ID";
   }
 
   String _formatTimestamp(int? timestamp) {

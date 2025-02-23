@@ -3,11 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:queue_management_system/src/common_widgets/button.dart';
 import 'package:queue_management_system/src/constants/app_theme.dart';
 import 'package:queue_management_system/src/features/queue/presentation/controllers/queue_controller.dart';
-import 'package:queue_management_system/src/features/queue/presentation/home_screen.dart';
 import 'package:queue_management_system/src/features/queue/presentation/person_details_screen.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-import '../../../common_widgets/button.dart';
 
 class Completedperson extends HookConsumerWidget {
   const Completedperson({super.key});
@@ -116,6 +113,7 @@ class Completedperson extends HookConsumerWidget {
                                   await ref
                                       .read(queueControllerProvider.notifier)
                                       .addPersonToQueue(
+                                          currentPerson.id,
                                           currentPerson.fullName,
                                           currentPerson.phoneNumber,
                                           currentPerson.notes ?? '');
