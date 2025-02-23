@@ -74,15 +74,13 @@ class AdminSetupScreen extends HookConsumerWidget {
                     key: _formKey,
                     child: Column(
                       children: [
-                        // Email field with validation using TextFormField
-                        TextFormField(
+                        // Replace TextFormField with AppTextFormField for email
+                        AppTextFormField(
                           controller: emailController,
-                          decoration: const InputDecoration(
-                              hintText: 'Enter your email',
-                              labelText: 'Email',
-                              border: OutlineInputBorder(),
-                              prefixIcon: Icon(Icons.email)),
+                          hintText: 'Enter your email',
+                          helpText: 'Email',
                           obscureText: false,
+                          icon: Icons.email,
                           keyboardType: TextInputType.emailAddress,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -98,15 +96,13 @@ class AdminSetupScreen extends HookConsumerWidget {
                         ),
                         const SizedBox(height: 20),
 
-                        // Password field with validation
-                        TextFormField(
+                        // Replace TextFormField with AppTextFormField for password
+                        AppTextFormField(
                           controller: passwordController,
-                          decoration: const InputDecoration(
-                              hintText: 'Enter your password',
-                              labelText: 'Password',
-                              border: OutlineInputBorder(),
-                              prefixIcon: Icon(Icons.lock)),
-                          obscureText: false,
+                          hintText: 'Enter your password',
+                          helpText: 'Password',
+                          obscureText: true,
+                          icon: Icons.lock,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter a password';

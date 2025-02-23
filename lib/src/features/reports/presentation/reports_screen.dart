@@ -124,13 +124,6 @@ class ReportsScreen extends ConsumerWidget {
       floatingActionButton: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          /* FloatingActionButton(
-            heroTag: "refreshReportsFAB",
-            onPressed: () => ref.refresh(reportServicesFutureProvider),
-            backgroundColor: primaryColor,
-            child: Icon(Icons.refresh, color: secondaryColor),
-          ),
-          */
           const SizedBox(height: 16),
           FloatingActionButton(
             heroTag: "backToHomeFAB",
@@ -147,10 +140,4 @@ class ReportsScreen extends ConsumerWidget {
       ),
     );
   }
-}
-
-String _formatTimeOnly(int timestamp) {
-  final dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
-  final timeFormat = DateFormat('HH:mm');
-  return timeFormat.format(dateTime);
 }
