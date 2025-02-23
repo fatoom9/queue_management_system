@@ -13,10 +13,11 @@ void main() async {
   // Check auth status on startup - this will set the auth state based on the database
   await container.read(authControllerProvider.notifier).checkAuthStatus();
 
-  runApp(UncontrolledProviderScope(
-    container: container,
-    child: const MyApp(),
-  ));
+  runApp(
+    ProviderScope(
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends ConsumerWidget {
