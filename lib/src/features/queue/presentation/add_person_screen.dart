@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:queue_management_system/src/common_widgets/button.dart';
+import 'package:queue_management_system/src/common_widgets/text_feild.dart';
 import 'package:queue_management_system/src/constants/app_theme.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:queue_management_system/src/features/queue/presentation/controllers/queue_controller.dart';
+
+const Color primaryColor = Color(0xFF335A7B);
+const Color secondaryColor = Color(0xFFf1f2ed);
+const Color accentColor = Color(0xFFAD534A);
 
 class AddPersonScreen extends ConsumerStatefulWidget {
   const AddPersonScreen({Key? key}) : super(key: key);
@@ -26,15 +30,12 @@ class _AddPersonScreenState extends ConsumerState<AddPersonScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Add Person',
-          style: GoogleFonts.poppins(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-            color: primaryColor,
-          ),
+          'Add Person Screen',
+          style: TextStyle(
+              fontSize: 22, fontWeight: FontWeight.bold, color: secondaryColor),
         ),
         centerTitle: true,
-        backgroundColor: primaryColor,
+        backgroundColor: AppTheme.theme.primaryColor,
       ),
       body: Container(
         color: secondaryColor, // Setting background color
@@ -44,14 +45,13 @@ class _AddPersonScreenState extends ConsumerState<AddPersonScreen> {
             key: _formKey,
             child: Column(
               children: [
-                TextFormField(
+                AppTextFormField(
                   controller: _idController,
-                  decoration: const InputDecoration(
-                    hintText: 'ID',
-                    labelText: 'ID',
-                    prefixIcon: Icon(Icons.lock),
-                    border: OutlineInputBorder(),
-                  ),
+                  hintText: 'ID',
+                  helpText: 'Please enter 9-digit ID',
+                  obscureText: false,
+                  icon: Icons.lock,
+                  keyboardType: TextInputType.number,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter ID';
@@ -63,14 +63,12 @@ class _AddPersonScreenState extends ConsumerState<AddPersonScreen> {
                   },
                 ),
                 const SizedBox(height: 20),
-                TextFormField(
+                AppTextFormField(
                   controller: _fullNameController,
-                  decoration: const InputDecoration(
-                    hintText: 'Name',
-                    labelText: 'Full Name',
-                    prefixIcon: Icon(Icons.person),
-                    border: OutlineInputBorder(),
-                  ),
+                  hintText: 'Full Name',
+                  helpText: 'Please enter your full name',
+                  obscureText: false,
+                  icon: Icons.person,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a name';
@@ -79,14 +77,12 @@ class _AddPersonScreenState extends ConsumerState<AddPersonScreen> {
                   },
                 ),
                 const SizedBox(height: 20),
-                TextFormField(
+                AppTextFormField(
                   controller: _phoneController,
-                  decoration: const InputDecoration(
-                    hintText: 'Phone Number',
-                    labelText: 'Phone Number',
-                    prefixIcon: Icon(Icons.phone),
-                    border: OutlineInputBorder(),
-                  ),
+                  hintText: 'Phone Number',
+                  helpText: 'Please enter a 10-digit phone number',
+                  obscureText: false,
+                  icon: Icons.phone,
                   keyboardType: TextInputType.phone,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -99,14 +95,12 @@ class _AddPersonScreenState extends ConsumerState<AddPersonScreen> {
                   },
                 ),
                 const SizedBox(height: 20),
-                TextFormField(
+                AppTextFormField(
                   controller: _notesController,
-                  decoration: const InputDecoration(
-                    hintText: 'Notes',
-                    labelText: 'Notes (Optional)',
-                    prefixIcon: Icon(Icons.note),
-                    border: OutlineInputBorder(),
-                  ),
+                  hintText: 'Notes (Optional)',
+                  helpText: 'Optional notes about the person',
+                  obscureText: false,
+                  icon: Icons.note,
                 ),
                 const SizedBox(height: 20),
                 _isLoading
@@ -142,7 +136,7 @@ class _AddPersonScreenState extends ConsumerState<AddPersonScreen> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
-        child: const Icon(Icons.home, color: Colors.white),
+        child: const Icon(Icons.home, color: secondaryColor),
       ),
     );
   }

@@ -5,7 +5,7 @@ class AppTheme {
   static ThemeData get theme {
     return ThemeData(
       primaryColor: const Color(0xFF335A7B),
-      scaffoldBackgroundColor: const Color(0xFFF1F2ED),
+      scaffoldBackgroundColor: const Color(0xFFf1f2ed),
 
       // AppBar theme
       appBarTheme: const AppBarTheme(
