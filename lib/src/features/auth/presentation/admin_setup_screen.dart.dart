@@ -106,7 +106,7 @@ class AdminSetupScreen extends HookConsumerWidget {
                               labelText: 'Password',
                               border: OutlineInputBorder(),
                               prefixIcon: Icon(Icons.lock)),
-                          obscureText: true,
+                          obscureText: false,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter a password';

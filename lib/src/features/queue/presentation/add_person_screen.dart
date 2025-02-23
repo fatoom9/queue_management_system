@@ -49,7 +49,7 @@ class _AddPersonScreenState extends ConsumerState<AddPersonScreen> {
                   decoration: const InputDecoration(
                     hintText: 'ID',
                     labelText: 'ID',
-                    prefixIcon: Icon(Icons.person),
+                    prefixIcon: Icon(Icons.lock),
                     border: OutlineInputBorder(),
                   ),
                   validator: (value) {
