@@ -8,11 +8,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final dbHelper = DatabaseHelper();
   await dbHelper.database;
-
   final container = ProviderContainer();
-  // Check auth status on startup - this will set the auth state based on the database
   await container.read(authControllerProvider.notifier).checkAuthStatus();
-
   runApp(
     UncontrolledProviderScope(
       container: container,
