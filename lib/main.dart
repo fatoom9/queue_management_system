@@ -14,7 +14,8 @@ void main() async {
   await container.read(authControllerProvider.notifier).checkAuthStatus();
 
   runApp(
-    ProviderScope(
+    UncontrolledProviderScope(
+      container: container,
       child: const MyApp(),
     ),
   );
