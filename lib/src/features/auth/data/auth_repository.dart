@@ -10,7 +10,8 @@ class AuthRepository {
 
   Future<void> insertAdmin(Admin admin) async {
     final db = await _dbHelper.database;
-    await db.insert('admin', admin.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+    await db.insert('admin', admin.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<List<Admin>> getAdmins() async {
@@ -47,7 +48,8 @@ class AuthRepository {
 
   Future<bool> validateCredentials(String email, String password) async {
     final admins = await getAdmins();
-    final isValid = admins.any((admin) => admin.email == email && admin.password == password);
+    final isValid = admins
+        .any((admin) => admin.email == email && admin.password == password);
     return isValid;
   }
 
@@ -59,16 +61,15 @@ class AuthRepository {
   Future<int> isLoggedIn(String id) async {
     final db = await _dbHelper.database;
 
-    // Query the admin table where the id matches the provided id
     final List<Map<String, dynamic>> maps = await db.query(
       'admin',
       where: 'id = ?',
       whereArgs: [id],
     );
 
-    // If the admin exists, check if the is_logged_in column is 1 (true)
     if (maps.isNotEmpty) {
-      final admin = Admin.fromMap(maps.first); // Get the first match (should be unique by id)
+      final admin = Admin.fromMap(
+          maps.first); // Get the first match (should be unique by id)
       return admin.isLoggedIn ? 1 : 0; // Return 1 if logged in, otherwise 0
     } else {
       return 0; // Return 0 if the admin with the given id is not found
