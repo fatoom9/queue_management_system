@@ -1,3 +1,4 @@
+import 'package:queue_management_system/src/exceptions/app_exceptions.dart';
 import 'package:queue_management_system/src/features/auth/domain/models/admin.dart';
 import 'package:queue_management_system/src/core/database/database_helper.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -8,9 +9,56 @@ class AuthRepository {
 
   AuthRepository(this._dbHelper);
 
+  Future<bool> _isEmailInUse(String email) async {
+    final db = await _dbHelper.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'admin',
+      where: 'email = ?',
+      whereArgs: [email],
+    );
+    return maps.isNotEmpty;
+  }
+
   Future<void> insertAdmin(Admin admin) async {
     final db = await _dbHelper.database;
-    await db.insert('admin', admin.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+    await db.insert('admin', admin.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  Future<void> signInWithEmailAndPassword(String email, String password) async {
+    final db = await _dbHelper.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'admin',
+      where: 'email = ?',
+      whereArgs: [email],
+    );
+
+    if (maps.isEmpty) {
+      throw UserNotFoundException();
+    }
+
+    final admin = Admin.fromMap(maps.first);
+
+    if (admin.password != password) {
+      throw WrongPasswordException();
+    }
+
+    await updateLoginStatus(email, true);
+  }
+
+  Future<void> createAdminWithEmailAndPassword(
+      String email, String password) async {
+    if (await _isEmailInUse(email)) {
+      throw EmailAlreadyInUseException();
+    }
+
+    if (password.length < 8) {
+      throw WeakPasswordException();
+    }
+
+    final newAdmin =
+        Admin(id: DateTime.now().toString(), email: email, password: password);
+    await insertAdmin(newAdmin);
   }
 
   Future<List<Admin>> getAdmins() async {
@@ -31,7 +79,6 @@ class AuthRepository {
 
   Future<String?> getLoggedInAdminEmail() async {
     final db = await _dbHelper.database;
-
     List<Map<String, dynamic>> result = await db.query(
       'admin',
       columns: ['email'],
@@ -46,9 +93,14 @@ class AuthRepository {
   }
 
   Future<bool> validateCredentials(String email, String password) async {
-    final admins = await getAdmins();
-    final isValid = admins.any((admin) => admin.email == email && admin.password == password);
-    return isValid;
+    final db = await _dbHelper.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'admin',
+      where: 'email = ? AND password = ?',
+      whereArgs: [email, password],
+    );
+
+    return maps.isNotEmpty;
   }
 
   Future<void> deleteAdmin(String id) async {
@@ -56,22 +108,19 @@ class AuthRepository {
     await db.delete('admin', where: 'id = ?', whereArgs: [id]);
   }
 
-  Future<int> isLoggedIn(String id) async {
+  Future<int> isLoggedIn(String email) async {
     final db = await _dbHelper.database;
-
-    // Query the admin table where the id matches the provided id
     final List<Map<String, dynamic>> maps = await db.query(
       'admin',
-      where: 'id = ?',
-      whereArgs: [id],
+      where: 'email = ?',
+      whereArgs: [email],
     );
 
-    // If the admin exists, check if the is_logged_in column is 1 (true)
     if (maps.isNotEmpty) {
-      final admin = Admin.fromMap(maps.first); // Get the first match (should be unique by id)
-      return admin.isLoggedIn ? 1 : 0; // Return 1 if logged in, otherwise 0
+      final admin = Admin.fromMap(maps.first);
+      return admin.isLoggedIn ? 1 : 0;
     } else {
-      return 0; // Return 0 if the admin with the given id is not found
+      return 0;
     }
   }
 }
