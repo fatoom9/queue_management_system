@@ -7,6 +7,9 @@ class AuthService {
   final Ref _ref;
 
   AuthService(this._authRepository, this._ref);
+  Future<void> signInWithEmailAndPassword(String email, String password) async {
+    return _authRepository.signInWithEmailAndPassword(email, password);
+  }
 
   Future<bool> validateCredentials(String email, String password) async {
     return _authRepository.validateCredentials(email, password);
@@ -18,6 +21,11 @@ class AuthService {
 
   Future<void> createAdmin(Admin admin) async {
     await _authRepository.insertAdmin(admin);
+  }
+
+  Future<void> createAdminWithEmailAndPassword(
+      String email, String password) async {
+    await _authRepository.createAdminWithEmailAndPassword(email, password);
   }
 
   Future<String?> getLoggedInAdmin() async {

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:queue_management_system/src/exceptions/app_exceptions.dart';
 
+//for errors inside providers
+// work with StateNotifier or FutureProvider
 class AsyncErrorLogger extends ProviderObserver {
   @override
   void didUpdateProvider(
