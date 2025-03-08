@@ -1,4 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:multiple_result/multiple_result.dart';
 import 'package:queue_management_system/src/exceptions/app_exceptions.dart';
 import 'package:queue_management_system/src/exceptions/error_logger.dart';
 import 'package:queue_management_system/src/features/auth/application/auth_service.dart';
@@ -28,17 +29,33 @@ class AuthController extends StateNotifier<AuthState> {
   AuthController(this._authService, this.ref) : super(AuthState());
 
   Future<String?> signIn(String email, String password) async {
-    try {
-      await _authService.signInWithEmailAndPassword(email, password);
-      state = AuthState(isAuthenticated: true, adminEmail: email);
-      return null; // No error
-    } on AppException catch (e) {
-      ref.read(errorLoggerProvider).logError(e, StackTrace.current);
-      return e.message;
-    } catch (e, st) {
-      ref.read(errorLoggerProvider).logError(e, st);
-      return "An unexpected error occurred. Please try again.";
-    }
+    final result =
+        await _authService.signInWithEmailAndPassword(email, password);
+    return result.when(
+      (success) {
+        state = AuthState(isAuthenticated: true, adminEmail: email);
+        return null;
+      },
+      (error) {
+        ref.read(errorLoggerProvider).logAppException(error);
+        return error.message;
+      },
+    );
+  }
+
+  Future<String?> createAdmin(String email, String password) async {
+    final result =
+        await _authService.createAdminWithEmailAndPassword(email, password);
+
+    return result.when(
+      (success) {
+        return null;
+      },
+      (error) {
+        ref.read(errorLoggerProvider).logAppException(error);
+        return error.message; //
+      },
+    );
   }
 
   Future<void> signOut() async {
@@ -48,22 +65,6 @@ class AuthController extends StateNotifier<AuthState> {
     }
     // After signing out, reset the AuthState to its initial state
     state = AuthState();
-  }
-
-  Future<String?> createAdmin(String email, String password) async {
-    try {
-      await _authService.createAdminWithEmailAndPassword(email, password);
-      return null; // Success
-    } on EmailAlreadyInUseException catch (e) {
-      ref.read(errorLoggerProvider).logError(e, StackTrace.current);
-      return e.message;
-    } on WeakPasswordException catch (e) {
-      ref.read(errorLoggerProvider).logError(e, StackTrace.current);
-      return e.message;
-    } catch (e, st) {
-      ref.read(errorLoggerProvider).logError(e, st);
-      return "An unexpected error occurred. Please try again.";
-    }
   }
 
   Future<void> deleteAdmin(String id) async {

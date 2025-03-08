@@ -1,4 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:multiple_result/multiple_result.dart';
+import 'package:queue_management_system/src/exceptions/app_exceptions.dart';
 import 'package:queue_management_system/src/features/auth/data/auth_repository.dart';
 import 'package:queue_management_system/src/features/auth/domain/models/admin.dart';
 
@@ -7,7 +9,8 @@ class AuthService {
   final Ref _ref;
 
   AuthService(this._authRepository, this._ref);
-  Future<void> signInWithEmailAndPassword(String email, String password) async {
+  Future<Result<void, AppException>> signInWithEmailAndPassword(
+      String email, String password) async {
     return _authRepository.signInWithEmailAndPassword(email, password);
   }
 
@@ -23,9 +26,10 @@ class AuthService {
     await _authRepository.insertAdmin(admin);
   }
 
-  Future<void> createAdminWithEmailAndPassword(
+  Future<Result<void, AppException>> createAdminWithEmailAndPassword(
       String email, String password) async {
-    await _authRepository.createAdminWithEmailAndPassword(email, password);
+    return await _authRepository.createAdminWithEmailAndPassword(
+        email, password);
   }
 
   Future<String?> getLoggedInAdmin() async {
